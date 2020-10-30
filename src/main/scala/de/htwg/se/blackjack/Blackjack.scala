@@ -1,6 +1,6 @@
-package main.de.htwg.se.blackjack
+package de.htwg.se.blackjack
 
-import main.de.htwg.se.blackjack.model.Person
+import de.htwg.se.blackjack.model.Person
 
 object Blackjack {
     def main(args:Array[String]): Unit = {
