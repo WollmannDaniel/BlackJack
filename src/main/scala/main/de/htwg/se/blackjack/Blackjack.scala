@@ -1,6 +1,8 @@
-package blackjack
+package main.de.htwg.se.blackjack
 
-object Main {
+import main.de.htwg.se.blackjack.model.Person
+
+object Blackjack {
     def main(args:Array[String]): Unit = {
         var board = createGameBoard()
         println(board)
@@ -13,7 +15,7 @@ object Main {
         val player = Person("Player", playerHand)
         val dealer = Person("Dealer", dealerHand)
 
-        board = board.concat("Welcome to blackjack!\n")
+        board = board.concat("Welcome to main.de.htwg.se.blackjack!\n")
         board = board.concat(player.toString())
         board = board.concat(dealer.toString())
         board = board.concat("It is Player's turn! hit or stand? (h/s): ")

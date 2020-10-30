@@ -1,4 +1,4 @@
-package blackjack
+package main.de.htwg.se.blackjack.model
 
 case class Person(name: String, kartenhand: Array[String]) {
     override def toString: String = {
