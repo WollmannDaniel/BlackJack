@@ -1,10 +1,9 @@
 package de.htwg.se.blackjack.model
 
-import org.scalatest.matchers.should.Matchers._
+import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-import org.scalatest._
 
-class PersonSpec extends AnyWordSpec {
+class PersonSpec extends AnyWordSpec with Matchers {
     "A Player" when { "new" should {
         val player = Person("any-name", Array("7","J"))
         "have a name" in {
