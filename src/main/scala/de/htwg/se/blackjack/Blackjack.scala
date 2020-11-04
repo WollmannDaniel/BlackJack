@@ -14,7 +14,6 @@ object Blackjack {
         val dealerHand = Array("7", "Q")
         val player = Person("Player", playerHand)
         val dealer = Person("Dealer", dealerHand)
-        print(player.toString())
         board = board.concat("Welcome to blackjack!\n")
         board = board.concat(player.toString())
         board = board.concat(dealer.toString())
