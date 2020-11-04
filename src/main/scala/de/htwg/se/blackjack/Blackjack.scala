@@ -15,7 +15,7 @@ object Blackjack {
         val player = Person("Player", playerHand)
         val dealer = Person("Dealer", dealerHand)
         print(player.toString())
-        board = board.concat("Welcome to main.de.htwg.se.blackjack!\n")
+        board = board.concat("Welcome to blackjack!\n")
         board = board.concat(player.toString())
         board = board.concat(dealer.toString())
         board = board.concat("It is Player's turn! hit or stand? (h/s): ")
