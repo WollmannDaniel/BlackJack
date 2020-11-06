@@ -5,7 +5,7 @@ import org.scalatest.wordspec.AnyWordSpec
 
 class PersonSpec extends AnyWordSpec with Matchers {
     "A Player" when { "new" should {
-        var hand = Array("7","J")
+        var hand = Vector("7","J")
         val player = Person("any-name", hand)
         "have unapply" in {
             Person.unapply(player).get should be ("any-name", hand)

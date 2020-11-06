@@ -1,6 +1,6 @@
 package de.htwg.se.blackjack.model
 
-case class Person(name: String, cards: Array[String]) {
+case class Person(name: String, cards: Vector[String]) {
     override def toString: String = {
         var output = s"$name's hand: ["
         output += cards.mkString(", ")

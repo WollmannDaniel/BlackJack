@@ -10,8 +10,8 @@ object Blackjack {
 
     def createGameBoard(): String = {
         var board = ""
-        val playerHand = Array("J", "2")
-        val dealerHand = Array("7", "Q")
+        val playerHand = Vector("J", "2")
+        val dealerHand = Vector("7", "Q")
         val player = Person("Player", playerHand)
         val dealer = Person("Dealer", dealerHand)
         board = board.concat("Welcome to blackjack!\n")
