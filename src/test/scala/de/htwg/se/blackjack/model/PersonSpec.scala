@@ -36,7 +36,7 @@ class PersonSpec extends AnyWordSpec with Matchers {
         val player = Person("any-name", cards)
 
         "have this string representation" in {
-            player.toString should be("any-name's hand: [♦2, ♣10] = 12")
+            player.toString should be("any-name's hand: [♦2, ♣J] = 12")
         }
     }}
 

@@ -3,9 +3,7 @@ package de.htwg.se.blackjack.model
 import de.htwg.se.blackjack.Blackjack
 
 case class Person(name: String, cards: Vector[Card]) {
-    def addCard(card: Card): Person = {
-        copy(name, cards :+ card)
-    }
+    def addCard(card: Card): Person = copy(name, cards :+ card)
 
     def calculateHandValue(): Int = {
         var sum = cards.map(card => Blackjack.cardValues(card.rank)).sum
