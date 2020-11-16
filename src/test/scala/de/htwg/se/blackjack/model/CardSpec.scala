@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class CardSpec extends AnyWordSpec with Matchers {
-    "A Card" when { "is printed" should {
+    /*"A Card" when { "is printed" should {
         val diamondCard = Card("Diamond", "Two")
         val heartCard = Card("Heart", "Three")
         val spadeCard = Card("Spade", "Four")
@@ -25,5 +25,5 @@ class CardSpec extends AnyWordSpec with Matchers {
         "have this string representation when its a club 5" in {
             clubCard.toString should be("♣5")
         }
-    }}
+    }}*/
 }

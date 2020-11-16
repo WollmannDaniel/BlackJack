@@ -1,34 +1,29 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.model.{Card, Deck, Person}
+import de.htwg.se.blackjack.controller.Controller
+import de.htwg.se.blackjack.util.Observer
+import de.htwg.se.blackjack.controller.GameState._
 
-import scala.util.Random
+class Tui(controller: Controller) extends Observer {
+    controller.add(this)
 
-class Tui {
-    var deck: Deck = Deck(Random.shuffle(initList()))
-
-    def processInputLine(input: String, person: Person): Person = {
-        input match {
-            case "s" | "exit" => person
-            case "h"=> {
-                val newDeck = deck.drawCard()
-                val newPerson = person.addCard(newDeck.getDrawedCard(deck))
-                deck = newDeck
-                newPerson
+    def processInputLine(input: String): Unit = {
+        controller.gameState match {
+            case PlayersTurn => {
+                input match {
+                    case "s" => controller.playerStands()
+                    case "h" => controller.playerHits()
+                    case _ => print("unknown command")
+                }
             }
-            case _ => {
-                print("Unknown command")
-                person
+            case Idle => {
+                input match {
+                    case "n" => controller.newGame()
+                    case _ =>
+                }
             }
         }
     }
 
-    def initList(): List[Card] = {
-        println("Shuffling card deck.")
-        for {
-            suit <- List("Heart", "Diamond", "Spade", "Club")
-            rank <- List("Ace", "King", "Queen", "Jack", "Ten", "Nine", "Eight", "Seven", "Six", "Five", "Four", "Three", "Two")
-        }
-            yield Card(suit, rank)
-    }
+    override def update: Unit = println(controller.gameStateToString)
 }

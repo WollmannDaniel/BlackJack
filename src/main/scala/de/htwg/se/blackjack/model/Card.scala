@@ -1,20 +1,42 @@
 package de.htwg.se.blackjack.model
 
-import de.htwg.se.blackjack.Blackjack
+object Rank extends Enumeration {
+    type Rank = Value
+    val Ace = Value(11)
+    val Two = Value(2)
+    val Three = Value(3)
+    val Four = Value(4)
+    val Five = Value(5)
+    val Six = Value(6)
+    val Seven = Value(7)
+    val Eight = Value(8)
+    val Nine = Value(9)
+    val Ten = Value(10)
+    val Jack = Ten
+    val Queen = Ten
+    val King = Ten
+}
 
-case class Card(suit: String, rank: String) {
-    val cardRank: Map[String, String] = Map("Ace" -> "A", "Two" -> "2", "Three" -> "3", "Four" -> "4", "Five" -> "5", "Six" -> "6",
-        "Seven" -> "7", "Eight" -> "8", "Nine" -> "9", "Ten" -> "10", "Jack" -> "J", "Queen" -> "Q", "King" -> "K")
+object Suit extends Enumeration {
+    type Suit = Value
+    val Diamond, Spade, Heart, Club = Value
+}
 
+import Rank._
+import Suit._
+
+case class Card(suit: Suit, rank: Rank) {
     override def toString: String = {
-        var output = ""
+        val builder = new StringBuilder()
         suit match {
-            case "Diamond" => output += "♦"
-            case "Heart" => output += "♥"
-            case "Spade" => output += "♠"
-            case "Club" => output += "♣"
+            case Diamond => builder.append("♦")
+            case Heart => builder.append("♥")
+            case Spade => builder.append("♠")
+            case Club => builder.append("♣")
         }
-        output += cardRank(rank)
-        output
+        builder.append(rank.id)
+        builder.append(",")
+        builder.toString()
     }
 }
+

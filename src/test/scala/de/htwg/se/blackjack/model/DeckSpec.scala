@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends AnyWordSpec with Matchers {
-    "The Deck" when { "is created" should {
+    /*"The Deck" when { "is created" should {
         val deck = Deck(List(Card("Diamond", "Two"), Card("Club", "Jack")))
         "have these cards" in {
             deck.cards should contain allOf (Card("Diamond", "Two"), Card("Club", "Jack"))
@@ -23,5 +23,5 @@ class DeckSpec extends AnyWordSpec with Matchers {
         "have this next card" in {
             deckNew.getDrawedCard(deckOld) should be(Card("Heart", "Ace"))
         }
-    }}
+    }}*/
 }

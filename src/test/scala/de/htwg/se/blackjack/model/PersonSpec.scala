@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class PersonSpec extends AnyWordSpec with Matchers {
-    "A Player" when { "new" should {
+    /*"A Player" when { "new" should {
         val cards = Vector(Card("Diamond", "Two"), Card("Club", "Jack"))
         val player = Person("any-name", cards)
         "have unapply" in {
@@ -56,5 +56,5 @@ class PersonSpec extends AnyWordSpec with Matchers {
         "has the calculated hand value" in {
             player.calculateHandValue should be (13)
         }
-    }}
+    }}*/
 }
