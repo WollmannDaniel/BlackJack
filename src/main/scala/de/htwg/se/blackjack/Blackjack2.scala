@@ -1,29 +1,22 @@
 package de.htwg.se.blackjack
 
 import de.htwg.se.blackjack.aview.Tui2
+import de.htwg.se.blackjack.controller.Controller
 import de.htwg.se.blackjack.model.{Deck2, Hand}
 
 import scala.io.StdIn.readLine
 
 object Blackjack2 {
-    val tui = new Tui2
-    var playerHand = new Hand(2)
-    var dealerHand = new Hand(2)
-    var output: String = "Starting new hand"
-    var deck = new Deck2()
-
-    val controller =
+    val controller = new Controller(new Hand(), new Hand())
+    val tui = new Tui2(controller)
+    controller.notifyObservers
 
     def main(args: Array[String]): Unit = {
         var input: String = ""
 
         do {
-            println(output)
             input = readLine().toLowerCase()
-            val (out, pH, dH, d) = tui.processInputLine(input, playerHand, dealerHand, deck)
-            output = out
-            playerHand = pH
-            dealerHand = dH
+            tui.processInputLine(input)
         } while (input != "q")
     }
 }
