@@ -54,9 +54,9 @@ object Blackjack {
 
                 if (dealer.calculateHandValue() > 21){
                     println(s"${player1.name} has won!")
-                } else if (player1.calculateHandValue() > dealer.calculateHandValue()) {
-                    println(s"${dealer.name} has won!")
                 } else if (player1.calculateHandValue() < dealer.calculateHandValue()) {
+                    println(s"${dealer.name} has won!")
+                } else if (player1.calculateHandValue() > dealer.calculateHandValue()) {
                     println(s"${player1.name} has won!")
                 } else {
                     println("It's a draw!")
