@@ -9,12 +9,8 @@ case class Hand(cards: Vector[Card]) {
         copy(cards :+ Deck.drawCard())
     }
 
-    def initHand(): Vector[Card] = {
-        cards ++ Vector(Deck.drawCard(), Deck.drawCard())
-    }
-
     def calculateHandValue(): Int = {
-        var sum = cards.map(card => card.rank.id).sum
+        var sum = cards.map(card => card.mapCardValue()).sum
         val count: Int = cards.count(_.rank == Ace)
 
         if(count >= 1 && sum > 21){

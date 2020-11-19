@@ -86,11 +86,10 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
     def gameStateToString: String = {
         gameState match {
             case FirstRound => {
-                gameState = PlayersTurn
-                message + "Playerhand: " + playerHand.toString + "Dealerhand: " + dealerHand.toStringDealer
+                message + "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
             }
-            case PlayersTurn => "Playerhand: " + playerHand.toString + "Dealerhand: " + dealerHand.toStringDealer
-            case DealersTurn => "Playerhand: " + playerHand.toString + "Dealerhand: " + dealerHand.toString
+            case PlayersTurn => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
+            case DealersTurn => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString
             case _ => message
         }
     }

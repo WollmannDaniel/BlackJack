@@ -9,7 +9,7 @@ class Tui(controller: Controller) extends Observer {
 
     def processInputLine(input: String): Unit = {
         controller.gameState match {
-            case PlayersTurn => {
+            case PlayersTurn | FirstRound => {
                 input match {
                     case "s" => controller.playerStands()
                     case "h" => controller.playerHits()
@@ -25,5 +25,7 @@ class Tui(controller: Controller) extends Observer {
         }
     }
 
-    override def update: Unit = println(controller.gameStateToString)
+    override def update: Unit = {
+        println(controller.gameStateToString)
+    }
 }

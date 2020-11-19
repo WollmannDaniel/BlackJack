@@ -12,9 +12,9 @@ object Rank extends Enumeration {
     val Eight = Value(8)
     val Nine = Value(9)
     val Ten = Value(10)
-    val Jack = Ten
-    val Queen = Ten
-    val King = Ten
+    val Jack = Value(12)
+    val Queen = Value(13)
+    val King = Value(14)
 }
 
 object Suit extends Enumeration {
@@ -34,9 +34,26 @@ case class Card(suit: Suit, rank: Rank) {
             case Spade => builder.append("♠")
             case Club => builder.append("♣")
         }
-        builder.append(rank.id)
+        builder.append(mapCardRank())
         builder.append(",")
         builder.toString()
+    }
+
+    def mapCardRank(): String = {
+        rank match {
+            case Ace => "A"
+            case Jack => "J"
+            case Queen => "Q"
+            case King => "K"
+            case _ => rank.id.toString
+        }
+    }
+
+    def mapCardValue(): Int = {
+        rank match {
+            case Jack | Queen | King => 10
+            case _ => rank.id
+        }
     }
 }
 
