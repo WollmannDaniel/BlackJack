@@ -5,32 +5,24 @@ import de.htwg.se.blackjack.util.Observable
 
 object GameState extends Enumeration {
     type GameState = Value
-    val PlayersTurn, DealersTurn, FirstRound, Idle = Value
+    val PlayersTurn, DealersTurn, FirstRound, Idle, PlayerWon, PlayerLost, Draw, BlackJack, WrongCmd, EndGame = Value
 }
 
 import GameState._
 
 class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable {
     var gameState = FirstRound
-    var message: String = "Starting new game!\nThe deck was shuffled.\nIt's your turn. Hit or stand?(h/s)\n"
 
     def playerHits(): Unit = {
         playerHand = playerHand.drawCard()
-        notifyObservers
 
         val playerHandValue = playerHand.calculateHandValue()
         if (playerHandValue > 21) {
             checkWinner()
         } else {
-            printMessage()
+            gameState = PlayersTurn
+            notifyObservers
         }
-    }
-
-    def printMessage(): Unit = {
-        gameState = Idle
-        message = "It's your turn. Hit or stand?(h/s)"
-        notifyObservers
-        gameState = PlayersTurn
     }
 
     def playerStands(): Unit = {
@@ -47,36 +39,33 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
     }
 
     def checkWinner(): Unit ={
-        gameState = Idle
         val playerHandValue = playerHand.calculateHandValue()
         val dealerHandValue = dealerHand.calculateHandValue()
 
         if(playerHandValue == 21 && playerHand.cards.size == 2) {
-            message = "Lucky boy! The Player has won!"
+            gameState = BlackJack
         } else if(playerHandValue > 21){
-            message = "Dealer has won!"
+            gameState = PlayerLost
         } else if (dealerHandValue > 21) {
-            message = "The Player has won!"
+            gameState = PlayerWon
         } else if (playerHandValue < dealerHandValue) {
-            message = "Dealer has won!"
+            gameState = PlayerLost
         } else if (playerHandValue > dealerHandValue) {
-            message = "The Player has won!"
+            gameState = PlayerWon
         } else {
-            message = "It's a draw!"
+            gameState = Draw
         }
 
         notifyObservers
-        gameState = DealersTurn
-        notifyObservers
         gameState = Idle
-        message = "q = quit, n = start new game"
         notifyObservers
     }
 
     def newGame(): Unit ={
-        message = "Starting new game!\nThe deck was shuffled.\nIt's your turn. Hit or stand?(h/s)"
-        notifyObservers
-        gameState = PlayersTurn
+        if (gameState == Idle) {
+            gameState = WrongCmd
+        }
+        gameState = FirstRound
         Deck.resetDeck()
         playerHand = new Hand()
         dealerHand = new Hand()
@@ -85,12 +74,17 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
 
     def gameStateToString: String = {
         gameState match {
-            case FirstRound => {
-                message + "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
-            }
-            case PlayersTurn => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
-            case DealersTurn => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString
-            case _ => message
+            case PlayersTurn | FirstRound => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
+            case _ => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString
         }
+    }
+
+    def quitGame(): Unit = {
+        gameState = EndGame
+        notifyObservers
+    }
+
+    def testNotify(): Unit = {
+        notifyObservers
     }
 }

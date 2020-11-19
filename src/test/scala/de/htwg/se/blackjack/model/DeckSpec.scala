@@ -4,24 +4,37 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends AnyWordSpec with Matchers {
-    /*"The Deck" when { "is created" should {
-        val deck = Deck(List(Card("Diamond", "Two"), Card("Club", "Jack")))
-        "have these cards" in {
-            deck.cards should contain allOf (Card("Diamond", "Two"), Card("Club", "Jack"))
-        }
-        "have unapply" in {
-            Deck.unapply(deck).get should be(List(Card("Diamond", "Two"), Card("Club", "Jack")))
+    "The Deck" when { "is created" should {
+        "have 52 cards" in {
+            Deck.cards.size should be(52)
         }
     }}
 
-    "The Deck" when { "a card is drawn" should {
-        val deckOld = Deck(List(Card("Diamond", "Two"), Card("Club", "Jack"), Card("Heart", "Ace")))
-        val deckNew = deckOld.drawCard()
-        "have these cards left" in {
-            deckNew.cards should contain allOf(Card("Diamond", "Two"), Card("Club", "Jack"))
+    "The Deck" when {
+        "is initialized" should {
+            val deckCards = Deck.initDeck()
+            "have 52 cards" in {
+                deckCards.size should be(52)
+            }
         }
-        "have this next card" in {
-            deckNew.getDrawedCard(deckOld) should be(Card("Heart", "Ace"))
+    }
+
+    /*
+    "The Deck" when {
+        "a card is drawn" should {
+            val card = Deck.drawCard()
+            "has a card less" in {
+                Deck.cards.size should be(51)
+            }
         }
-    }}*/
+    }*/
+
+    "The Deck" when {
+        "is reseted" should {
+            Deck.resetDeck()
+            "have 52 cards" in {
+                Deck.cards.size should be(52)
+            }
+        }
+    }
 }
