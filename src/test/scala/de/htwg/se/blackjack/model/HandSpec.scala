@@ -23,7 +23,7 @@ class HandSpec extends AnyWordSpec with Matchers {
     val hand = Hand(handCards)
 
     "have this string representation" in {
-      hand.toString should be("[♦2,♣10] = 12\n")
+      hand.toString should be("[♦2,♣J] = 12\n")
     }
   }}
 

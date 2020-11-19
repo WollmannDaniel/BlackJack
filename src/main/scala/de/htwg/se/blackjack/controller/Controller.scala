@@ -62,14 +62,18 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
     }
 
     def newGame(): Unit ={
-        if (gameState == Idle) {
+        if (gameState != Idle) {
             gameState = WrongCmd
+            notifyObservers
+            gameState = PlayersTurn
+            notifyObservers
+        } else {
+            gameState = FirstRound
+            Deck.resetDeck()
+            playerHand = new Hand()
+            dealerHand = new Hand()
+            notifyObservers
         }
-        gameState = FirstRound
-        Deck.resetDeck()
-        playerHand = new Hand()
-        dealerHand = new Hand()
-        notifyObservers
     }
 
     def gameStateToString: String = {
