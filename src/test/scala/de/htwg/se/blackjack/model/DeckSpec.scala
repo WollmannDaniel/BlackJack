@@ -12,7 +12,6 @@ class DeckSpec extends AnyWordSpec with Matchers {
         "have unapply" in {
             var deck = new Deck()
             deck = Deck(deck.initDeck())
-
             Deck.unapply(deck).get should be (deck.cards)
         }
     }}
