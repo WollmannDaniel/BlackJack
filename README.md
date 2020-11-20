@@ -1,6 +1,6 @@
-
-
 [![Build Status](https://travis-ci.org/WollmannDaniel/BlackJack.svg?branch=feature%2Ftravis)](https://travis-ci.org/WollmannDaniel/BlackJack)
+
+[![Coverage Status](https://coveralls.io/repos/github/WollmannDaniel/BlackJack/badge.svg?branch=feature/travis)](https://coveralls.io/github/WollmannDaniel/BlackJack?branch=feature/travis)
 
 # BlackJack
 Repository for Software Engineering from Daniel Wollmann and Vlad Bratulescu
