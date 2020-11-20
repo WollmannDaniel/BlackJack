@@ -11,6 +11,9 @@ class CardSpec extends AnyWordSpec with Matchers {
         val clubCard = Card(Suit.Club, Rank.Five)
 
         val jackCard = Card(Suit.Club, Rank.Jack)
+        val aceCard = Card(Suit.Heart, Rank.Ace)
+        val queenCard = Card(Suit.Heart, Rank.Queen)
+        val kingCard = Card(Suit.Spade, Rank.King)
         val tenCard = Card(Suit.Club, Rank.Ten)
 
         "have unapply" in {
@@ -30,6 +33,15 @@ class CardSpec extends AnyWordSpec with Matchers {
         }
         "have this rank value when is jack" in {
             jackCard.mapCardValue() equals 10
+        }
+        "have this rank value when is ace" in {
+            aceCard.mapCardValue() equals 11
+        }
+        "have this rank value when is queen" in {
+            queenCard.mapCardValue() equals 10
+        }
+        "have this rank value when is king" in {
+            kingCard.mapCardValue() equals 10
         }
         "have this rank value when is ten" in {
             tenCard.mapCardValue() equals 10
