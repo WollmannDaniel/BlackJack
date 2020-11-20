@@ -1,6 +1,7 @@
+
 package de.htwg.se.blackjack.controller
 
-import de.htwg.se.blackjack.model.{Hand, Deck}
+import de.htwg.se.blackjack.model.{Hand, Deck, Card}
 import de.htwg.se.blackjack.util.Observable
 
 object GameState extends Enumeration {
@@ -10,11 +11,26 @@ object GameState extends Enumeration {
 
 import GameState._
 
-class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable {
+class Controller(var deck: Deck) extends Observable {
     var gameState = FirstRound
 
+    var playerHand = Hand(Vector[Card]())
+    var dealerHand = Hand(Vector[Card]())
+
+    def initGame(): Unit = {
+        deck = deck.resetDeck()
+        val (newDeck, cards) = deck.drawCards(4)
+        deck = newDeck
+        val playerHandCards = Vector(cards(0), cards(1))
+        val dealerHandCards = Vector(cards(2), cards(3))
+        playerHand = Hand(playerHandCards)
+        dealerHand = Hand(dealerHandCards)
+    }
+
     def playerHits(): Unit = {
-        playerHand = playerHand.drawCard()
+        val (newPlayerHand, newDeck) = playerHand.drawCard(deck)
+        playerHand = newPlayerHand
+        deck = newDeck
 
         val playerHandValue = playerHand.calculateHandValue()
         if (playerHandValue > 21) {
@@ -33,7 +49,9 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
 
     def manageDealerLogic(): Unit = {
         while(dealerHand.calculateHandValue() < 17) {
-            dealerHand = dealerHand.drawCard()
+            val (newDealerHand, newDeck) = dealerHand.drawCard(deck)
+            dealerHand = newDealerHand
+            deck = newDeck
         }
         notifyObservers
     }
@@ -69,9 +87,7 @@ class Controller(var playerHand: Hand, var dealerHand: Hand) extends Observable 
             notifyObservers
         } else {
             gameState = FirstRound
-            Deck.resetDeck()
-            playerHand = new Hand()
-            dealerHand = new Hand()
+            initGame()
             notifyObservers
         }
     }

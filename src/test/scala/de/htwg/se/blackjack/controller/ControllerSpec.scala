@@ -9,9 +9,10 @@ import org.scalatest.wordspec.AnyWordSpec
 class ControllerSpec extends AnyWordSpec with Matchers {
     "A Controller" when {
         "observed by an Observer" should {
-            val playerHand = new Hand()
-            val dealerHand = new Hand()
-            val controller = new Controller(playerHand, dealerHand)
+            var deck = new Deck()
+            deck = Deck(deck.initDeck())
+
+            val controller = new Controller(deck)
             val observer = new Observer {
                 var updated: Boolean = false
                 override def update: Unit = {
@@ -25,6 +26,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 controller.newGame()
                 observer.updated should be(true)
                 controller.gameState should be(FirstRound)
+                controller.deck.cards.size should be(48)
                 controller.playerHand.cards.size should be(2)
                 controller.dealerHand.cards.size should be(2)
             }
@@ -35,6 +37,19 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 controller.playerHand.cards.size should be(3)
             }
 
+            "notify its Observer after player hits and has less than 21" in {
+                controller.playerHand = Hand(Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Two)))
+                controller.playerHits()
+                observer.updated should be(true)
+                controller.gameState should be(PlayersTurn)
+            }
+
+            "notify its Observer after player hits and has more than 21" in {
+                controller.playerHand = Hand(Vector(Card(Suit.Diamond, Rank.Jack), Card(Suit.Club, Rank.Nine), Card(Suit.Heart, Rank.Two)))
+                controller.playerHits()
+                observer.updated should be(true)
+                controller.gameState should be(Idle)
+            }
 
             "notify its Observer after player wins" in {
                 controller.playerHand = Hand(Vector(Card(Suit.Diamond, Rank.Ace), Card(Suit.Club, Rank.Jack)))
@@ -91,6 +106,23 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 controller.newGame()
                 observer.updated should be(true)
                 controller.gameState should be(PlayersTurn)
+            }
+        }
+
+        "is initialized" should {
+            var deck = new Deck()
+            deck = Deck(deck.initDeck())
+            val controller = new Controller(deck)
+            controller.initGame()
+
+            "have drawed 2 cards for player" in {
+                controller.playerHand.cards.size should be(2)
+            }
+            "have drawed 2 cards for dealer" in {
+                controller.dealerHand.cards.size should be(2)
+            }
+            "have drawed 4 cards from deck" in {
+                controller.deck.cards.size should be(48)
             }
         }
     }

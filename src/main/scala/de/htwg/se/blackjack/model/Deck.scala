@@ -5,13 +5,20 @@ import de.htwg.se.blackjack.model.Suit._
 
 import scala.util.Random
 
-object Deck {
-    var cards = collection.mutable.ListBuffer() ++ Random.shuffle(initDeck())
+case class Deck(cards: Vector[Card]) {
+    def this() = this(Vector[Card]())
 
-    def drawCard(): Card = {
-        val card = cards.head
-        cards -= card
-        card
+    def drawCards(num: Int): (Deck, Vector[Card]) = {
+        var drawedCards = Vector[Card]()
+
+        val from = cards.size - num
+        val bis = cards.size - 1
+
+        for (i <- (from to bis)) {
+            drawedCards = drawedCards :+ cards(i)
+        }
+        val newDeck = copy(cards.dropRight(num))
+        (newDeck, drawedCards)
     }
 
     def initDeck(): Vector[Card] = {
@@ -22,9 +29,8 @@ object Deck {
         yield Card(suit, rank)
     }
 
-    def resetDeck(): Unit = {
-        cards.clear()
-        cards = collection.mutable.ListBuffer() ++ Random.shuffle(initDeck())
+    def resetDeck(): Deck = {
+        copy(Random.shuffle(initDeck()))
     }
 }
 

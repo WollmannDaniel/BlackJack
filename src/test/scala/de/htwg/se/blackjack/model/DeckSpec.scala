@@ -4,41 +4,65 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class DeckSpec extends AnyWordSpec with Matchers {
-    /*
-    "The Deck" when { "size get called" should {
-        val currentDeckSize = Deck.cards.size
-        "have " + currentDeckSize + " cards" in {
-            Deck.cards.size should be(currentDeckSize)
+    "The Deck" when { "new" should {
+        val deck = new Deck()
+        "be empty" in {
+            deck.cards.size should be(0)
+        }
+        "have unapply" in {
+            var deck = new Deck()
+            deck = Deck(deck.initDeck())
+
+            Deck.unapply(deck).get should be (deck.cards)
         }
     }}
-    */
 
-    "The Deck" when {
-        "is initialized" should {
-            val deckCards = Deck.initDeck()
-            "have 52 cards" in {
-                deckCards.size should be(52)
-            }
+    "The Deck" when { "initialized" should {
+        var deck = new Deck()
+        deck = Deck(deck.initDeck())
+        "have 52 cards" in {
+            deck.cards.size should be(52)
         }
-    }
+    }}
 
-    /*
-    "The Deck" when {
-        "a card is drawn" should {
-            val card = Deck.drawCard()
-            "has a card less" in {
-                Deck.cards.size should be(51)
-            }
-        }
-    }*/
+    "The Deck" when { "a card is drawn" should {
+        var deck = Deck(Vector(Card(Suit.Diamond, Rank.Two),
+                               Card(Suit.Heart, Rank.Ace),
+                               Card(Suit.Heart, Rank.Jack),
+                               Card(Suit.Spade, Rank.Ten),
+                               Card(Suit.Club, Rank.Seven)))
 
-    /*
-    "The Deck" when {
-        "is reseted" should {
-            Deck.resetDeck()
-            "have 52 cards" in {
-                Deck.cards.size should be(52)
-            }
+        val (newDeck, cards) = deck.drawCards(1)
+        deck = newDeck
+        "have draw card" in {
+            deck.cards.size should be(4)
+            cards(0) should be(Card(Suit.Club, Rank.Seven))
         }
-    }*/
+    }}
+
+    "The Deck" when { "multiple cards are drawn" should {
+        var deck = Deck(Vector(Card(Suit.Diamond, Rank.Two),
+            Card(Suit.Heart, Rank.Ace),
+            Card(Suit.Heart, Rank.Jack),
+            Card(Suit.Spade, Rank.Ten),
+            Card(Suit.Club, Rank.Seven)))
+
+        val (newDeck, cards) = deck.drawCards(4)
+        deck = newDeck
+        "have drawn multiple cards" in {
+            deck.cards.size should be(1)
+            cards.size should be(4)
+        }
+    }}
+
+    "The Deck" when { "is reseted" should {
+        var deck = new Deck(Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Jack)))
+        "has only 2 cards before reset" in {
+            deck.cards.size should be(2)
+        }
+        "have 52 cards" in {
+            deck = deck.resetDeck()
+            deck.cards.size should be (52)
+        }
+    }}
 }

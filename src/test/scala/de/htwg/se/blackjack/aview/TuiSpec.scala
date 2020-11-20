@@ -4,18 +4,21 @@ import java.io.{ByteArrayOutputStream, StringReader}
 
 import de.htwg.se.blackjack.controller.Controller
 import de.htwg.se.blackjack.model.Hand
+import de.htwg.se.blackjack.model.Deck
 import de.htwg.se.blackjack.controller.GameState._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class TuiSpec extends AnyWordSpec with Matchers {
     "A Blackjack Tui" should {
-        val controller = new Controller(new Hand(), new Hand())
+        val deck = new Deck()
+        val controller = new Controller(deck)
         val tui = new Tui(controller)
 
         "create two new hands on input 'n'" in {
             controller.gameState = Idle
             tui.processInputLine("n")
+            controller.deck.cards.size should be(48)
             controller.playerHand.cards.size should be(2)
             controller.dealerHand.cards.size should be(2)
             controller.gameState should be(FirstRound)

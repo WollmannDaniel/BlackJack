@@ -7,8 +7,10 @@ import de.htwg.se.blackjack.model.{Deck, Hand}
 import scala.io.StdIn.readLine
 
 object Blackjack {
-    val controller = new Controller(new Hand(), new Hand())
+    val deck = new Deck()
+    val controller = new Controller(deck)
     val tui = new Tui(controller)
+    controller.initGame()
     controller.notifyObservers
 
     def main(args: Array[String]): Unit = {
