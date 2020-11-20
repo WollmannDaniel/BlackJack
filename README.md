@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/WollmannDaniel/BlackJack.svg?branch=master)](https://travis-ci.org/WollmannDaniel/BlackJack)
+
 # BlackJack
 Repository for Software Engineering from Daniel Wollmann and Vlad Bratulescu
 
