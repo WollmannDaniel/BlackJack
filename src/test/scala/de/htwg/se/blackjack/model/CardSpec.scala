@@ -31,20 +31,32 @@ class CardSpec extends AnyWordSpec with Matchers {
         "have this string representation when its a club 5" in {
             clubCard.toString should be("♣5,")
         }
-        "have this rank value when is jack" in {
+        "have this card value when is jack" in {
             jackCard.mapCardValue() equals 10
         }
-        "have this rank value when is ace" in {
+        "have this card value when is ace" in {
             aceCard.mapCardValue() equals 11
         }
-        "have this rank value when is queen" in {
+        "have this card value when is queen" in {
             queenCard.mapCardValue() equals 10
         }
-        "have this rank value when is king" in {
+        "have this card value when is king" in {
             kingCard.mapCardValue() equals 10
         }
-        "have this rank value when is ten" in {
+        "have this card value when is ten" in {
             tenCard.mapCardValue() equals 10
+        }
+        "have this rank value when is ace" in {
+            aceCard.mapCardRank() equals "A"
+        }
+        "have this rank value when is queen" in {
+            queenCard.mapCardRank() equals "Q"
+        }
+        "have this rank value when is jack" in {
+            jackCard.mapCardRank() equals "J"
+        }
+        "have this rank value when is king" in {
+            kingCard.mapCardRank() equals "K"
         }
     }}
     "To get 100% code coverage" when { "for enum" should {

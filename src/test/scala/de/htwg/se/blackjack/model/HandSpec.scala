@@ -14,7 +14,7 @@ class HandSpec extends AnyWordSpec with Matchers {
             hand.cards.length should be(2)
         }
         "have these cards" in {
-            hand.cards should contain allOf (Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Jack))
+            hand.cards should be(Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Jack)))
         }
     }}
 
@@ -41,7 +41,7 @@ class HandSpec extends AnyWordSpec with Matchers {
         val hand = Hand(cards)
 
         "has the calculated hand value" in {
-            hand.calculateHandValue should be (13)
+            hand.calculateHandValue() should be (13)
         }
     }}
 

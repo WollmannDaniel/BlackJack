@@ -5,6 +5,7 @@ import de.htwg.se.blackjack.model.{Card, Deck, Hand, Rank, Suit}
 import de.htwg.se.blackjack.util.Observer
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import scala.language.reflectiveCalls
 
 class ControllerSpec extends AnyWordSpec with Matchers {
     "A Controller" when {
