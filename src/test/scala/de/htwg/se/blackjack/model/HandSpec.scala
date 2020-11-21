@@ -41,7 +41,7 @@ class HandSpec extends AnyWordSpec with Matchers {
         val hand = Hand(cards)
 
         "has the calculated hand value" in {
-            hand.calculateHandValue should be (13)
+            hand.calculateHandValue() should be (13)
         }
     }}
 
