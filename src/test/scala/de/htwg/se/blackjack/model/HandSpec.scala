@@ -14,7 +14,7 @@ class HandSpec extends AnyWordSpec with Matchers {
             hand.cards.length should be(2)
         }
         "have these cards" in {
-            hand.cards should contain allOf (Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Jack))
+            hand.cards should be(Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Club, Rank.Jack)))
         }
     }}
 
