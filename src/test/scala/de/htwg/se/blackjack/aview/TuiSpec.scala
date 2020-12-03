@@ -17,7 +17,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "create two new hands on input 'n'" in {
             controller.gameState = Idle
-            tui.processInputLine("n")
+            tui.processCommands("n")
             controller.deck.cards.size should be(48)
             controller.playerHand.cards.size should be(2)
             controller.dealerHand.cards.size should be(2)
@@ -25,24 +25,24 @@ class TuiSpec extends AnyWordSpec with Matchers {
         }
 
         "add a card to player's hand on input 'h'" in {
-            tui.processInputLine("h")
+            tui.processCommands("h")
             controller.playerHand.cards.size should be(3)
         }
 
         "add a card to dealer's hand on input 's'" in {
-            tui.processInputLine("s")
+            tui.processCommands("s")
             controller.dealerHand.cards.size should be >= 2
         }
 
         "quit the game on input 'q'" in {
-            tui.processInputLine("q")
+            tui.processCommands("q")
             controller.gameState should be(EndGame)
         }
 
         "should have this output when unknown command" in {
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
-                tui.processInputLine("this is a unknown command")
+                tui.processCommands("this is a unknown command")
             }
             out.toString should include ("unknown command")
         }

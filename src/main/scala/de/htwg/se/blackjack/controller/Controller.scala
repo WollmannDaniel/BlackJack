@@ -1,7 +1,8 @@
 
 package de.htwg.se.blackjack.controller
 
-import de.htwg.se.blackjack.model.{Hand, Deck, Card}
+import de.htwg.se.blackjack.model.{Card, Deck, Hand}
+import de.htwg.se.blackjack.model.StrategyContext
 import de.htwg.se.blackjack.util.Observable
 
 object GameState extends Enumeration {
@@ -28,7 +29,7 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def playerHits(): Unit = {
-        val (newPlayerHand, newDeck) = playerHand.drawCard(deck)
+        val (newPlayerHand, newDeck) = StrategyContext.strategy(StrategyContext.drawPlayerHand, deck, playerHand)
         playerHand = newPlayerHand
         deck = newDeck
 
@@ -48,11 +49,9 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def manageDealerLogic(): Unit = {
-        while(dealerHand.calculateHandValue() < 17) {
-            val (newDealerHand, newDeck) = dealerHand.drawCard(deck)
-            dealerHand = newDealerHand
-            deck = newDeck
-        }
+        val (newDealerHand, newDeck) = StrategyContext.strategy(StrategyContext.drawDealerHand, deck, dealerHand)
+        dealerHand = newDealerHand
+        deck = newDeck
         notifyObservers
     }
 
@@ -92,12 +91,7 @@ class Controller(var deck: Deck) extends Observable {
         }
     }
 
-    def gameStateToString: String = {
-        gameState match {
-            case PlayersTurn | FirstRound => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
-            case _ => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString
-        }
-    }
+    def gameStateToString: String = StateContext.handle(gameState, playerHand, dealerHand)
 
     def quitGame(): Unit = {
         gameState = EndGame

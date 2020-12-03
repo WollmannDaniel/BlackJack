@@ -2,9 +2,10 @@ package de.htwg.se.blackjack.controller
 
 import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.model.{Card, Deck, Hand, Rank, Suit}
-import de.htwg.se.blackjack.util.Observer
+import de.htwg.se.blackjack.util.{Observable, Observer}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+
 import scala.language.reflectiveCalls
 
 class ControllerSpec extends AnyWordSpec with Matchers {
@@ -16,9 +17,8 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             val controller = new Controller(deck)
             val observer = new Observer {
                 var updated: Boolean = false
-                override def update: Unit = {
-                    updated = true
-                }
+                def isUpdated: Boolean = updated
+                override def update: Boolean = {updated = true; updated}
             }
             controller.add(observer)
 

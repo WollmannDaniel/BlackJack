@@ -4,8 +4,12 @@ import de.htwg.se.blackjack.controller.Controller
 import de.htwg.se.blackjack.util.Observer
 import de.htwg.se.blackjack.controller.GameState._
 
-class Tui(controller: Controller) extends Observer {
+class Tui(controller: Controller) extends Observer with UserInterface {
     controller.add(this)
+
+    override def processCommands(input: String): Unit = {
+        processInputLine(input)
+    }
 
     def processInputLine(input: String): Unit = {
         input match {
@@ -17,7 +21,7 @@ class Tui(controller: Controller) extends Observer {
         }
     }
 
-    override def update: Unit = {
+    override def update: Boolean = {
         controller.gameState match {
             case FirstRound => {
                 println("Starting new game!\nThe deck was shuffled.\nIt's your turn. Hit or stand?(h/s)\n")
@@ -48,5 +52,6 @@ class Tui(controller: Controller) extends Observer {
             case WrongCmd => println("Command not allowed!")
             case EndGame => print("Good bye!")
         }
+        true
     }
 }
