@@ -2,7 +2,7 @@ package de.htwg.se.blackjack.aview
 
 import java.io.{ByteArrayOutputStream, StringReader}
 
-import de.htwg.se.blackjack.controller.Controller
+import de.htwg.se.blackjack.controller.{Controller, IsRunning}
 import de.htwg.se.blackjack.model.Hand
 import de.htwg.se.blackjack.model.Deck
 import de.htwg.se.blackjack.controller.GameState._
@@ -37,6 +37,15 @@ class TuiSpec extends AnyWordSpec with Matchers {
         "quit the game on input 'q'" in {
             tui.processCommands("q")
             controller.gameState should be(EndGame)
+        }
+
+        "get state in input 'state'" in {
+            controller.running = IsRunning()
+            val out = new ByteArrayOutputStream();
+            Console.withOut(out){
+                tui.processCommands("state")
+            }
+            out.toString should include ("Game is running!")
         }
 
         "should have this output when unknown command" in {

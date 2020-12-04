@@ -3,12 +3,26 @@ package de.htwg.se.blackjack.controller
 import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.model.Hand
 
+object InternState extends Enumeration {
+    type InternState = Value
+    val InternPlayersTurn, InternDealersTurn = Value
+}
+
+import InternState._
+
 object StateContext {
-    var state = ""
+    var state = InternPlayersTurn
+    var output = ""
     def handle(e: GameState, playerHand: Hand, dealerHand: Hand) = {
         e match {
-            case PlayersTurn | FirstRound => state = showDealerHand(playerHand, dealerHand)
-            case _ => state = showFullDealerHand(playerHand, dealerHand)
+            case PlayersTurn | FirstRound => {
+                state = InternPlayersTurn
+                output = showDealerHand(playerHand, dealerHand)
+            }
+            case _ => {
+                state = InternDealersTurn
+                output = showFullDealerHand(playerHand, dealerHand)
+            }
         }
         state
     }

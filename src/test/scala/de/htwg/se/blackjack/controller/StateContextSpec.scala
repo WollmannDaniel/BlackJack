@@ -10,7 +10,8 @@ class StateContextSpec extends AnyWordSpec with Matchers {
         val dealerHand = Hand(Vector(Card(Suit.Heart, Rank.Eight), Card(Suit.Spade, Rank.Ace)))
         val gameState = GameState.FirstRound
         "hide dealer's hand" in {
-            StateContext.handle(gameState, playerHand, dealerHand) should equal("Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer)
+            StateContext.handle(gameState, playerHand, dealerHand)
+            StateContext.output should equal("Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer)
         }
     }}
 
@@ -19,7 +20,8 @@ class StateContextSpec extends AnyWordSpec with Matchers {
         val dealerHand = Hand(Vector(Card(Suit.Heart, Rank.Eight), Card(Suit.Spade, Rank.Ace)))
         val gameState = GameState.DealersTurn
         "show full dealer's hand" in {
-            StateContext.handle(gameState, playerHand, dealerHand) should equal("Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString)
+            StateContext.handle(gameState, playerHand, dealerHand)
+            StateContext.output should equal("Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString)
         }
     }}
 }

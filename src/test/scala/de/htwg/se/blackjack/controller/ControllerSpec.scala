@@ -1,5 +1,7 @@
 package de.htwg.se.blackjack.controller
 
+import java.io.ByteArrayOutputStream
+
 import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.model.{Card, Deck, Hand, Rank, Suit}
 import de.htwg.se.blackjack.util.{Observable, Observer}
@@ -17,10 +19,29 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             val controller = new Controller(deck)
             val observer = new Observer {
                 var updated: Boolean = false
-                def isUpdated: Boolean = updated
                 override def update: Boolean = {updated = true; updated}
             }
             controller.add(observer)
+
+            "when game is running" in {
+                controller.running = IsRunning()
+
+                val out = new ByteArrayOutputStream();
+                Console.withOut(out){
+                    controller.getState()
+                }
+                out.toString should include ("Game is running!")
+            }
+
+            "when game is not running" in {
+                controller.running = IsNotRunning()
+
+                val out = new ByteArrayOutputStream();
+                Console.withOut(out){
+                    controller.getState()
+                }
+                out.toString should include ("No game is running!")
+            }
 
             "notify its Observer after creating two new hands" in {
                 controller.gameState = Idle

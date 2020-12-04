@@ -18,7 +18,16 @@ class Controller(var deck: Deck) extends Observable {
     var playerHand = Hand(Vector[Card]())
     var dealerHand = Hand(Vector[Card]())
 
+    var running: State = IsNotRunning()
+
+    def getState() = {
+        val (state, output) = running.handle(running)
+        running = state
+        println(output)
+    }
+
     def initGame(): Unit = {
+        running = IsRunning()
         deck = deck.resetDeck()
         val (newDeck, cards) = deck.drawCards(4)
         deck = newDeck
@@ -76,6 +85,7 @@ class Controller(var deck: Deck) extends Observable {
         notifyObservers
         gameState = Idle
         notifyObservers
+        running = IsNotRunning()
     }
 
     def newGame(): Unit ={
@@ -91,7 +101,10 @@ class Controller(var deck: Deck) extends Observable {
         }
     }
 
-    def gameStateToString: String = StateContext.handle(gameState, playerHand, dealerHand)
+    def gameStateToString: String = {
+        StateContext.handle(gameState, playerHand, dealerHand)
+        StateContext.output
+    }
 
     def quitGame(): Unit = {
         gameState = EndGame
