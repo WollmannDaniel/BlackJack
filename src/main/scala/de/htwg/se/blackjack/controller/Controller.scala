@@ -3,7 +3,7 @@ package de.htwg.se.blackjack.controller
 
 import de.htwg.se.blackjack.model.{Card, Deck, Hand, GameConfig, Player}
 import de.htwg.se.blackjack.model.DrawStrategy
-import de.htwg.se.blackjack.util.Observable
+import de.htwg.se.blackjack.util.{Observable, UndoManager}
 
 object GameState extends Enumeration {
     type GameState = Value
@@ -14,15 +14,19 @@ import GameState._
 
 class Controller(var deck: Deck) extends Observable {
     var gameState = WELCOME
-
     var running: State = IsNotRunning()
-
     var gameConfig = GameConfig(Vector[Player](), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
+    private val undoManager = new UndoManager
 
     def getState() = {
         val (state, output) = running.handle(running)
         running = state
         println(output)
+    }
+
+    def performInitGame(playerAmount: Int): Unit = {
+        undoManager.doStep(new PlayerAmountCommand(this, playerAmount))
+        notifyObservers
     }
 
     def initGame(playerAmount: Int): Unit = {
@@ -33,8 +37,6 @@ class Controller(var deck: Deck) extends Observable {
         }
 
         gameState = NAME_CREATION
-        notifyObservers
-
         running = IsRunning()
     }
 
@@ -52,6 +54,10 @@ class Controller(var deck: Deck) extends Observable {
             gameConfig = gameConfig.resetActivePlayerIndex()
             gameState = PLAYER_TURN
         }
+    }
+
+    def performSetPlayerName(playerName: String): Unit = {
+        undoManager.doStep(new NameCommand(this, playerName))
         notifyObservers
     }
 
@@ -169,6 +175,16 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def testNotify(): Unit = {
+        notifyObservers
+    }
+
+    def undo: Unit = {
+        undoManager.undoStep
+        notifyObservers
+    }
+
+    def redo: Unit = {
+        undoManager.redoStep
         notifyObservers
     }
 }

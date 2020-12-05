@@ -8,10 +8,18 @@ class Tui(controller: Controller) extends Observer with UserInterface {
     controller.add(this)
 
     override def processCommands(input: String): Unit = {
-        if(controller.gameState == WELCOME){
-            initPlayers(input)
+        if (controller.gameState == WELCOME) {
+            input match {
+                case "z" => controller.undo
+                case "y" => controller.redo
+                case _ => initPlayers(input)
+            }
         } else if (controller.gameState == NAME_CREATION) {
-            setPlayerName(input)
+            input match {
+                case "z" => controller.undo
+                case "y" => controller.redo
+                case _ => controller.performSetPlayerName(input)
+            }
         } else {
             processInputLine(input)
         }
@@ -20,13 +28,9 @@ class Tui(controller: Controller) extends Observer with UserInterface {
     def initPlayers(input: String): Unit = {
         if (!List("1", "2", "3", "4").contains(input)) {
             println("There may only be 1,2,3 or 4 players!")
-        }else{
-            controller.initGame(input.toInt)
+        } else {
+            controller.performInitGame(input.toInt)
         }
-    }
-
-    def setPlayerName(playerName: String): Unit = {
-        controller.setPlayerName(playerName)
     }
 
     def processInputLine(input: String): Unit = {
@@ -35,6 +39,8 @@ class Tui(controller: Controller) extends Observer with UserInterface {
             case "h" => controller.playerHits()
             case "n" => controller.newGame()
             case "q" => controller.quitGame()
+            case "z" => controller.undo
+            //case "y" => controller.redo()
             case "state" => controller.getState()
             case _ => print("unknown command")
         }
