@@ -8,7 +8,26 @@ class Tui(controller: Controller) extends Observer with UserInterface {
     controller.add(this)
 
     override def processCommands(input: String): Unit = {
-        processInputLine(input)
+        if(controller.gameState == WELCOME){
+            initPlayers(input)
+        } else if (controller.gameState == NAME_CREATION) {
+            setPlayerName(input)
+        } else {
+            processInputLine(input)
+        }
+
+    }
+
+    def initPlayers(input: String): Unit = {
+        if (!List("1", "2", "3", "4").contains(input)) {
+            println("There may only be 1,2,3 or 4 players!")
+        }else{
+            controller.initGame(input.toInt)
+        }
+    }
+
+    def setPlayerName(playerName: String): Unit = {
+        controller.setPlayerName(playerName)
     }
 
     def processInputLine(input: String): Unit = {
@@ -24,12 +43,14 @@ class Tui(controller: Controller) extends Observer with UserInterface {
 
     override def update: Boolean = {
         controller.gameState match {
-            case FirstRound => {
-                println("Starting new game!\nThe deck was shuffled.\nIt's your turn. Hit or stand?(h/s)\n")
-                println(controller.gameStateToString)
+            case WELCOME => {
+                println("Starting new game!\nThe deck was shuffled.\nHow many players want to play?")
             }
-            case PlayersTurn => {
-                println("It's your turn. Hit or stand?(h/s)")
+            case NAME_CREATION => {
+                println(controller.getPlayerName)
+            }
+            case PLAYER_TURN => {
+                println(s"${controller.getActivePlayerName}'s turn. Hit or stand?(h/s)\n")
                 println(controller.gameStateToString)
             }
             case DealersTurn => println(controller.gameStateToString)

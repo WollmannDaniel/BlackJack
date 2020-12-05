@@ -1,24 +1,26 @@
 
 package de.htwg.se.blackjack.controller
 
-import de.htwg.se.blackjack.model.{Card, Deck, Hand}
+import de.htwg.se.blackjack.model.{Card, Deck, Hand, GameConfig, Player}
 import de.htwg.se.blackjack.model.StrategyContext
 import de.htwg.se.blackjack.util.Observable
 
 object GameState extends Enumeration {
     type GameState = Value
-    val PlayersTurn, DealersTurn, FirstRound, Idle, PlayerWon, PlayerLost, Draw, BlackJack, WrongCmd, EndGame = Value
+    val WELCOME, NAME_CREATION, PLAYER_TURN, DealersTurn, FirstRound, Idle, PlayerWon, PlayerLost, Draw, BlackJack, WrongCmd, EndGame = Value
 }
 
 import GameState._
 
 class Controller(var deck: Deck) extends Observable {
-    var gameState = FirstRound
+    var gameState = WELCOME
 
     var playerHand = Hand(Vector[Card]())
     var dealerHand = Hand(Vector[Card]())
 
     var running: State = IsNotRunning()
+
+    var gameConfig = GameConfig(Vector[Player](), deck)
 
     def getState() = {
         val (state, output) = running.handle(running)
@@ -26,7 +28,17 @@ class Controller(var deck: Deck) extends Observable {
         println(output)
     }
 
-    def initGame(): Unit = {
+    def initGame(playerAmount: Int): Unit = {
+
+        for (i <- 0 until playerAmount) {
+            gameConfig = gameConfig.createPlayer()
+        }
+
+        gameState = NAME_CREATION
+        notifyObservers
+
+
+        /*
         running = IsRunning()
         deck = deck.resetDeck()
         val (newDeck, cards) = deck.drawCards(4)
@@ -35,6 +47,24 @@ class Controller(var deck: Deck) extends Observable {
         val dealerHandCards = Vector(cards(2), cards(3))
         playerHand = Hand(playerHandCards)
         dealerHand = Hand(dealerHandCards)
+         */
+    }
+
+    def getActivePlayerName: String = gameConfig.getActivePlayerName()
+
+    def getPlayerName: String = {
+        s"Please enter Playername ${gameConfig.activePlayerIndex + 1}:"
+    }
+
+    def setPlayerName(playerName: String): Unit = {
+        gameConfig = gameConfig.setPlayerName(playerName, gameConfig.activePlayerIndex)
+        gameConfig = gameConfig.incrementActivePlayerIndex()
+
+        if(gameConfig.activePlayerIndex > gameConfig.players.size){
+            gameConfig = gameConfig.resetActivePlayerIndex()
+            gameState = PLAYER_TURN
+        }
+        notifyObservers
     }
 
     def playerHits(): Unit = {
@@ -46,7 +76,7 @@ class Controller(var deck: Deck) extends Observable {
         if (playerHandValue > 21) {
             checkWinner()
         } else {
-            gameState = PlayersTurn
+            gameState = PLAYER_TURN
             notifyObservers
         }
     }
@@ -92,18 +122,20 @@ class Controller(var deck: Deck) extends Observable {
         if (gameState != Idle) {
             gameState = WrongCmd
             notifyObservers
-            gameState = PlayersTurn
+            //gameState = PlayersTurn
             notifyObservers
         } else {
             gameState = FirstRound
-            initGame()
+            //initGame()
             notifyObservers
         }
     }
 
     def gameStateToString: String = {
-        StateContext.handle(gameState, playerHand, dealerHand)
-        StateContext.output
+        gameState match {
+            case PLAYER_TURN => "Your hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
+            case _ => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString //todo
+        }
     }
 
     def quitGame(): Unit = {

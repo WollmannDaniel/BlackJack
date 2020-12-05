@@ -113,7 +113,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
         "should have this output when is PlayersTurn" in {
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
-                controller.gameState = PlayersTurn
+                controller.gameState = PLAYER_TURN
                 controller.testNotify()
             }
             out.toString should include ("It's your turn. Hit or stand?(h/s)")

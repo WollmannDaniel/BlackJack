@@ -9,8 +9,6 @@ import scala.io.StdIn.readLine
 object Blackjack {
     val deck = new Deck()
     val controller = new Controller(deck)
-    //val tui = new Tui(controller)
-    controller.initGame()
 
     def main(args: Array[String]): Unit = {
         var input: String = ""

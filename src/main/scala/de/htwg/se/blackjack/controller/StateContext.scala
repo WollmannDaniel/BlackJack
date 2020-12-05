@@ -15,7 +15,7 @@ object StateContext {
     var output = ""
     def handle(e: GameState, playerHand: Hand, dealerHand: Hand) = {
         e match {
-            case PlayersTurn | FirstRound => {
+            case PLAYER_TURN | FirstRound => {
                 state = InternPlayersTurn
                 output = showDealerHand(playerHand, dealerHand)
             }
