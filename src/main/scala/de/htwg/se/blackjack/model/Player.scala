@@ -15,4 +15,10 @@ case class Player(name: String, hand: Hand) {
         builder.append(" ").append(hand.toString);
         builder.toString
     }
+
+    def toStringDealer: String = {
+        val builder = new StringBuilder(name)
+        builder.append(" ").append(hand.toStringDealer);
+        builder.toString
+    }
 }

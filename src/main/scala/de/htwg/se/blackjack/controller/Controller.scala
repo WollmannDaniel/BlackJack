@@ -2,12 +2,12 @@
 package de.htwg.se.blackjack.controller
 
 import de.htwg.se.blackjack.model.{Card, Deck, Hand, GameConfig, Player}
-import de.htwg.se.blackjack.model.StrategyContext
+import de.htwg.se.blackjack.model.DrawStrategy
 import de.htwg.se.blackjack.util.Observable
 
 object GameState extends Enumeration {
     type GameState = Value
-    val WELCOME, NAME_CREATION, PLAYER_TURN, DealersTurn, FirstRound, Idle, PlayerWon, PlayerLost, Draw, BlackJack, WrongCmd, EndGame = Value
+    val WELCOME, NAME_CREATION, PLAYER_TURN, PLAYER_HITS, PLAYER_STANDS, PLAYER_LOST, EVALUATION, DEALERS_TURN, DEALER_WON, DRAW, PLAYER_WON, NEW_GAME_STARTED, IDLE, WRONG_CMD, END_GAME = Value
 }
 
 import GameState._
@@ -15,12 +15,9 @@ import GameState._
 class Controller(var deck: Deck) extends Observable {
     var gameState = WELCOME
 
-    var playerHand = Hand(Vector[Card]())
-    var dealerHand = Hand(Vector[Card]())
-
     var running: State = IsNotRunning()
 
-    var gameConfig = GameConfig(Vector[Player](), deck)
+    var gameConfig = GameConfig(Vector[Player](), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
 
     def getState() = {
         val (state, output) = running.handle(running)
@@ -29,28 +26,19 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def initGame(playerAmount: Int): Unit = {
+        gameConfig = gameConfig.initDealer()
 
-        for (i <- 0 until playerAmount) {
+        for (_ <- 1 to playerAmount) {
             gameConfig = gameConfig.createPlayer()
         }
 
         gameState = NAME_CREATION
         notifyObservers
 
-
-        /*
         running = IsRunning()
-        deck = deck.resetDeck()
-        val (newDeck, cards) = deck.drawCards(4)
-        deck = newDeck
-        val playerHandCards = Vector(cards(0), cards(1))
-        val dealerHandCards = Vector(cards(2), cards(3))
-        playerHand = Hand(playerHandCards)
-        dealerHand = Hand(dealerHandCards)
-         */
     }
 
-    def getActivePlayerName: String = gameConfig.getActivePlayerName()
+    def getActivePlayerName: String = gameConfig.getActivePlayerName
 
     def getPlayerName: String = {
         s"Please enter Playername ${gameConfig.activePlayerIndex + 1}:"
@@ -60,7 +48,7 @@ class Controller(var deck: Deck) extends Observable {
         gameConfig = gameConfig.setPlayerName(playerName, gameConfig.activePlayerIndex)
         gameConfig = gameConfig.incrementActivePlayerIndex()
 
-        if(gameConfig.activePlayerIndex > gameConfig.players.size){
+        if(gameConfig.activePlayerIndex >= gameConfig.players.size){
             gameConfig = gameConfig.resetActivePlayerIndex()
             gameState = PLAYER_TURN
         }
@@ -68,13 +56,13 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def playerHits(): Unit = {
-        val (newPlayerHand, newDeck) = StrategyContext.strategy(StrategyContext.drawPlayerHand, deck, playerHand)
-        playerHand = newPlayerHand
-        deck = newDeck
+        gameConfig = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
 
-        val playerHandValue = playerHand.calculateHandValue()
+        val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
         if (playerHandValue > 21) {
-            checkWinner()
+            gameState = PLAYER_LOST
+            notifyObservers
+            nextPlayer()
         } else {
             gameState = PLAYER_TURN
             notifyObservers
@@ -82,64 +70,101 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def playerStands(): Unit = {
-        gameState = DealersTurn
-        manageDealerLogic()
-        checkWinner()
+        nextPlayer()
+    }
+
+    def nextPlayer(): Unit ={
+        gameConfig = gameConfig.incrementActivePlayerIndex()
+
+        if(gameConfig.activePlayerIndex >= gameConfig.players.size){
+            gameState = DEALERS_TURN
+            manageDealerLogic()
+            gameState = EVALUATION
+            checkWinner()
+        } else {
+            gameState = PLAYER_TURN
+            notifyObservers
+        }
     }
 
     def manageDealerLogic(): Unit = {
-        val (newDealerHand, newDeck) = StrategyContext.strategy(StrategyContext.drawDealerHand, deck, dealerHand)
-        dealerHand = newDealerHand
-        deck = newDeck
+        gameConfig = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
         notifyObservers
     }
 
-    def checkWinner(): Unit ={
-        val playerHandValue = playerHand.calculateHandValue()
-        val dealerHandValue = dealerHand.calculateHandValue()
+    def checkWinner(): Unit = {
+        val dealerHandValue = gameConfig.dealer.hand.calculateHandValue()
 
-        if(playerHandValue == 21 && playerHand.cards.size == 2) {
-            gameState = BlackJack
-        } else if(playerHandValue > 21){
-            gameState = PlayerLost
-        } else if (dealerHandValue > 21) {
-            gameState = PlayerWon
-        } else if (playerHandValue < dealerHandValue) {
-            gameState = PlayerLost
-        } else if (playerHandValue > dealerHandValue) {
-            gameState = PlayerWon
+        if(dealerHandValue > 21){
+            //alle Spieler die <= 21 sind haben gewonnen
+            for (i <- 0 until gameConfig.players.size) {
+                val handValue = gameConfig.players(i).hand.calculateHandValue()
+                if (handValue <= 21) {
+                    gameConfig = gameConfig.addWinner(gameConfig.players(i))
+                }
+            }
+            gameState = PLAYER_WON
         } else {
-            gameState = Draw
+            //der wo am nähesten an 21 kommt hat gewonnen
+            var closestValue = 0
+            for (i <- 0 until gameConfig.players.size) {
+                val handValue = gameConfig.players(i).hand.calculateHandValue()
+                if (handValue <= 21 && handValue > closestValue) {
+                    closestValue = handValue
+                }
+            }
+
+            for (i <- 0 until gameConfig.players.size) {
+                val handValue = gameConfig.players(i).hand.calculateHandValue()
+                if (handValue == closestValue) {
+                    gameConfig = gameConfig.addWinner(gameConfig.players(i))
+                }
+            }
+
+            if (dealerHandValue > closestValue) {
+                gameState = DEALER_WON
+                gameConfig = gameConfig.setWinner(gameConfig.dealer)
+            } else if(dealerHandValue == closestValue){
+                gameState = DRAW
+                gameConfig = gameConfig.addWinner(gameConfig.dealer)
+            } else {
+                gameState = PLAYER_WON
+            }
         }
 
         notifyObservers
-        gameState = Idle
+        gameState = IDLE
         notifyObservers
         running = IsNotRunning()
     }
 
     def newGame(): Unit ={
-        if (gameState != Idle) {
-            gameState = WrongCmd
+        if (gameState != IDLE) {
+            gameState = WRONG_CMD
             notifyObservers
-            //gameState = PlayersTurn
+            gameState = PLAYER_TURN
             notifyObservers
         } else {
-            gameState = FirstRound
-            //initGame()
+            gameState = NEW_GAME_STARTED
             notifyObservers
+            gameState = PLAYER_TURN
+            gameConfig = gameConfig.resetGameConfig()
+            notifyObservers
+
+            running = IsRunning()
         }
     }
 
     def gameStateToString: String = {
         gameState match {
-            case PLAYER_TURN => "Your hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toStringDealer
-            case _ => "Player hand: " + playerHand.toString + "Dealer hand: " + dealerHand.toString //todo
+            case PLAYER_TURN | PLAYER_LOST => gameConfig.players(gameConfig.activePlayerIndex).toString + gameConfig.dealer.toStringDealer
+            case PLAYER_WON | DEALER_WON | DRAW => gameConfig.getAllWinnerAsString
+            case _ => gameConfig.getAllPlayerAndDealerHandsAsString
         }
     }
 
     def quitGame(): Unit = {
-        gameState = EndGame
+        gameState = END_GAME
         notifyObservers
     }
 

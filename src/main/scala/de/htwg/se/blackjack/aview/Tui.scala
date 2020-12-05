@@ -15,7 +15,6 @@ class Tui(controller: Controller) extends Observer with UserInterface {
         } else {
             processInputLine(input)
         }
-
     }
 
     def initPlayers(input: String): Unit = {
@@ -49,30 +48,28 @@ class Tui(controller: Controller) extends Observer with UserInterface {
             case NAME_CREATION => {
                 println(controller.getPlayerName)
             }
+            case NEW_GAME_STARTED => {
+                println("Starting new game!\nThe deck was shuffled.")
+            }
             case PLAYER_TURN => {
                 println(s"${controller.getActivePlayerName}'s turn. Hit or stand?(h/s)\n")
                 println(controller.gameStateToString)
             }
-            case DealersTurn => println(controller.gameStateToString)
-            case Idle => println("q = quit, n = start new game")
-            case PlayerWon => {
-                println("The Player has won!")
+            case PLAYER_LOST => {
+                println(s"${controller.getActivePlayerName}'s hand value went over twenty-one!\n")
                 println(controller.gameStateToString)
             }
-            case PlayerLost => {
-                println("The Dealer has won!")
+            case DEALERS_TURN => println(controller.gameStateToString)
+            case IDLE => println("q = quit, n = start new game")
+            case DEALER_WON | PLAYER_WON => {
                 println(controller.gameStateToString)
             }
-            case Draw => {
+            case DRAW => {
                 println("It's a draw!")
                 println(controller.gameStateToString)
             }
-            case BlackJack => {
-                println("Lucky boy! The Player has won")
-                println(controller.gameStateToString)
-            }
-            case WrongCmd => println("Command not allowed!")
-            case EndGame => print("Good bye!")
+            case WRONG_CMD => println("Command not allowed!")
+            case END_GAME => print("Good bye!")
         }
         true
     }

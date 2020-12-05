@@ -10,6 +10,10 @@ case class Hand(cards: Vector[Card]) {
         (copy(cards :+ drawedCard(0)), newDeck)
     }
 
+    def addCard(card: Card): Hand = {
+        copy(cards :+ card)
+    }
+
     def calculateHandValue(): Int = {
         var sum = cards.map(card => card.mapCardValue()).sum
         val count: Int = cards.count(_.rank == Ace)
