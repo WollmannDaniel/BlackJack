@@ -11,8 +11,12 @@ case class Deck(cards: Vector[Card]) {
     def drawCards(num: Int): (Deck, Vector[Option[Card]]) = {
         var drawnCards = Vector[Option[Card]]()
 
-        val from = cards.size - num
-        val bis = cards.size - 1
+        var from = cards.size - num
+        var bis = cards.size - 1
+        if (from < 0) {
+            from = 0
+            bis = cards.size
+        }
 
         var newDeck = cards
 

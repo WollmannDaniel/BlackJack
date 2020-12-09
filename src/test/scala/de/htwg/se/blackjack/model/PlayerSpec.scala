@@ -1,5 +1,8 @@
 package de.htwg.se.blackjack.model
 
-class PlayerSpec {
+import org.scalatest.matchers.should.Matchers
+import org.scalatest.wordspec.AnyWordSpecclass
+
+PlayerSpec extends AnyWordSpec with Matchers {
 
 }

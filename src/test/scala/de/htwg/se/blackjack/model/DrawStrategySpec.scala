@@ -4,7 +4,7 @@ import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
 class DrawStrategySpec extends AnyWordSpec with Matchers {
-    /*"The Strategy" when { "is called with drawDealerHand" should {
+    "The Strategy" when { "is called with drawDealerHand" should {
         var deck = Deck(Vector(Card(Suit.Diamond, Rank.Two),
             Card(Suit.Heart, Rank.Seven),
             Card(Suit.Heart, Rank.Jack),
@@ -34,5 +34,5 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
             val (newPlayerHand, newDeck) = StrategyContext.strategy(StrategyContext.drawPlayerHand, deck, hand)
             newPlayerHand.calculateHandValue() should be(16)
         }
-    }}*/
+    }}
 }
