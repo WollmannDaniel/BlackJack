@@ -3,7 +3,7 @@ package de.htwg.se.blackjack.controller
 import java.io.ByteArrayOutputStream
 
 import de.htwg.se.blackjack.controller.GameState._
-import de.htwg.se.blackjack.model.{Card, Deck, Hand, Rank, Suit}
+import de.htwg.se.blackjack.model.{Card, Deck, GameConfig, Hand, Rank, Suit}
 import de.htwg.se.blackjack.util.{Observable, Observer}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -11,9 +11,7 @@ import org.scalatest.wordspec.AnyWordSpec
 import scala.language.reflectiveCalls
 
 class ControllerSpec extends AnyWordSpec with Matchers {
-    /*
-    "A Controller" when {
-        "observed by an Observer" should {
+    "A Controller" when { "observed by an Observer" should {
             var deck = new Deck()
             deck = Deck(deck.initDeck())
 
@@ -44,11 +42,23 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 out.toString should include ("No game is running!")
             }
 
-            "notify its Observer after creating two new hands" in {
-                controller.gameState = Idle
+            "notify its observer after init game" in {
+                controller.performInitGame(2)
+                observer.updated should be(true)
+            }
+
+            "notify its observer after init game and init dealer" in {
+                val gameConfig = controller.gameConfig
+                //controller.gameConfig = GameConfig(gameConfig.players, gameConfig.dealer, Deck())
+                controller.initGame(2)
+
+            }
+
+            /*"notify its Observer after creating two new hands" in {
+                controller.gameState = IDLE
                 controller.newGame()
                 observer.updated should be(true)
-                controller.gameState should be(FirstRound)
+                controller.gameState should be(PLAYER_TURN)
                 controller.deck.cards.size should be(48)
                 controller.playerHand.cards.size should be(2)
                 controller.dealerHand.cards.size should be(2)
@@ -147,8 +157,6 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             "have drawed 4 cards from deck" in {
                 controller.deck.cards.size should be(48)
             }
-        }
-    }
-
-     */
+        }*/
+    }}
 }
