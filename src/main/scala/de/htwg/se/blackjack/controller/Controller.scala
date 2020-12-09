@@ -1,13 +1,15 @@
 
 package de.htwg.se.blackjack.controller
 
-import de.htwg.se.blackjack.model.{Card, Deck, Hand, GameConfig, Player}
+import de.htwg.se.blackjack.model.{Card, Deck, GameConfig, Hand, Player}
 import de.htwg.se.blackjack.model.DrawStrategy
 import de.htwg.se.blackjack.util.{Observable, UndoManager}
 
+import scala.util.{Failure, Success, Try}
+
 object GameState extends Enumeration {
     type GameState = Value
-    val WELCOME, NAME_CREATION, PLAYER_TURN, PLAYER_HITS, PLAYER_STANDS, PLAYER_LOST, EVALUATION, DEALERS_TURN, DEALER_WON, DRAW, PLAYER_WON, NEW_GAME_STARTED, IDLE, WRONG_CMD, END_GAME = Value
+    val WELCOME, NAME_CREATION, PLAYER_TURN, PLAYER_HITS, PLAYER_STANDS, PLAYER_LOST, EVALUATION, DEALERS_TURN, DEALER_WON, DRAW, PLAYER_WON, NEW_GAME_STARTED, IDLE, WRONG_CMD, END_GAME, EMPTY_DECK = Value
 }
 
 import GameState._
@@ -30,10 +32,24 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def initGame(playerAmount: Int): Unit = {
-        gameConfig = gameConfig.initDealer()
+        val dealerConfig = Try(gameConfig.initDealer())
+        dealerConfig match {
+            case Success(value) => gameConfig = value
+            case Failure(exception) => {
+                gameState = EMPTY_DECK
+                notifyObservers
+            }
+        }
 
         for (_ <- 1 to playerAmount) {
-            gameConfig = gameConfig.createPlayer()
+            val playerConfig = Try(gameConfig.createPlayer())
+            playerConfig match {
+                case Success(value) => gameConfig = value
+                case Failure(exception) => {
+                    gameState = EMPTY_DECK
+                    notifyObservers
+                }
+            }
         }
 
         gameState = NAME_CREATION
@@ -62,16 +78,24 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def playerHits(): Unit = {
-        gameConfig = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
-
-        val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
-        if (playerHandValue > 21) {
-            gameState = PLAYER_LOST
-            notifyObservers
-            nextPlayer()
-        } else {
-            gameState = PLAYER_TURN
-            notifyObservers
+        val config = Try(DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig))
+        config match {
+            case Success(value) => {
+                gameConfig = value
+                val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
+                if (playerHandValue > 21) {
+                    gameState = PLAYER_LOST
+                    notifyObservers
+                    nextPlayer()
+                } else {
+                    gameState = PLAYER_TURN
+                    notifyObservers
+                }
+            }
+            case Failure(exception) => {
+                gameState = EMPTY_DECK
+                notifyObservers
+            }
         }
     }
 
@@ -94,8 +118,17 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def manageDealerLogic(): Unit = {
-        gameConfig = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
-        notifyObservers
+        val config = Try(DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig))
+        config match {
+            case Success(value) => {
+                gameConfig = value
+                notifyObservers
+            }
+            case Failure(exception) => {
+                gameState = EMPTY_DECK
+                notifyObservers
+            }
+        }
     }
 
     def checkWinner(): Unit = {

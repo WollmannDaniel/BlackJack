@@ -4,8 +4,23 @@ case class GameConfig(players: Vector[Player], dealer: Player, deck: Deck, activ
 
     def createPlayer(playerName: String = ""): GameConfig = {
         val (newDeck, newHand) = deck.drawCards(2)
-        val newPlayer = Player(playerName, Hand(newHand))
+
+        val cardList = unpackOption(newHand)
+
+        val newPlayer = Player(playerName, Hand(cardList))
         copy(players :+ newPlayer, dealer, newDeck)
+    }
+
+    def unpackOption(cards: Vector[Option[Card]]): Vector[Card] = {
+        var cardList = Vector[Card]()
+
+        for (i <- (0 to cards.size - 1)) {
+            cards(i) match {
+                case Some(card) => cardList = cardList :+ card
+                case None => throw new NullPointerException("Deck doesn't have enough cards.")
+            }
+        }
+        cardList
     }
 
     def setPlayerName(playerName: String, playerIndex: Int): GameConfig = {
@@ -39,7 +54,10 @@ case class GameConfig(players: Vector[Player], dealer: Player, deck: Deck, activ
 
     def initDealer(): GameConfig = {
         val (newDeck, newHand) = deck.drawCards(2)
-        val newDealer = Player(dealer.name, Hand(newHand))
+
+        val cardList = unpackOption(newHand)
+
+        val newDealer = Player(dealer.name, Hand(cardList))
         copy(players, newDealer, newDeck)
     }
 

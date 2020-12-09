@@ -15,9 +15,15 @@ object DrawStrategy {
 
     def drawPlayerHand(gameConfig: GameConfig): GameConfig = {
         val (newDeck, newCard) = gameConfig.deck.drawCards(1)
-        val newHand = gameConfig.getActivePlayer.hand.addCard(newCard(0))
-        val newPlayer = Player(gameConfig.getActivePlayerName, newHand)
-        gameConfig.updatePlayerAtIndex(newPlayer, gameConfig.activePlayerIndex, newDeck)
+
+        newCard(0) match {
+            case Some(card) => {
+                val newHand = gameConfig.getActivePlayer.hand.addCard(card)
+                val newPlayer = Player(gameConfig.getActivePlayerName, newHand)
+                gameConfig.updatePlayerAtIndex(newPlayer, gameConfig.activePlayerIndex, newDeck)
+            }
+            case None => throw new NullPointerException("Deck doesn't have enough cards.")
+        }
     }
 
     def strategy(callback:(GameConfig) => (GameConfig), gameConfig: GameConfig) = callback(gameConfig)

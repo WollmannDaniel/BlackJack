@@ -7,7 +7,11 @@ case class Hand(cards: Vector[Card]) {
 
     def drawCard(deck: Deck): (Hand, Deck) = {
         val (newDeck, drawedCard) = deck.drawCards(1)
-        (copy(cards :+ drawedCard(0)), newDeck)
+
+        drawedCard(0) match {
+            case Some(card) => (copy(cards :+ card), newDeck)
+            case None => throw new NullPointerException("Deck doesn't have enough cards.")
+        }
     }
 
     def addCard(card: Card): Hand = {
