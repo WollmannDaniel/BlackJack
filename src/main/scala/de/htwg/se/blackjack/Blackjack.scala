@@ -20,7 +20,6 @@ object Blackjack {
         do {
             input = readLine().toLowerCase()
             ui.processCommands(input)
-            //tui.processInputLine(input)
         } while (input != "q")
     }
 }

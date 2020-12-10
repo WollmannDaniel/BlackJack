@@ -3,6 +3,8 @@ package de.htwg.se.blackjack.util
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import scala.language.reflectiveCalls
+
 class ObservableSpec extends AnyWordSpec with Matchers {
     "An Observable" should {
         val observable = new Observable

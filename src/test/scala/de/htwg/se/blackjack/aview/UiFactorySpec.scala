@@ -5,6 +5,8 @@ import de.htwg.se.blackjack.model.Deck
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
+import scala.language.reflectiveCalls
+
 class UiFactorySpec extends AnyWordSpec with Matchers{
     "A UserInterface" should {
         val userInterface = new UserInterface {

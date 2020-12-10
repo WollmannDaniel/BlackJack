@@ -2,7 +2,7 @@ package de.htwg.se.blackjack.aview
 import de.htwg.se.blackjack.controller.Controller
 
 trait UserInterface {
-    def processCommands(input: String)
+    def processCommands(input: String): Unit
 }
 
 object UserInterface {

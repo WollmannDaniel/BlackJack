@@ -75,8 +75,7 @@ class Tui(controller: Controller) extends Observer with UserInterface {
             case WRONG_CMD => println("Command not allowed!")
             case END_GAME => print("Good bye!")
             case EMPTY_DECK => {
-                print("Deck doesn't have enough cards.")
-                System.exit(0)
+                throw new IllegalStateException("Deck doesn't have enough cards.")
             }
         }
         true
