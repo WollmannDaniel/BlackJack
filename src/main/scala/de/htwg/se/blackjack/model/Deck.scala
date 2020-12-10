@@ -8,17 +8,27 @@ import scala.util.Random
 case class Deck(cards: Vector[Card]) {
     def this() = this(Vector[Card]())
 
-    def drawCards(num: Int): (Deck, Vector[Card]) = {
-        var drawedCards = Vector[Card]()
+    def drawCards(num: Int): (Deck, Vector[Option[Card]]) = {
+        var drawnCards = Vector[Option[Card]]()
 
-        val from = cards.size - num
-        val bis = cards.size - 1
+        var from = cards.size - num
+        var bis = cards.size - 1
+        if (from < 0) {
+            from = 0
+            bis = cards.size
+        }
+
+        var newDeck = cards
 
         for (i <- (from to bis)) {
-            drawedCards = drawedCards :+ cards(i)
+            if (newDeck.nonEmpty) {
+                drawnCards = drawnCards :+ Some(cards(i))
+                newDeck = newDeck.dropRight(1)
+            } else {
+                drawnCards = drawnCards :+ None
+            }
         }
-        val newDeck = copy(cards.dropRight(num))
-        (newDeck, drawedCards)
+        (copy(newDeck), drawnCards)
     }
 
     def initDeck(): Vector[Card] = {

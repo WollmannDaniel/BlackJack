@@ -35,7 +35,7 @@ class DeckSpec extends AnyWordSpec with Matchers {
         deck = newDeck
         "have draw card" in {
             deck.cards.size should be(4)
-            cards(0) should be(Card(Suit.Club, Rank.Seven))
+            cards(0) should be(Some(Card(Suit.Club, Rank.Seven)))
         }
     }}
 
@@ -51,6 +51,13 @@ class DeckSpec extends AnyWordSpec with Matchers {
         "have drawn multiple cards" in {
             deck.cards.size should be(1)
             cards.size should be(4)
+        }
+
+        "have drawn too many cards" in {
+            val (updatedDeck, cards2) = deck.drawCards(2)
+            cards2(0) should be(Some(Card(Suit.Diamond, Rank.Two)))
+            cards2(1) should be(None)
+            updatedDeck.cards.size should be(0)
         }
     }}
 
