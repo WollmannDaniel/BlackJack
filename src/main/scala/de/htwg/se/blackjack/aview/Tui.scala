@@ -39,6 +39,8 @@ class Tui(controller: Controller) extends Observer with UserInterface {
             case "h" => controller.playerHits()
             case "n" => controller.newGame()
             case "q" => controller.quitGame()
+            case "z" => controller.undo
+            //case "y" => controller.redo
             case "state" => controller.getState()
             case _ => print("unknown command")
         }

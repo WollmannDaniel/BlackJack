@@ -132,6 +132,18 @@ class TuiSpec extends AnyWordSpec with Matchers {
             tmpController.gameState should be(END_GAME)
         }
 
+        "process command 'z'" in {
+            val deck = new Deck()
+            val tmpController = new Controller(deck)
+            val tui = new Tui(tmpController)
+            tmpController.gameState = WELCOME
+            tui.processCommands("1")
+            tui.processCommands("any-name")
+            tmpController.gameState = PLAYER_TURN
+            tui.processCommands("z")
+            tmpController.gameState should be(NAME_CREATION)
+        }
+
         "process command 'state'" in {
             val deck = new Deck()
             val tmpController = new Controller(deck)
