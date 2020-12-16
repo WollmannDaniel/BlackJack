@@ -1,9 +1,8 @@
 package de.htwg.se.blackjack.model
 
+import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
-
-import scala.util.{Failure, Try}
 
 class DrawStrategySpec extends AnyWordSpec with Matchers {
     "The Strategy" when { "is called with drawDealerHand" should {
@@ -21,7 +20,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
 
         "have draw cards until card value is greater or equals than 17" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
-            config.dealer.hand.calculateHandValue() should be > 17
+            config.success.value.dealer.hand.calculateHandValue() should be > 17
         }
     }}
 
@@ -40,7 +39,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
 
         "draw and have a hand value of 16" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
-            config.players(0).hand.calculateHandValue() should be(16)
+            config.success.value.players(0).hand.calculateHandValue() should be(16)
         }
     }}
 

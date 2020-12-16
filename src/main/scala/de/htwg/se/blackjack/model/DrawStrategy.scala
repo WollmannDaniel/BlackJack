@@ -3,7 +3,7 @@ package de.htwg.se.blackjack.model
 import scala.util.{Failure, Success, Try}
 
 object DrawStrategy {
-    def drawDealerHand(gameConfig: GameConfig): GameConfig = {
+    def drawDealerHand(gameConfig: GameConfig): Try[GameConfig] = {
         var newHand = gameConfig.dealer.hand
         var newDeck = gameConfig.deck
         while(newHand.calculateHandValue() < 17) {
@@ -12,7 +12,7 @@ object DrawStrategy {
             newDeck = tempDeck
         }
         val newDealer = Player(gameConfig.dealer.name, newHand)
-        GameConfig(gameConfig.players, newDealer, newDeck)
+        Success(GameConfig(gameConfig.players, newDealer, newDeck))
     }
 
     def drawPlayerHand(gameConfig: GameConfig): Try[GameConfig] = {
@@ -28,5 +28,5 @@ object DrawStrategy {
         }
     }
 
-    def strategy(callback:(GameConfig) => (GameConfig), gameConfig: GameConfig) = callback(gameConfig)
+    def strategy(callback:(GameConfig) => (Try[GameConfig]), gameConfig: GameConfig) = callback(gameConfig)
 }

@@ -78,7 +78,7 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def playerHits(): Unit = {
-        val config = Try(DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig))
+        val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
         config match {
             case Success(value) => {
                 gameConfig = value
@@ -118,7 +118,7 @@ class Controller(var deck: Deck) extends Observable {
     }
 
     def manageDealerLogic(): Unit = {
-        val config = Try(DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig))
+        val config = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
         config match {
             case Success(value) => {
                 gameConfig = value
