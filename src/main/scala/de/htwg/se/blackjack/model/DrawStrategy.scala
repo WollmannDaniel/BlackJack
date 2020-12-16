@@ -1,5 +1,7 @@
 package de.htwg.se.blackjack.model
 
+import scala.util.{Failure, Success, Try}
+
 object DrawStrategy {
     def drawDealerHand(gameConfig: GameConfig): GameConfig = {
         var newHand = gameConfig.dealer.hand
@@ -13,16 +15,16 @@ object DrawStrategy {
         GameConfig(gameConfig.players, newDealer, newDeck)
     }
 
-    def drawPlayerHand(gameConfig: GameConfig): GameConfig = {
+    def drawPlayerHand(gameConfig: GameConfig): Try[GameConfig] = {
         val (newDeck, newCard) = gameConfig.deck.drawCards(1)
 
         newCard(0) match {
             case Some(card) => {
                 val newHand = gameConfig.getActivePlayer.hand.addCard(card)
                 val newPlayer = Player(gameConfig.getActivePlayerName, newHand)
-                gameConfig.updatePlayerAtIndex(newPlayer, gameConfig.activePlayerIndex, newDeck)
+                Success(gameConfig.updatePlayerAtIndex(newPlayer, gameConfig.activePlayerIndex, newDeck))
             }
-            case None => throw new NullPointerException("Deck doesn't have enough cards.")
+            case None => Failure(new Throwable("Deck doesn't have enough cards."))
         }
     }
 
