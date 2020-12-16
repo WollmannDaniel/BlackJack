@@ -4,7 +4,7 @@ package de.htwg.se.blackjack.controller
 import de.htwg.se.blackjack.model.{Card, Deck, GameConfig, Hand, Player}
 import de.htwg.se.blackjack.model.DrawStrategy
 import de.htwg.se.blackjack.util.{Observable, UndoManager}
-
+import scala.swing.Publisher
 import scala.util.{Failure, Success, Try}
 
 object GameState extends Enumeration {
@@ -14,7 +14,7 @@ object GameState extends Enumeration {
 
 import GameState._
 
-class Controller(var deck: Deck) extends Observable {
+class Controller(var deck: Deck) extends Publisher {
     var gameState = WELCOME
     var running: State = IsNotRunning()
     var gameConfig = GameConfig(Vector[Player](), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
@@ -28,7 +28,7 @@ class Controller(var deck: Deck) extends Observable {
 
     def performInitGame(playerAmount: Int): Unit = {
         undoManager.doStep(new PlayerAmountCommand(this, playerAmount))
-        notifyObservers
+        publish(new RefreshData)
     }
 
     def initGame(playerAmount: Int): Unit = {
@@ -37,7 +37,7 @@ class Controller(var deck: Deck) extends Observable {
             case Success(value) => gameConfig = value
             case Failure(exception) => {
                 gameState = EMPTY_DECK
-                notifyObservers
+                publish(new RefreshData)
             }
         }
 
@@ -47,7 +47,7 @@ class Controller(var deck: Deck) extends Observable {
                 case Success(value) => gameConfig = value
                 case Failure(exception) => {
                     gameState = EMPTY_DECK
-                    notifyObservers
+                    publish(new RefreshData)
                 }
             }
         }
@@ -74,7 +74,7 @@ class Controller(var deck: Deck) extends Observable {
 
     def performSetPlayerName(playerName: String): Unit = {
         undoManager.doStep(new NameCommand(this, playerName))
-        notifyObservers
+        publish(new RefreshData)
     }
 
     def playerHits(): Unit = {
@@ -85,16 +85,16 @@ class Controller(var deck: Deck) extends Observable {
                 val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
                 if (playerHandValue > 21) {
                     gameState = PLAYER_LOST
-                    notifyObservers
+                    publish(new RefreshData)
                     nextPlayer()
                 } else {
                     gameState = PLAYER_TURN
-                    notifyObservers
+                    publish(new RefreshData)
                 }
             }
             case Failure(exception) => {
                 gameState = EMPTY_DECK
-                notifyObservers
+                publish(new RefreshData)
             }
         }
     }
@@ -113,7 +113,7 @@ class Controller(var deck: Deck) extends Observable {
             checkWinner()
         } else {
             gameState = PLAYER_TURN
-            notifyObservers
+            publish(new RefreshData)
         }
     }
 
@@ -122,11 +122,11 @@ class Controller(var deck: Deck) extends Observable {
         config match {
             case Success(value) => {
                 gameConfig = value
-                notifyObservers
+                publish(new RefreshData)
             }
             case Failure(exception) => {
                 gameState = EMPTY_DECK
-                notifyObservers
+                publish(new RefreshData)
             }
         }
     }
@@ -171,24 +171,24 @@ class Controller(var deck: Deck) extends Observable {
             }
         }
 
-        notifyObservers
+        publish(new RefreshData)
         gameState = IDLE
-        notifyObservers
+        publish(new RefreshData)
         running = IsNotRunning()
     }
 
     def newGame(): Unit ={
         if (gameState != IDLE) {
             gameState = WRONG_CMD
-            notifyObservers
+            publish(new RefreshData)
             gameState = PLAYER_TURN
-            notifyObservers
+            publish(new RefreshData)
         } else {
             gameState = NEW_GAME_STARTED
-            notifyObservers
+            publish(new RefreshData)
             gameState = PLAYER_TURN
             gameConfig = gameConfig.resetGameConfig()
-            notifyObservers
+            publish(new RefreshData)
 
             running = IsRunning()
         }
@@ -204,20 +204,20 @@ class Controller(var deck: Deck) extends Observable {
 
     def quitGame(): Unit = {
         gameState = END_GAME
-        notifyObservers
+        publish(new RefreshData)
     }
 
     def testNotify(): Unit = {
-        notifyObservers
+        publish(new RefreshData)
     }
 
     def undo: Unit = {
         undoManager.undoStep
-        notifyObservers
+        publish(new RefreshData)
     }
 
     def redo: Unit = {
         undoManager.redoStep
-        notifyObservers
+        publish(new RefreshData)
     }
 }

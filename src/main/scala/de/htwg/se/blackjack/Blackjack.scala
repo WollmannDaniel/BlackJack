@@ -1,7 +1,7 @@
 package de.htwg.se.blackjack
 
 import de.htwg.se.blackjack.aview.{Tui, UserInterface}
-import de.htwg.se.blackjack.controller.Controller
+import de.htwg.se.blackjack.controller.{Controller, RefreshData}
 import de.htwg.se.blackjack.model.{Deck, Hand}
 
 import scala.io.StdIn.readLine
@@ -13,13 +13,12 @@ object Blackjack {
     def main(args: Array[String]): Unit = {
         var input: String = ""
 
-        val uiType = "tui"
-        val ui = UserInterface(uiType, controller)
-        controller.notifyObservers
+        val tui = new Tui(controller)
+        controller.publish(new RefreshData)
 
         do {
             input = readLine().toLowerCase()
-            ui.processCommands(input)
+            tui.processCommands(input)
         } while (input != "q")
     }
 }

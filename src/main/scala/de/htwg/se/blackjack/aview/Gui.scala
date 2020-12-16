@@ -4,7 +4,7 @@ import de.htwg.se.blackjack.util.Observer
 import de.htwg.se.blackjack.controller.Controller
 
 class Gui(controller: Controller) extends Observer with UserInterface{
-    controller.add(this)
+    //controller.add(this)
 
     override def processCommands(input: String): Unit = {
         println("gui not implemented yet")

@@ -1,13 +1,15 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.Controller
+import de.htwg.se.blackjack.controller.{Controller, RefreshData}
 import de.htwg.se.blackjack.util.Observer
 import de.htwg.se.blackjack.controller.GameState._
 
-class Tui(controller: Controller) extends Observer with UserInterface {
-    controller.add(this)
+import scala.swing.Reactor
 
-    override def processCommands(input: String): Unit = {
+class Tui(controller: Controller) extends Reactor {
+    listenTo(controller)
+
+    def processCommands(input: String): Unit = {
         if (controller.gameState == WELCOME) {
             input match {
                 case "z" => controller.undo
@@ -46,7 +48,11 @@ class Tui(controller: Controller) extends Observer with UserInterface {
         }
     }
 
-    override def update: Boolean = {
+    reactions += {
+        case event: RefreshData => update
+    }
+
+    def update: Unit = {
         controller.gameState match {
             case WELCOME => {
                 println("Starting new game!\nThe deck was shuffled.\nHow many players want to play?")
@@ -80,6 +86,5 @@ class Tui(controller: Controller) extends Observer with UserInterface {
                 throw new IllegalStateException("Deck doesn't have enough cards.")
             }
         }
-        true
     }
 }
