@@ -5,9 +5,7 @@ import de.htwg.se.blackjack.controller.{Controller}
 import scala.swing._
 import scala.swing.event.ButtonClicked
 
-class WelcomeGui(controller: Controller) extends Frame{
-    listenTo(controller)
-
+class WelcomeGui(controller: Controller) extends Frame {
     visible = true
     peer.setLocationRelativeTo(null)
     peer.setPreferredSize(new Dimension(500, 500))

@@ -10,8 +10,6 @@ class SetupGui(controller: Controller) extends Frame {
     peer.setLocationRelativeTo(null)
     title = "Blackjack"
 
-    var count = 1
-
     val btn_undo = new Button {
         text = "Undo"
     }
@@ -22,13 +20,13 @@ class SetupGui(controller: Controller) extends Frame {
         text = "Do"
     }
 
-    val flowPanel = new FlowPanel{
+    val flowPanel = new FlowPanel {
         contents += btn_undo
         contents += btn_redo
         contents += btn_do
     }
 
-    val txt_playername = new TextField{
+    val txt_playername = new TextField {
         columns = 40
     }
 
@@ -36,7 +34,7 @@ class SetupGui(controller: Controller) extends Frame {
         text = controller.getPlayerName
     }
 
-    contents = new GridPanel(3,1){
+    contents = new GridPanel(3,1) {
         contents += lbl_playername
         contents += txt_playername
         contents += flowPanel
@@ -44,11 +42,11 @@ class SetupGui(controller: Controller) extends Frame {
 
         reactions += {
             case ButtonClicked(component) => {
-                if(component == btn_undo){
+                if(component == btn_undo) {
                     controller.undo
-                }else if(component == btn_redo){
+                } else if(component == btn_redo) {
                     controller.redo
-                }else if(component == btn_do){
+                } else if(component == btn_do) {
                     controller.performSetPlayerName(txt_playername.text)
                 }
 
