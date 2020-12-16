@@ -5,10 +5,12 @@ import de.htwg.se.blackjack.controller.GameState._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import java.io.{ByteArrayOutputStream, StringReader}
+
+import de.htwg.se.blackjack.aview.gui.WelcomeGui
 import de.htwg.se.blackjack.model.Deck
 
-class GuiSpec extends AnyWordSpec with Matchers{
-    "A Blackjack Gui" should {
+class WelcomeGuiSpec extends AnyWordSpec with Matchers{
+    /*"A Blackjack Gui" should {
         val deck = new Deck()
         val controller = new Controller(deck)
         val gui = new Gui(controller)
@@ -29,5 +31,5 @@ class GuiSpec extends AnyWordSpec with Matchers{
             }
             out.toString should include ("gui not implemented yet")
         }
-    }
+    }*/
 }

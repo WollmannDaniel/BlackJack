@@ -1,5 +1,6 @@
 package de.htwg.se.blackjack.aview
 
+import de.htwg.se.blackjack.aview.gui.WelcomeGui
 import de.htwg.se.blackjack.controller.Controller
 import de.htwg.se.blackjack.model.Deck
 import org.scalatest.matchers.should.Matchers
@@ -41,7 +42,7 @@ class UiFactorySpec extends AnyWordSpec with Matchers{
         val ui = UserInterface(uiType, controller)
 
         "have instance of Gui" in {
-            ui.isInstanceOf[Gui] should be(true)
+            ui.isInstanceOf[WelcomeGui] should be(true)
         }
     }}
 }

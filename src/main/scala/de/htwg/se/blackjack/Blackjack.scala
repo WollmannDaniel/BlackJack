@@ -1,5 +1,6 @@
 package de.htwg.se.blackjack
 
+import de.htwg.se.blackjack.aview.gui.WelcomeGui
 import de.htwg.se.blackjack.aview.{Tui, UserInterface}
 import de.htwg.se.blackjack.controller.{Controller, RefreshData}
 import de.htwg.se.blackjack.model.{Deck, Hand}
@@ -13,6 +14,7 @@ object Blackjack {
     def main(args: Array[String]): Unit = {
         var input: String = ""
 
+        val gui = new WelcomeGui(controller)
         val tui = new Tui(controller)
         controller.publish(new RefreshData)
 
