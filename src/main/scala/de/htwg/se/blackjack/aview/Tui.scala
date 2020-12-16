@@ -1,6 +1,6 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.{Controller, RefreshData}
+import de.htwg.se.blackjack.controller.{Controller, DealersTurn, RefreshData}
 import de.htwg.se.blackjack.util.Observer
 import de.htwg.se.blackjack.controller.GameState._
 
@@ -50,6 +50,7 @@ class Tui(controller: Controller) extends Reactor {
 
     reactions += {
         case event: RefreshData => update
+        case event: DealersTurn => update
     }
 
     def update: Unit = {

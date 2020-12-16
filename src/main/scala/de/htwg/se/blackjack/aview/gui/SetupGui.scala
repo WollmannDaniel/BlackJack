@@ -1,12 +1,13 @@
 package de.htwg.se.blackjack.aview.gui
 
 import scala.swing._
-import de.htwg.se.blackjack.controller.Controller
+import de.htwg.se.blackjack.controller.{Controller, RefreshData}
 import de.htwg.se.blackjack.controller.GameState._
 
 import scala.swing.event.ButtonClicked
 
 class SetupGui(controller: Controller) extends Frame {
+    listenTo(controller)
     peer.setLocationRelativeTo(null)
     title = "Blackjack"
 
@@ -38,7 +39,7 @@ class SetupGui(controller: Controller) extends Frame {
         contents += lbl_playername
         contents += txt_playername
         contents += flowPanel
-        listenTo(btn_undo, btn_do)
+        listenTo(btn_undo, btn_do, btn_redo)
 
         reactions += {
             case ButtonClicked(component) => {
@@ -51,12 +52,20 @@ class SetupGui(controller: Controller) extends Frame {
                 }
 
                 if (controller.gameState == PLAYER_TURN) {
-                    peer.setVisible(false)
+                    //peer.setVisible(false)
+                    new BoardGui(controller).visible = true
                 }
 
                 lbl_playername.text = controller.getPlayerName
                 txt_playername.text = ""
             }
+        }
+    }
+
+    reactions += {
+        case event: RefreshData => {
+            lbl_playername.text = controller.getPlayerName
+            txt_playername.text = ""
         }
     }
 }

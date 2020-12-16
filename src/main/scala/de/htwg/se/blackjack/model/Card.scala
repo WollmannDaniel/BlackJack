@@ -58,5 +58,16 @@ case class Card(suit: Suit, rank: Rank) {
             case _ => rank.id
         }
     }
+
+    def mapCardSymbol(): String = {
+        val builder = new StringBuilder(mapCardRank())
+        suit match {
+            case Diamond => builder.append("D")
+            case Heart => builder.append("H")
+            case Spade => builder.append("S")
+            case Club => builder.append("C")
+        }
+        builder.toString()
+    }
 }
 

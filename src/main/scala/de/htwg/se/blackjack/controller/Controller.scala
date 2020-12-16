@@ -122,7 +122,7 @@ class Controller(var deck: Deck) extends Publisher {
         config match {
             case Success(value) => {
                 gameConfig = value
-                publish(new RefreshData)
+                publish(new DealersTurn)
             }
             case Failure(exception) => {
                 gameState = EMPTY_DECK
@@ -219,5 +219,28 @@ class Controller(var deck: Deck) extends Publisher {
     def redo: Unit = {
         undoManager.redoStep
         publish(new RefreshData)
+    }
+
+    def mapAllHands(): List[List[String]] = {
+
+    }
+
+    def mapSymbolToChar(hideDealerCards: Boolean, isDealer: Boolean): List[String] = {
+        var cardImageNames = List[String]()
+
+        if (isDealer) {
+            for(card <- gameConfig.dealer.hand.cards) {
+                if (hideDealerCards && card.equals(gameConfig.dealer.hand.cards.last)) {
+                    cardImageNames = cardImageNames :+ "red_back.png"
+                } else {
+                    cardImageNames = cardImageNames :+ (card.mapCardSymbol() + ".png")
+                }
+            }
+        } else {
+            for(card <- gameConfig.getActivePlayer.hand.cards) {
+                cardImageNames = cardImageNames :+ (card.mapCardSymbol() + ".png")
+            }
+        }
+        cardImageNames
     }
 }
