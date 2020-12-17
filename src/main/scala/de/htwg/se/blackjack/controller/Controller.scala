@@ -217,6 +217,9 @@ class Controller(var deck: Deck) extends Publisher {
 
     def undo: Unit = {
         undoManager.undoStep
+        if (gameState == ) {
+
+        }
         publish(new RefreshData)
     }
 
@@ -243,7 +246,7 @@ class Controller(var deck: Deck) extends Publisher {
             }
         } else {
             var targetPlayer = gameConfig.getActivePlayer
-            if(playerIndex != -1){
+            if(playerIndex != -1) {
                 targetPlayer = gameConfig.players(playerIndex)
             }
 

@@ -59,7 +59,6 @@ class BoardGui(controller: Controller) extends Frame {
     def createDealerGrid: GridPanel = new GridPanel(2,1){
         contents += lbl_dealer
         contents += createDealerCards
-        border = new LineBorder(java.awt.Color.RED, 2)
     }
 
     def createPlayerGrid(index: Int = -1): GridPanel = new GridPanel(2,1) {
@@ -104,7 +103,6 @@ class BoardGui(controller: Controller) extends Frame {
         val btn_Exit = new Button{
             text = "Exit"
         }
-        border = new LineBorder(java.awt.Color.RED, 2)
         contents += btn_NewGame
         contents += btn_Exit
 
