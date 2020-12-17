@@ -58,6 +58,18 @@ class CardSpec extends AnyWordSpec with Matchers {
         "have this rank value when is king" in {
             kingCard.mapCardRank() equals "K"
         }
+        "have this card Symbol when is Diamond" in {
+            diamondCard.mapCardSymbol() equals "D"
+        }
+        "have this card Symbol when is Heart" in {
+            heartCard.mapCardSymbol() equals "H"
+        }
+        "have this card Symbol when is Spade" in {
+            spadeCard.mapCardSymbol() equals "S"
+        }
+        "have this card Symbol when is Club" in {
+            clubCard.mapCardSymbol() equals "C"
+        }
     }}
     "To get 100% code coverage" when { "for enum" should {
         "have this call" in {
