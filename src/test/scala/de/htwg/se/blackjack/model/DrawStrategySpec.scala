@@ -53,10 +53,8 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
         val gameConfig = GameConfig(playerList, dealer, deck: Deck, 0, Vector[Player]())
 
         "draw and have a hand value of 16" in {
-            val thrown = intercept[Exception] {
-                val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
-            }
-            thrown.getMessage should be("Deck doesn't have enough cards.")
+            val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
+            config.failure.exception.getMessage should be("Deck doesn't have enough cards.")
         }
     }}
 }

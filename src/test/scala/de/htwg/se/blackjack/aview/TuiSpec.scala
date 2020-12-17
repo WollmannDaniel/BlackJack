@@ -218,7 +218,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("any-name's turn. Hit or stand?(h/s)\n\n").append(tmpController.gameStateToString).append("\n").toString())
+            out.toString should be (builder.append("any-name's turn. Hit or stand?(h/s)\n\n").append(tmpController.gameStateToString).append("\n\n").toString())
         }
 
         "should have this output on PLAYER_LOST" in {
@@ -280,7 +280,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("any-name has won!\n").toString())
+            out.toString should be (builder.append("any-name has won!").toString())
         }
 
         "should have this output on DRAW" in {
@@ -296,7 +296,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("It's a draw!\n").append(tmpController.gameStateToString).append("\n").toString())
+            out.toString should be (builder.append("It's a draw!").append(tmpController.gameStateToString).append("\n").toString())
         }
 
         "should have this output on WRONG_CMD" in {
@@ -309,7 +309,7 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("Command not allowed!\n").toString())
+            out.toString should be (builder.append("Command not allowed!").toString())
         }
 
         "should have this output on END_GAME" in {

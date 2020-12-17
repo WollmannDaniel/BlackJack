@@ -55,13 +55,13 @@ class Tui(controller: Controller) extends Reactor {
     def update: Unit = {
         controller.gameState match {
             case WELCOME => {
-                println("Starting new game!\nThe deck was shuffled.\nHow many players want to play?")
+                print("Starting new game!\nThe deck was shuffled.\nHow many players want to play?\n")
             }
             case NAME_CREATION => {
-                println(controller.getPlayerName)
+                print(controller.getPlayerName + "\n")
             }
             case NEW_GAME_STARTED => {
-                println("Starting new game!\nThe deck was shuffled.")
+                print("Starting new game!\nThe deck was shuffled.\n")
             }
             case PLAYER_TURN => {
                 println(s"${controller.getActivePlayerName}'s turn. Hit or stand?(h/s)\n")
@@ -77,10 +77,10 @@ class Tui(controller: Controller) extends Reactor {
                 println(controller.gameStateToString)
             }
             case DRAW => {
-                println("It's a draw!")
+                print("It's a draw!\n")
                 println(controller.gameStateToString)
             }
-            case WRONG_CMD => println("Command not allowed!")
+            case WRONG_CMD => print("Command not allowed!\n")
             case END_GAME => print("Good bye!")
             case EMPTY_DECK => {
                 throw new IllegalStateException("Deck doesn't have enough cards.")
