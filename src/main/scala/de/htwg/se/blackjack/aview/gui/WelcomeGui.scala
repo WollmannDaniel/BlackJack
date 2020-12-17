@@ -1,6 +1,6 @@
 package de.htwg.se.blackjack.aview.gui
 
-import de.htwg.se.blackjack.controller.{Controller}
+import de.htwg.se.blackjack.controller.{Controller, InitGame}
 
 import scala.swing._
 import scala.swing.event.ButtonClicked
@@ -10,6 +10,8 @@ class WelcomeGui(controller: Controller) extends Frame {
     peer.setLocationRelativeTo(null)
     peer.setPreferredSize(new Dimension(300, 300))
     peer.setResizable(false)
+    peer.setDefaultCloseOperation(3)
+    listenTo(controller)
 
     title = "Blackjack"
 
@@ -18,10 +20,8 @@ class WelcomeGui(controller: Controller) extends Frame {
     }
 
     val lbl_Players = new Label {
-        text += "Starting new game!"
-        text += "The deck was shuffled."
-        text += "How many players want to play?"
-   }
+        text += "<html><center>Starting new game!</center><center>The deck was shuffled.</center><center>How many players want to play?</center></html>"
+    }
 
     val btn_Player1 = new Button {
         text = "1 Player"
@@ -53,8 +53,6 @@ class WelcomeGui(controller: Controller) extends Frame {
                 }else if(component == btn_Player4){
                     controller.performInitGame(4)
                 }
-                new SetupGui(controller).visible = true
-                peer.setVisible(false)
             }
         }
     }
@@ -67,5 +65,12 @@ class WelcomeGui(controller: Controller) extends Frame {
     contents = new GridPanel(2, 1) {
         contents += lbl_title
         contents += grid
+    }
+
+    reactions += {
+        case event: InitGame => {
+            new SetupGui(controller).visible = true
+            dispose()
+        }
     }
 }

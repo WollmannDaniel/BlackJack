@@ -2,8 +2,9 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.Image
 
-import de.htwg.se.blackjack.controller.{Controller, RefreshData, DealersTurn}
+import de.htwg.se.blackjack.controller.{Controller, DealersTurn, PlayerWentOver, RefreshData, ShowResults}
 import javax.swing.ImageIcon
+import javax.swing.border.{Border, LineBorder}
 
 import scala.swing._
 import scala.swing.event.ButtonClicked
@@ -11,8 +12,9 @@ import scala.swing.event.ButtonClicked
 class BoardGui(controller: Controller) extends Frame {
     listenTo(controller)
     title = "Blackjack"
-    peer.setPreferredSize(new Dimension(750, 750))
+    peer.setPreferredSize(new Dimension(1000, 750))
     peer.setResizable(false)
+    peer.setDefaultCloseOperation(3)
 
     val pathToImage = "src/main/scala/de/htwg/se/blackjack/aview/gui/img/"
     val imageHeight = 80
@@ -36,9 +38,9 @@ class BoardGui(controller: Controller) extends Frame {
         text = "Stand"
     }
 
-    def getCards(hideDealerCards: Boolean, isDealer: Boolean): collection.mutable.Buffer[Component] = {
+    def getCards(hideDealerCards: Boolean, isDealer: Boolean, playerIndex: Int): collection.mutable.Buffer[Component] = {
         var content = collection.mutable.Buffer[Component]()
-        val cardList = controller.mapSymbolToChar(hideDealerCards, isDealer)
+        val cardList = controller.mapSymbolToChar(hideDealerCards, isDealer, playerIndex)
         for(str <- cardList) {
             content += new Label {
                 icon = scaledImageIcon(pathToImage + str, imageWidth, imageHeight)
@@ -48,7 +50,7 @@ class BoardGui(controller: Controller) extends Frame {
     }
 
     def createDealerCards = new FlowPanel {
-        val cards = getCards(hideDealerCard, true)
+        val cards = getCards(hideDealerCard, true, -1)
         for(content <- cards) {
             contents += content
         }
@@ -57,15 +59,22 @@ class BoardGui(controller: Controller) extends Frame {
     def createDealerGrid: GridPanel = new GridPanel(2,1){
         contents += lbl_dealer
         contents += createDealerCards
+        border = new LineBorder(java.awt.Color.RED, 2)
     }
 
-    def createPlayerGrid: GridPanel = new GridPanel(2,1) {
-        contents += lbl_player
-        contents += createPlayerCards
+    def createPlayerGrid(index: Int = -1): GridPanel = new GridPanel(2,1) {
+        if (index != -1) {
+            contents += new Label {
+                text = controller.gameConfig.players(index).name
+            }
+        } else {
+            contents += lbl_player
+        }
+        contents += createPlayerCards(index)
     }
 
-    def createPlayerCards: FlowPanel = new FlowPanel {
-        val cards = getCards(false, false)
+    def createPlayerCards(index: Int): FlowPanel = new FlowPanel {
+        val cards = getCards(false, false, index)
         for (content <- cards) {
             contents += content
         }
@@ -88,9 +97,36 @@ class BoardGui(controller: Controller) extends Frame {
         }
     }
 
+    val endGameButtonFlowPanel = new FlowPanel {
+        val btn_NewGame = new Button{
+            text = "New Game"
+        }
+        val btn_Exit = new Button{
+            text = "Exit"
+        }
+        border = new LineBorder(java.awt.Color.RED, 2)
+        contents += btn_NewGame
+        contents += btn_Exit
+
+        listenTo(btn_NewGame, btn_Exit)
+
+        reactions += {
+            case ButtonClicked(component) => {
+                if(component == btn_NewGame) {
+                    hideDealerCard = true
+                    controller.newGame()
+                } else if(component == btn_Exit) {
+                    controller.quitGame()
+                    Dialog.showMessage(contents.head, "Good bye!", "Ciao Bella")
+                    System.exit(0)
+                }
+            }
+        }
+    }
+
     contents = new GridPanel(3,1) {
         contents += createDealerGrid
-        contents += createPlayerGrid
+        contents += createPlayerGrid()
         contents += buttonFlowPanel
     }
 
@@ -98,19 +134,51 @@ class BoardGui(controller: Controller) extends Frame {
         case event: DealersTurn => {
             hideDealerCard = false
             redraw
+            lbl_player.text = controller.getActivePlayerName
         }
-        case event: RefreshData => redraw
-
-        lbl_player.text = controller.getActivePlayerName
+        case event: RefreshData => {
+            redraw
+            lbl_player.text = controller.getActivePlayerName
+        }
+        case event: PlayerWentOver => {
+            Dialog.showMessage(contents.head, s"${controller.getActivePlayerName}'s hand value went over twenty-one!", "Game message")
+            lbl_player.text = controller.getActivePlayerName
+            repaint
+        }
+        case event: ShowResults => {
+            redrawResults
+        }
     }
 
     def redraw: Unit = {
         val grid = new GridPanel(3,1) {
             contents += createDealerGrid
-            contents += createPlayerGrid
+            contents += createPlayerGrid()
             contents += buttonFlowPanel
         }
         contents = grid
+    }
+
+    def redrawResults: Unit = {
+        val playerAmount = controller.gameConfig.players.size
+        contents = new BoxPanel(Orientation.Vertical){
+            contents += new GridPanel(1,1) {
+                contents += new Label {
+                    text = controller.gameConfig.getAllWinnerAsString
+                    //horizontalAlignment = Alignment.Center
+
+                }
+            }
+            contents += createDealerGrid
+
+            contents += new GridPanel(2,2) {
+                for (i <- 0 until playerAmount) {
+                    contents += createPlayerGrid(i)
+                }
+            }
+            contents += endGameButtonFlowPanel
+
+        }
     }
 
     def scaledImageIcon(path: String, width: Int, height: Int): ImageIcon = {

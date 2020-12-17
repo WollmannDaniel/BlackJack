@@ -1,7 +1,7 @@
 package de.htwg.se.blackjack.aview.gui
 
 import scala.swing._
-import de.htwg.se.blackjack.controller.{Controller, RefreshData}
+import de.htwg.se.blackjack.controller.{Controller, RefreshData, StartGame}
 import de.htwg.se.blackjack.controller.GameState._
 
 import scala.swing.event.ButtonClicked
@@ -9,6 +9,7 @@ import scala.swing.event.ButtonClicked
 class SetupGui(controller: Controller) extends Frame {
     listenTo(controller)
     peer.setLocationRelativeTo(null)
+    peer.setDefaultCloseOperation(3)
     title = "Blackjack"
 
     val btn_undo = new Button {
@@ -50,12 +51,6 @@ class SetupGui(controller: Controller) extends Frame {
                 } else if(component == btn_do) {
                     controller.performSetPlayerName(txt_playername.text)
                 }
-
-                if (controller.gameState == PLAYER_TURN) {
-                    //peer.setVisible(false)
-                    new BoardGui(controller).visible = true
-                }
-
                 lbl_playername.text = controller.getPlayerName
                 txt_playername.text = ""
             }
@@ -66,6 +61,10 @@ class SetupGui(controller: Controller) extends Frame {
         case event: RefreshData => {
             lbl_playername.text = controller.getPlayerName
             txt_playername.text = ""
+        }
+        case event: StartGame => {
+            new BoardGui(controller).visible = true
+            dispose()
         }
     }
 }

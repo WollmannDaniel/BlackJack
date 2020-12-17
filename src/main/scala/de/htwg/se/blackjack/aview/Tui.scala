@@ -49,8 +49,7 @@ class Tui(controller: Controller) extends Reactor {
     }
 
     reactions += {
-        case event: RefreshData => update
-        case event: DealersTurn => update
+        case _ => update
     }
 
     def update: Unit = {

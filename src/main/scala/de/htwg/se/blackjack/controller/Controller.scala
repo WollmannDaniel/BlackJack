@@ -28,7 +28,7 @@ class Controller(var deck: Deck) extends Publisher {
 
     def performInitGame(playerAmount: Int): Unit = {
         undoManager.doStep(new PlayerAmountCommand(this, playerAmount))
-        publish(new RefreshData)
+        publish(new InitGame)
     }
 
     def initGame(playerAmount: Int): Unit = {
@@ -74,7 +74,11 @@ class Controller(var deck: Deck) extends Publisher {
 
     def performSetPlayerName(playerName: String): Unit = {
         undoManager.doStep(new NameCommand(this, playerName))
-        publish(new RefreshData)
+        if (gameState == PLAYER_TURN) {
+            publish(new StartGame)
+        } else{
+            publish(new RefreshData)
+        }
     }
 
     def playerHits(): Unit = {
@@ -85,7 +89,7 @@ class Controller(var deck: Deck) extends Publisher {
                 val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
                 if (playerHandValue > 21) {
                     gameState = PLAYER_LOST
-                    publish(new RefreshData)
+                    publish(new PlayerWentOver)
                     nextPlayer()
                 } else {
                     gameState = PLAYER_TURN
@@ -171,9 +175,9 @@ class Controller(var deck: Deck) extends Publisher {
             }
         }
 
-        publish(new RefreshData)
+        publish(new ShowResults)
         gameState = IDLE
-        publish(new RefreshData)
+        publish(new ShowResults)
         running = IsNotRunning()
     }
 
@@ -221,11 +225,12 @@ class Controller(var deck: Deck) extends Publisher {
         publish(new RefreshData)
     }
 
+    /*
     def mapAllHands(): List[List[String]] = {
 
-    }
+    }*/
 
-    def mapSymbolToChar(hideDealerCards: Boolean, isDealer: Boolean): List[String] = {
+    def mapSymbolToChar(hideDealerCards: Boolean, isDealer: Boolean, playerIndex: Int): List[String] = {
         var cardImageNames = List[String]()
 
         if (isDealer) {
@@ -237,7 +242,12 @@ class Controller(var deck: Deck) extends Publisher {
                 }
             }
         } else {
-            for(card <- gameConfig.getActivePlayer.hand.cards) {
+            var targetPlayer = gameConfig.getActivePlayer
+            if(playerIndex != -1){
+                targetPlayer = gameConfig.players(playerIndex)
+            }
+
+            for(card <- targetPlayer.hand.cards) {
                 cardImageNames = cardImageNames :+ (card.mapCardSymbol() + ".png")
             }
         }
