@@ -12,6 +12,8 @@ class SetupGui(controller: Controller) extends Frame {
     peer.setDefaultCloseOperation(3)
     title = "Blackjack"
 
+    var boardGui = new BoardGui(SetupGui.this, controller)
+
     val btn_undo = new Button {
         text = "Undo"
     }
@@ -37,6 +39,8 @@ class SetupGui(controller: Controller) extends Frame {
     }
 
     contents = new GridPanel(3,1) {
+        btn_undo.enabled = false
+
         contents += lbl_playername
         contents += txt_playername
         contents += flowPanel
@@ -51,9 +55,15 @@ class SetupGui(controller: Controller) extends Frame {
                 } else if(component == btn_do) {
                     controller.performSetPlayerName(txt_playername.text)
                 }
-                lbl_playername.text = controller.getPlayerName
-                txt_playername.text = ""
             }
+        }
+    }
+
+    def checkUndo = {
+        if (lbl_playername.text == "Please enter Playername 1:") {
+            btn_undo.enabled = false
+        } else {
+            btn_undo.enabled = true
         }
     }
 
@@ -61,10 +71,18 @@ class SetupGui(controller: Controller) extends Frame {
         case event: RefreshData => {
             lbl_playername.text = controller.getPlayerName
             txt_playername.text = ""
+            checkUndo
         }
         case event: StartGame => {
-            new BoardGui(controller).visible = true
+            boardGui = new BoardGui(SetupGui.this, controller)
+            boardGui.pack()
+            boardGui.visible = true
             dispose()
         }
+    }
+
+    def redraw: Unit = {
+        lbl_playername.text = controller.getPlayerName
+        txt_playername.text = ""
     }
 }

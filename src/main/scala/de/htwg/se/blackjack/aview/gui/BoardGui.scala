@@ -2,14 +2,14 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.Image
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, PlayerWentOver, RefreshData, ShowResults}
+import de.htwg.se.blackjack.controller.{Controller, DealersTurn, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
 import javax.swing.border.{Border, LineBorder}
 
 import scala.swing._
 import scala.swing.event.ButtonClicked
 
-class BoardGui(controller: Controller) extends Frame {
+class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
     listenTo(controller)
     title = "Blackjack"
     peer.setPreferredSize(new Dimension(1000, 750))
@@ -129,6 +129,12 @@ class BoardGui(controller: Controller) extends Frame {
     }
 
     reactions += {
+        case event: SetupMenu => {
+            parent.pack()
+            parent.redraw
+            parent.visible = true
+            dispose()
+        }
         case event: DealersTurn => {
             hideDealerCard = false
             redraw

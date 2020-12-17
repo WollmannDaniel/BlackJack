@@ -215,23 +215,29 @@ class Controller(var deck: Deck) extends Publisher {
         publish(new RefreshData)
     }
 
-    def undo: Unit = {
-        undoManager.undoStep
-        if (gameState == ) {
+    var jumpedToSetup = false
 
+    def undo: Unit = {
+        val oldState = gameState
+
+        undoManager.undoStep
+        if (oldState == PLAYER_TURN && gameState == NAME_CREATION) {
+            publish(new SetupMenu)
+            jumpedToSetup = true
+        } else {
+            publish(new RefreshData)
         }
-        publish(new RefreshData)
     }
 
     def redo: Unit = {
         undoManager.redoStep
-        publish(new RefreshData)
+        if (jumpedToSetup && gameState == PLAYER_TURN) {
+            jumpedToSetup = false
+            publish(new StartGame)
+        } else {
+            publish(new RefreshData)
+        }
     }
-
-    /*
-    def mapAllHands(): List[List[String]] = {
-
-    }*/
 
     def mapSymbolToChar(hideDealerCards: Boolean, isDealer: Boolean, playerIndex: Int): List[String] = {
         var cardImageNames = List[String]()
