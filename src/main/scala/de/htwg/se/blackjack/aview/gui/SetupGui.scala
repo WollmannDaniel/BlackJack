@@ -74,6 +74,7 @@ class SetupGui(controller: Controller) extends Frame {
             checkUndo
         }
         case event: StartGame => {
+            boardGui.deafTo(controller)
             boardGui = new BoardGui(SetupGui.this, controller)
             boardGui.pack()
             boardGui.visible = true
