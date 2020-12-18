@@ -189,7 +189,7 @@ class Controller(var deck: Deck) extends Publisher {
             publish(new RefreshData)
         } else {
             gameState = NEW_GAME_STARTED
-            publish(new RefreshData)
+            publish(new NewGameStarted)
             gameState = PLAYER_TURN
             gameConfig = gameConfig.resetGameConfig()
             publish(new RefreshData)

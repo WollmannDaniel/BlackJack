@@ -2,7 +2,7 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.Image
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
+import de.htwg.se.blackjack.controller.{Controller, DealersTurn, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
 import javax.swing.border.{Border, LineBorder}
 
@@ -152,6 +152,7 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
         case event: ShowResults => {
             redrawResults
         }
+        case event: NewGameStarted => hideDealerCard = true
     }
 
     def redraw: Unit = {

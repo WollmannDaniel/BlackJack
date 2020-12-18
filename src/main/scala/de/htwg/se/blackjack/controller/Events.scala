@@ -10,3 +10,4 @@ class ShowResults extends Event
 class InitGame extends Event
 class StartGame extends Event
 class SetupMenu extends Event
+class NewGameStarted extends Event
