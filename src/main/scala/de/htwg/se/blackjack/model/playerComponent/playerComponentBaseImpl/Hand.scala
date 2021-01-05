@@ -4,14 +4,16 @@ import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
 import de.htwg.se.blackjack.model.deckComponent.Rank.Ace
 import de.htwg.se.blackjack.model.playerComponent.IHand
 
+import scala.util.{Failure, Success, Try}
+
 case class Hand(cards: Vector[ICard]) extends IHand {
 
-    def drawCard(deck: IDeck): (IHand, IDeck) = {
+    def drawCard(deck: IDeck): Try[(IHand, IDeck)] = {
         val (newDeck, drawedCard) = deck.drawCards(1)
 
         drawedCard(0) match {
-            case Some(card) => (copy(cards :+ card), newDeck)
-            case None => throw new NullPointerException("Deck doesn't have enough cards.")
+            case Some(card) => Success(copy(cards :+ card), newDeck)
+            case None => Failure(new Throwable("Deck doesn't have enough cards."))
         }
     }
 

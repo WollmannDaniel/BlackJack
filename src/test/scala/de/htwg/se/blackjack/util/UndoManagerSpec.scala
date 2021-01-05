@@ -1,4 +1,3 @@
-/*
 package de.htwg.se.blackjack.util
 
 import org.scalatest.matchers.should.Matchers
@@ -36,4 +35,3 @@ class UndoManagerSpec extends AnyWordSpec with Matchers {
         }
     }
 }
-*/

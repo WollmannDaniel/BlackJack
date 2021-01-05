@@ -2,8 +2,9 @@ package de.htwg.se.blackjack.model.playerComponent
 
 import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
 
+import scala.util.Try
+
 trait IPlayer {
-    def drawCard(deck: IDeck): (IPlayer, IDeck)
     def setName(newName: String): IPlayer
     def toStringDealer: String
     def getName(): String
@@ -11,7 +12,7 @@ trait IPlayer {
 }
 
 trait IHand {
-    def drawCard(deck: IDeck): (IHand, IDeck)
+    def drawCard(deck: IDeck): Try[(IHand, IDeck)]
     def addCard(card: ICard): IHand
     def calculateHandValue(): Int
     def toStringDealer: String

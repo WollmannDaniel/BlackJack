@@ -1,4 +1,3 @@
-/*
 package de.htwg.se.blackjack.util
 
 import org.scalatest.wordspec.AnyWordSpec
@@ -45,4 +44,3 @@ class CommandSpec extends AnyWordSpec with Matchers {
         }
     }
 }
-*/

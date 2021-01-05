@@ -1,11 +1,12 @@
-/*
 package de.htwg.se.blackjack.model
 
-import de.htwg.se.blackjack.model.deckComponent.Deck
-import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.Hand
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.blackjack.model.deckComponent._
+
+import scala.util.{Failure, Success}
 
 class HandSpec extends AnyWordSpec with Matchers {
     "A Hand " when { "new" should {
@@ -52,7 +53,7 @@ class HandSpec extends AnyWordSpec with Matchers {
     "A Hand" when { "draws a card" should {
         val deck = Deck(Vector(Card(Suit.Diamond, Rank.Jack), Card(Suit.Club, Rank.Nine), Card(Suit.Heart, Rank.Ace)))
         val (newDeckAfterDeckDraw, cards) = deck.drawCards(2)
-        var handCards = Vector[Card]()
+        var handCards = Vector[ICard]()
 
         cards(0) match {
             case Some(card) => handCards = handCards :+ card
@@ -65,9 +66,15 @@ class HandSpec extends AnyWordSpec with Matchers {
 
         var hand = Hand(handCards)
 
-        val (newHand, newDeckAfterHandDraw) = hand.drawCard(deck)
-        hand = newHand
-
+        val tmp = hand.drawCard(deck)
+        tmp match {
+            case Success(value) => {
+                hand = value._1.asInstanceOf[Hand]
+            }
+            case Failure(e) => {
+                //should never run
+            }
+        }
         "have three cards" in {
             hand.cards.length should be(3)
         }
@@ -76,7 +83,7 @@ class HandSpec extends AnyWordSpec with Matchers {
     "A Hand" when { "is new and initialized" should {
         val deck = Deck(Vector(Card(Suit.Diamond, Rank.Jack), Card(Suit.Club, Rank.Nine)))
         val (newDeck, cards) = deck.drawCards(2)
-        var handCards = Vector[Card]()
+        var handCards = Vector[ICard]()
 
         cards(0) match {
             case Some(card) => handCards = handCards :+ card
@@ -91,6 +98,10 @@ class HandSpec extends AnyWordSpec with Matchers {
         "have two cards" in {
             hand.cards.length should be(2)
         }
+
+        "have these cards" in {
+            hand.getCards() should be(hand.cards)
+        }
     }}
 
     "A Hand" when { "draws a card from deck which is empty" should {
@@ -99,21 +110,26 @@ class HandSpec extends AnyWordSpec with Matchers {
         val hand = Hand(handCards)
 
         "have drawn a none and exception is thrown" in {
-            val thrown = intercept[Exception] {
-                val (newHand, newDeckAfterHandDraw) = hand.drawCard(deck)
+            val tmp = hand.drawCard(deck)
+            tmp match {
+                case Success(value) => {
+                    //should never run
+                }
+                case Failure(exception) => {
+                    exception.getMessage should be("Deck doesn't have enough cards.")
+                }
             }
-            thrown.getMessage should be("Deck doesn't have enough cards.")
         }
     }}
 
     "A Hand" when { "card is added" should {
         val deck = Deck(Vector())
-        val handCards = Vector[Card]()
+        val handCards = Vector[ICard]()
         var hand = Hand(handCards)
 
         "have the new card in his hand" in {
-            hand = hand.addCard(Card(Suit.Diamond, Rank.Jack))
+            hand = hand.addCard(Card(Suit.Diamond, Rank.Jack)).asInstanceOf[Hand]
             hand.cards.size should be(1)
         }
     }}
-}*/
+}

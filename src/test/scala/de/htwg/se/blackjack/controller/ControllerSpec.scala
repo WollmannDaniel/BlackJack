@@ -1,19 +1,18 @@
-/*
 package de.htwg.se.blackjack.controller
 
 import java.io.ByteArrayOutputStream
 
+import de.htwg.se.blackjack.controller.GameState._
+import de.htwg.se.blackjack.controller._
 import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{Controller, IsNotRunning, IsRunning}
-import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.GameState._
-import de.htwg.se.blackjack.model.deckComponent.Deck
-import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
 import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl
-import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.GameConfig
-import de.htwg.se.blackjack.model.gameConfigComponent
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
-import de.htwg.se.blackjack.util.{Observable, Observer}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.GameConfig
+import de.htwg.se.blackjack.model.playerComponent.IPlayer
 
 import scala.swing.Publisher
 import scala.language.reflectiveCalls
@@ -23,12 +22,12 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         "observed by an Observer" should {
             var deck = new Deck()
             deck = Deck(deck.initDeck())
-
-            val controller = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val controller = new Controller(gameConfig)
 
             /*
             val publisher = new Publisher {
-                var updated:
+                var updated: Boolean = false
             }
              */
 
@@ -70,7 +69,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
             "notify its observer after init game and init dealer" in {
                 val gameConfig = controller.gameConfig
-                controller.gameConfig = gameConfigBaseImpl.GameConfig(gameConfig.players, gameConfig.dealer, Deck(Vector[Card]()), 0, Vector[Player]())
+                controller.gameConfig = gameConfigBaseImpl.GameConfig(gameConfig.getPlayers(), gameConfig.getDealer(), Deck(Vector[ICard]()), 0, Vector[IPlayer]())
                 controller.initGame(2)
                 controller.gameState = EMPTY_DECK
                 //observer.updated should be(true)
@@ -79,22 +78,22 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             "notify its observer after init game and init player" in {
                 val gameConfig = controller.gameConfig
                 val deck = Deck(Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Heart, Rank.Seven)))
-                controller.gameConfig = gameConfigBaseImpl.GameConfig(gameConfig.players, gameConfig.dealer, deck, 0, Vector[Player]())
+                controller.gameConfig = gameConfigBaseImpl.GameConfig(gameConfig.getPlayers(), gameConfig.getDealer(), deck, 0, Vector[IPlayer]())
                 controller.initGame(1)
                 controller.gameState = EMPTY_DECK
                 //observer.updated should be(true)
             }
 
             "get active player name" in {
-                val dealer = Player("any-dealer-name", Hand(Vector[Card]()))
-                controller.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](), dealer, deck: Deck, 0, Vector[Player]())
+                val dealer = Player("any-dealer-name", Hand(Vector[ICard]()))
+                controller.gameConfig = gameConfigBaseImpl.GameConfig(Vector[IPlayer](), dealer, deck: Deck, 0, Vector[IPlayer]())
                 controller.gameConfig = controller.gameConfig.createPlayer("any-name")
                 controller.getActivePlayerName should be("any-name")
             }
 
             "get player name" in {
-                val dealer = Player("any-dealer-name", Hand(Vector[Card]()))
-                controller.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](), dealer, deck: Deck, 5, Vector[Player]())
+                val dealer = Player("any-dealer-name", Hand(Vector[ICard]()))
+                controller.gameConfig = gameConfigBaseImpl.GameConfig(Vector[IPlayer](), dealer, deck: Deck, 5, Vector[IPlayer]())
                 controller.getPlayerName should be("Please enter Playername 6:")
             }
 
@@ -171,15 +170,12 @@ class ControllerSpec extends AnyWordSpec with Matchers {
 
             "notify its Observer after manageDealerLogic and the deck is empty" in {
                 val emptyDeck = Deck(Vector())
-                val tempController = controller
-                tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](), Player("Dealer", Hand(Vector())), emptyDeck, 0, Vector[Player]())
+                var gameConfig = GameConfig(Vector[Player](), Player("Dealer", Hand(Vector())), emptyDeck, 0, Vector[Player]())
+                val tmpController = new Controller(gameConfig)
 
-                val thrown = intercept[Exception] {
-                    tempController.manageDealerLogic()
-                }
-                thrown.getMessage should be("Deck doesn't have enough cards.")
+                tmpController.manageDealerLogic()
                 //observer.updated should be(true)
-                controller.gameState should be(PLAYER_WON)
+                tmpController.gameState should be(EMPTY_DECK)
             }
 
             "notify its Observer after dealer gets a bust" in {
@@ -248,9 +244,9 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("", Hand(playerHandCards))), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
 
                 tempController.performSetPlayerName("playerName")
-                tempController.gameConfig.players(0).name should be("playerName")
+                tempController.gameConfig.getPlayerAtIndex(0).getName() should be("playerName")
                 tempController.undo
-                tempController.gameConfig.players(0).name should be("")
+                tempController.gameConfig.getPlayers()(0).getName() should be("")
             }
 
             "when redo is performed" in {
@@ -259,11 +255,11 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("", Hand(playerHandCards))), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
 
                 tempController.performSetPlayerName("playerName")
-                tempController.gameConfig.players(0).name should be("playerName")
+                tempController.gameConfig.getPlayers()(0).getName() should be("playerName")
                 tempController.undo
-                tempController.gameConfig.players(0).name should be("")
+                tempController.gameConfig.getPlayers()(0).getName() should be("")
                 tempController.redo
-                tempController.gameConfig.players(0).name should be("playerName")
+                tempController.gameConfig.getPlayers()(0).getName() should be("playerName")
             }
 
             "notify its observers after test notify is called" in {
@@ -305,4 +301,3 @@ class ControllerSpec extends AnyWordSpec with Matchers {
         }
     }
 }
-*/

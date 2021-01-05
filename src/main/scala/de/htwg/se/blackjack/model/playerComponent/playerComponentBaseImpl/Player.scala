@@ -3,12 +3,9 @@ package de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl
 import de.htwg.se.blackjack.model.deckComponent.IDeck
 import de.htwg.se.blackjack.model.playerComponent.{IHand, IPlayer}
 
-case class Player(name: String, hand: IHand) extends IPlayer {
-    def drawCard(deck: IDeck): (Player, IDeck) = {
-        val (newHand, newDeck) = hand.drawCard(deck)
-        (copy(name, newHand), newDeck)
-    }
+import scala.util.{Failure, Success, Try}
 
+case class Player(name: String, hand: IHand) extends IPlayer {
     def setName(newName: String): IPlayer = {
         copy(newName, hand)
     }

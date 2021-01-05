@@ -1,9 +1,10 @@
 package de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl
 
+import de.htwg.se.blackjack.model.deckComponent.ICard
 import de.htwg.se.blackjack.model.gameConfigComponent
 import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl
-import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.Player
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 
 import scala.util.{Failure, Success, Try}
 
@@ -12,9 +13,16 @@ object DrawStrategy {
         var newHand = gameConfig.getDealer().getHand()
         var newDeck = gameConfig.getDeck()
         while (newHand.calculateHandValue() < 17) {
-            val (tempHand, tempDeck) = newHand.drawCard(newDeck)
-            newHand = tempHand
-            newDeck = tempDeck
+            val tmp = newHand.drawCard(newDeck)
+            tmp match {
+                case Success(value) => {
+                    newHand = value._1
+                    newDeck = value._2
+                }
+                case Failure(exception) => {
+                    return Failure(exception)
+                }
+            }
         }
         val newDealer = Player(gameConfig.getDealer().getName(), newHand)
         Success(GameConfig(gameConfig.getPlayers(), newDealer, newDeck))

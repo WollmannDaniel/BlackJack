@@ -1,22 +1,25 @@
-/*
 package de.htwg.se.blackjack.aview
 
 import java.io.{ByteArrayOutputStream, StringReader}
 
+import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{Controller, IsRunning}
-import de.htwg.se.blackjack.model.Player
-import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.GameState._
-import de.htwg.se.blackjack.model.deckComponent.Deck
-import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.deckComponent.ICard
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.GameConfig
+import de.htwg.se.blackjack.model.playerComponent.IPlayer
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.controller._
 
 class TuiSpec extends AnyWordSpec with Matchers {
     "A Blackjack Tui" should {
         "process command 'z' on state WELCOME" in {
             val deck = new Deck()
-            val controller = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val controller = new Controller(gameConfig)
             val tui = new Tui(controller)
             controller.gameState = WELCOME
             tui.processCommands("z")
@@ -25,7 +28,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'y' on state WELCOME" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("y")
@@ -34,7 +38,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process player amount on state WELCOME" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("2")
@@ -43,7 +48,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'z' on state NAME_CREATION" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = NAME_CREATION
             tui.processCommands("z")
@@ -52,7 +58,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'y' on state NAME_CREATION" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = NAME_CREATION
             tui.processCommands("y")
@@ -61,18 +68,20 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process player name on state NAME_CREATION" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("1")
             tui.processCommands("any-name")
-            tmpController.gameConfig.players(0).name should be("any-name")
+            tmpController.gameConfig.getPlayerAtIndex(0).getName() should be("any-name")
         }
 
         "notice user to enter correct number of players" in {
             val out = new ByteArrayOutputStream();
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             Console.withOut(out) {
                 tui.initPlayers("5")
@@ -82,7 +91,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "perform init game on correct player amount" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tui.initPlayers("2")
             tmpController.gameState should be(NAME_CREATION)
@@ -90,7 +100,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 's'" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("2")
@@ -104,7 +115,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
             val deck = Deck(Vector(Card(Suit.Diamond, Rank.Two),
                 Card(Suit.Heart, Rank.Seven),
                 Card(Suit.Heart, Rank.Jack)))
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val player = Player("updated-name", Hand(Vector[Card](Card(Suit.Diamond, Rank.Ace), Card(Suit.Spade, Rank.Ace))))
             tmpController.gameState = WELCOME
@@ -117,7 +129,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'n'" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("1")
@@ -129,7 +142,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'q'" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = PLAYER_TURN
             tui.processCommands("q")
@@ -138,7 +152,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'z'" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = WELCOME
             tui.processCommands("1")
@@ -150,7 +165,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "process command 'state'" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = PLAYER_TURN
             tmpController.running = IsRunning()
@@ -163,7 +179,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "notify user that command is unknown" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             tmpController.gameState = PLAYER_TURN
             val out = new ByteArrayOutputStream();
@@ -175,7 +192,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output when WELCOME" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
@@ -187,7 +205,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on NAME_CREATION" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
@@ -199,7 +218,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on NEW_GAME_STARTED" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
@@ -211,7 +231,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on PLAYER_TURN" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = WELCOME
@@ -222,12 +243,13 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("any-name's turn. Hit or stand?(h/s)\n\n").append(tmpController.gameStateToString).append("\n\n").toString())
+            out.toString should be (builder.append("any-name's turn. Hit or stand?(h/s)\n\n").append(tmpController.gameStateToString).append("\n").toString())
         }
 
         "should have this output on PLAYER_LOST" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = WELCOME
@@ -243,7 +265,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on DEALERS_TURN" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = WELCOME
@@ -259,7 +282,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on IDLE" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = IDLE
@@ -272,7 +296,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on PLAYER_WON" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = WELCOME
@@ -280,16 +305,17 @@ class TuiSpec extends AnyWordSpec with Matchers {
             tui.processCommands("any-name")
             Console.withOut(out){
                 tmpController.gameState = PLAYER_WON
-                tmpController.gameConfig = tmpController.gameConfig.setWinner(tmpController.gameConfig.players(0))
+                tmpController.gameConfig = tmpController.gameConfig.setWinner(tmpController.gameConfig.getPlayerAtIndex(0))
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("any-name has won!").toString())
+            out.toString should be (builder.append("any-name has won!\n").toString())
         }
 
         "should have this output on DRAW" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             tmpController.gameState = WELCOME
@@ -300,12 +326,13 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("It's a draw!").append(tmpController.gameStateToString).append("\n").toString())
+            out.toString should be (builder.append("It's a draw!\n\n").append(tmpController.gameStateToString).toString())
         }
 
         "should have this output on WRONG_CMD" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
@@ -313,12 +340,13 @@ class TuiSpec extends AnyWordSpec with Matchers {
                 tui.update
             }
             val builder = new StringBuilder();
-            out.toString should be (builder.append("Command not allowed!").toString())
+            out.toString should be (builder.append("Command not allowed!\n").toString())
         }
 
         "should have this output on END_GAME" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
             val out = new ByteArrayOutputStream();
             Console.withOut(out){
@@ -331,7 +359,8 @@ class TuiSpec extends AnyWordSpec with Matchers {
 
         "should have this output on EMPTY_DECK" in {
             val deck = new Deck()
-            val tmpController = new Controller(deck)
+            var gameConfig = GameConfig(Vector[IPlayer](), Player("Dealer", Hand(Vector[ICard]())), deck.resetDeck(), 0, Vector[IPlayer]())
+            val tmpController = new Controller(gameConfig)
             val tui = new Tui(tmpController)
 
             val thrown = intercept[Exception] {
@@ -342,4 +371,3 @@ class TuiSpec extends AnyWordSpec with Matchers {
         }
     }
 }
-*/
