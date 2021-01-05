@@ -298,6 +298,22 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 val outputString = tempController.gameConfig.getAllPlayerAndDealerHandsAsString
                 tempController.gameStateToString should be(outputString)
             }
+
+            "return these image names when dealer" in {
+                val tempController = controller
+                val dealerHand = Hand(Vector(Card(Suit.Spade, Rank.Queen), Card(Suit.Heart, Rank.Jack)))
+                tempController.gameConfig = GameConfig(Vector[Player](), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
+                val cards = tempController.mapSymbolToChar(true, true, 0)
+                cards should be(List("QS.png", "red_back.png"))
+            }
+
+            "return these image names when player" in {
+                val tempController = controller
+                val playerHand = Hand(Vector(Card(Suit.Spade, Rank.Queen), Card(Suit.Heart, Rank.Jack)))
+                tempController.gameConfig = GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", playerHand), deck.resetDeck(), 0, Vector[Player]())
+                val cards = tempController.mapSymbolToChar(false, false, 0)
+                cards should be(List("QS.png", "JH.png"))
+            }
         }
     }
 }

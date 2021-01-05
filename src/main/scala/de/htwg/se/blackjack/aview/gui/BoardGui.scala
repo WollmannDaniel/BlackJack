@@ -146,7 +146,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         case event: PlayerWentOver => {
             Dialog.showMessage(contents.head, s"${controller.getActivePlayerName}'s hand value went over twenty-one!", "Game message")
             lbl_player.text = controller.getActivePlayerName
-            repaint
+            repaint()
         }
         case event: ShowResults => {
             redrawResults

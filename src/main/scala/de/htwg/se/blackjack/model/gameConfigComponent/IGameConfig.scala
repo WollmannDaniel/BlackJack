@@ -31,5 +31,5 @@ trait IGameConfig {
 trait IDrawStrategy {
     def drawDealerHand(gameConfig: IGameConfig): Try[IGameConfig]
     def drawPlayerHand(gameConfig: IGameConfig): Try[IGameConfig]
-    def strategy(callback:(IGameConfig) => (Try[IGameConfig]), gameConfig: IGameConfig)
+    def strategy(callback:(IGameConfig) => (Try[IGameConfig]), gameConfig: IGameConfig): Unit
 }
