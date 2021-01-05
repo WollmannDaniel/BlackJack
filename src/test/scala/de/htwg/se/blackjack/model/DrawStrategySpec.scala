@@ -1,10 +1,10 @@
-/*
+
 package de.htwg.se.blackjack.model
 
-import de.htwg.se.blackjack.model.deckComponent.Deck
-import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
 import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.{DrawStrategy, GameConfig}
-import de.htwg.se.blackjack.model.gameConfigComponent.{DrawStrategy, GameConfig, gameConfigBaseImpl}
+import de.htwg.se.blackjack.model.gameConfigComponent.{gameConfigBaseImpl}
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import org.scalatest.matchers.should.Matchers
@@ -26,7 +26,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
 
         "have draw cards until card value is greater or equals than 17" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
-            config.success.value.dealer.hand.calculateHandValue() should be > 17
+            config.success.value.getDealer().getHand().calculateHandValue() should be > 17
         }
     }}
 
@@ -45,7 +45,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
 
         "draw and have a hand value of 16" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
-            config.success.value.players(0).hand.calculateHandValue() should be(16)
+            config.success.value.getPlayerAtIndex(0).getHand().calculateHandValue() should be(16)
         }
     }}
 
@@ -64,4 +64,4 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
         }
     }}
 }
-*/
+
