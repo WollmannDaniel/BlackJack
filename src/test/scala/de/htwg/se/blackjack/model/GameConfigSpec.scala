@@ -1,5 +1,11 @@
+/*
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent.Deck
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.GameConfig
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -13,7 +19,7 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             Card(Suit.Club, Rank.Seven)))
 
         val dealer = Player("any-dealer-name", Hand(Vector[Card]()))
-        val gameConfig = GameConfig(Vector[Player](), dealer, deck: Deck, 0, Vector[Player]())
+        val gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](), dealer, deck: Deck, 0, Vector[Player]())
 
         "create player with default name" in {
             val config = gameConfig.createPlayer()
@@ -143,3 +149,4 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
     }}
 }
 
+*/

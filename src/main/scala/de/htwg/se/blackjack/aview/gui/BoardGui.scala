@@ -2,14 +2,13 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.Image
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
-import javax.swing.border.{Border, LineBorder}
 
 import scala.swing._
 import scala.swing.event.ButtonClicked
 
-class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
+class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     listenTo(controller)
     title = "Blackjack"
     peer.setPreferredSize(new Dimension(1000, 750))
@@ -64,7 +63,7 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
     def createPlayerGrid(index: Int = -1): GridPanel = new GridPanel(2,1) {
         if (index != -1) {
             contents += new Label {
-                text = controller.gameConfig.players(index).name
+                text = controller.gameConfig.getPlayerAtIndex(index).getName()
             }
         } else {
             contents += lbl_player
@@ -165,7 +164,7 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
     }
 
     def redrawResults: Unit = {
-        val playerAmount = controller.gameConfig.players.size
+        val playerAmount = controller.gameConfig.getPlayers().size
         contents = new BoxPanel(Orientation.Vertical){
             contents += new GridPanel(1,1) {
                 contents += new Label {

@@ -1,12 +1,11 @@
 package de.htwg.se.blackjack.aview.gui
 
 import scala.swing._
-import de.htwg.se.blackjack.controller.{Controller, RefreshData, StartGame}
-import de.htwg.se.blackjack.controller.GameState._
+import de.htwg.se.blackjack.controller.{IController, RefreshData, StartGame}
 
 import scala.swing.event.ButtonClicked
 
-class SetupGui(controller: Controller) extends Frame {
+class SetupGui(controller: IController) extends Frame {
     listenTo(controller)
     peer.setLocationRelativeTo(null)
     peer.setDefaultCloseOperation(3)

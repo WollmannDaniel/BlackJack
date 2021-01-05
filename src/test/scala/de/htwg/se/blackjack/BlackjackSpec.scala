@@ -14,9 +14,6 @@ class BlackjackSpec extends AnyWordSpec with Matchers {
                 Blackjack.main(Array[String](""))
             }
                 //assert(StdIn.readLine()
-
-
-
         }
     }
 }

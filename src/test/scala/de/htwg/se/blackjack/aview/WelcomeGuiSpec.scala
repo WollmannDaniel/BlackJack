@@ -1,13 +1,12 @@
 package de.htwg.se.blackjack.aview
-import de.htwg.se.blackjack.controller.Controller
 import de.htwg.se.blackjack.util.Observer
-import de.htwg.se.blackjack.controller.GameState._
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 import java.io.{ByteArrayOutputStream, StringReader}
 
 import de.htwg.se.blackjack.aview.gui.WelcomeGui
-import de.htwg.se.blackjack.model.Deck
+import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Deck
 
 class WelcomeGuiSpec extends AnyWordSpec with Matchers{
     /*"A Blackjack Gui" should {

@@ -1,23 +1,18 @@
 
-package de.htwg.se.blackjack.controller
+package de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.blackjack.model.{Card, Deck, GameConfig, Hand, Player}
-import de.htwg.se.blackjack.model.DrawStrategy
-import de.htwg.se.blackjack.util.{Observable, UndoManager}
+import de.htwg.se.blackjack.controller.GameState._
+import de.htwg.se.blackjack.controller._
+import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.{DrawStrategy}
+import de.htwg.se.blackjack.util.UndoManager
+
 import scala.swing.Publisher
 import scala.util.{Failure, Success, Try}
 
-object GameState extends Enumeration {
-    type GameState = Value
-    val WELCOME, NAME_CREATION, PLAYER_TURN, PLAYER_HITS, PLAYER_STANDS, PLAYER_LOST, EVALUATION, DEALERS_TURN, DEALER_WON, DRAW, PLAYER_WON, NEW_GAME_STARTED, IDLE, WRONG_CMD, END_GAME, EMPTY_DECK = Value
-}
-
-import GameState._
-
-class Controller(var deck: Deck) extends Publisher {
+class Controller(var gameConfig: IGameConfig) extends IController with Publisher {
     var gameState = WELCOME
     var running: State = IsNotRunning()
-    var gameConfig = GameConfig(Vector[Player](), Player("Dealer", Hand(Vector[Card]())), deck.resetDeck(), 0, Vector[Player]())
     private val undoManager = new UndoManager
 
     def getState() = {
@@ -59,14 +54,14 @@ class Controller(var deck: Deck) extends Publisher {
     def getActivePlayerName: String = gameConfig.getActivePlayerName
 
     def getPlayerName: String = {
-        s"Please enter Playername ${gameConfig.activePlayerIndex + 1}:"
+        s"Please enter Playername ${gameConfig.getActivePlayerIndex() + 1}:"
     }
 
     def setPlayerName(playerName: String): Unit = {
-        gameConfig = gameConfig.setPlayerName(playerName, gameConfig.activePlayerIndex)
+        gameConfig = gameConfig.setPlayerName(playerName, gameConfig.getActivePlayerIndex())
         gameConfig = gameConfig.incrementActivePlayerIndex()
 
-        if(gameConfig.activePlayerIndex >= gameConfig.players.size){
+        if(gameConfig.getActivePlayerIndex() >= gameConfig.getPlayers().size){
             gameConfig = gameConfig.resetActivePlayerIndex()
             gameState = PLAYER_TURN
         }
@@ -86,7 +81,7 @@ class Controller(var deck: Deck) extends Publisher {
         config match {
             case Success(value) => {
                 gameConfig = value
-                val playerHandValue = gameConfig.getActivePlayer.hand.calculateHandValue()
+                val playerHandValue = gameConfig.getActivePlayer.getHand().calculateHandValue()
                 if (playerHandValue > 21) {
                     gameState = PLAYER_LOST
                     publish(new PlayerWentOver)
@@ -110,7 +105,7 @@ class Controller(var deck: Deck) extends Publisher {
     def nextPlayer(): Unit ={
         gameConfig = gameConfig.incrementActivePlayerIndex()
 
-        if(gameConfig.activePlayerIndex >= gameConfig.players.size){
+        if(gameConfig.getActivePlayerIndex() >= gameConfig.getPlayers().size){
             gameState = DEALERS_TURN
             manageDealerLogic()
             gameState = EVALUATION
@@ -136,40 +131,40 @@ class Controller(var deck: Deck) extends Publisher {
     }
 
     def checkWinner(): Unit = {
-        val dealerHandValue = gameConfig.dealer.hand.calculateHandValue()
+        val dealerHandValue = gameConfig.getDealer().getHand().calculateHandValue()
 
         if(dealerHandValue > 21){
             //alle Spieler die <= 21 sind haben gewonnen
-            for (i <- 0 until gameConfig.players.size) {
-                val handValue = gameConfig.players(i).hand.calculateHandValue()
+            for (i <- 0 until gameConfig.getPlayers().size) {
+                val handValue = gameConfig.getPlayers()(i).getHand().calculateHandValue()
                 if (handValue <= 21) {
-                    gameConfig = gameConfig.addWinner(gameConfig.players(i))
+                    gameConfig = gameConfig.addWinner(gameConfig.getPlayers()(i))
                 }
             }
             gameState = PLAYER_WON
         } else {
             //der wo am nähesten an 21 kommt hat gewonnen
             var closestValue = 0
-            for (i <- 0 until gameConfig.players.size) {
-                val handValue = gameConfig.players(i).hand.calculateHandValue()
+            for (i <- 0 until gameConfig.getPlayers().size) {
+                val handValue = gameConfig.getPlayers()(i).getHand().calculateHandValue()
                 if (handValue <= 21 && handValue > closestValue) {
                     closestValue = handValue
                 }
             }
 
-            for (i <- 0 until gameConfig.players.size) {
-                val handValue = gameConfig.players(i).hand.calculateHandValue()
+            for (i <- 0 until gameConfig.getPlayers().size) {
+                val handValue = gameConfig.getPlayers()(i).getHand().calculateHandValue()
                 if (handValue == closestValue) {
-                    gameConfig = gameConfig.addWinner(gameConfig.players(i))
+                    gameConfig = gameConfig.addWinner(gameConfig.getPlayers()(i))
                 }
             }
 
             if (dealerHandValue > closestValue) {
                 gameState = DEALER_WON
-                gameConfig = gameConfig.setWinner(gameConfig.dealer)
+                gameConfig = gameConfig.setWinner(gameConfig.getDealer())
             } else if(dealerHandValue == closestValue){
                 gameState = DRAW
-                gameConfig = gameConfig.addWinner(gameConfig.dealer)
+                gameConfig = gameConfig.addWinner(gameConfig.getDealer())
             } else {
                 gameState = PLAYER_WON
             }
@@ -200,7 +195,7 @@ class Controller(var deck: Deck) extends Publisher {
 
     def gameStateToString: String = {
         gameState match {
-            case PLAYER_TURN | PLAYER_LOST => gameConfig.players(gameConfig.activePlayerIndex).toString + gameConfig.dealer.toStringDealer
+            case PLAYER_TURN | PLAYER_LOST => gameConfig.getPlayers()(gameConfig.getActivePlayerIndex()).toString + gameConfig.getDealer().toStringDealer
             case PLAYER_WON | DEALER_WON | DRAW => gameConfig.getAllWinnerAsString
             case _ => gameConfig.getAllPlayerAndDealerHandsAsString
         }
@@ -243,8 +238,8 @@ class Controller(var deck: Deck) extends Publisher {
         var cardImageNames = List[String]()
 
         if (isDealer) {
-            for(card <- gameConfig.dealer.hand.cards) {
-                if (hideDealerCards && card.equals(gameConfig.dealer.hand.cards.last)) {
+            for(card <- gameConfig.getDealer().getHand().getCards()) {
+                if (hideDealerCards && card.equals(gameConfig.getDealer().getHand().getCards().last)) {
                     cardImageNames = cardImageNames :+ "red_back.png"
                 } else {
                     cardImageNames = cardImageNames :+ (card.mapCardSymbol() + ".png")
@@ -253,10 +248,10 @@ class Controller(var deck: Deck) extends Publisher {
         } else {
             var targetPlayer = gameConfig.getActivePlayer
             if(playerIndex != -1) {
-                targetPlayer = gameConfig.players(playerIndex)
+                targetPlayer = gameConfig.getPlayers()(playerIndex)
             }
 
-            for(card <- targetPlayer.hand.cards) {
+            for(card <- targetPlayer.getHand().getCards()) {
                 cardImageNames = cardImageNames :+ (card.mapCardSymbol() + ".png")
             }
         }

@@ -1,5 +1,8 @@
+/*
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent.Deck
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -72,3 +75,4 @@ class DeckSpec extends AnyWordSpec with Matchers {
         }
     }}
 }
+*/

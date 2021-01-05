@@ -1,12 +1,15 @@
-package de.htwg.se.blackjack.model
+package de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl
 
-case class Player(name: String, hand: Hand) {
-    def drawCard(deck: Deck): (Player, Deck) = {
+import de.htwg.se.blackjack.model.deckComponent.IDeck
+import de.htwg.se.blackjack.model.playerComponent.{IHand, IPlayer}
+
+case class Player(name: String, hand: IHand) extends IPlayer {
+    def drawCard(deck: IDeck): (Player, IDeck) = {
         val (newHand, newDeck) = hand.drawCard(deck)
         (copy(name, newHand), newDeck)
     }
 
-    def setName(newName: String): Player = {
+    def setName(newName: String): IPlayer = {
         copy(newName, hand)
     }
 
@@ -21,4 +24,8 @@ case class Player(name: String, hand: Hand) {
         builder.append(" ").append(hand.toStringDealer);
         builder.toString
     }
+
+    override def getName(): String = name
+
+    override def getHand(): IHand = hand
 }

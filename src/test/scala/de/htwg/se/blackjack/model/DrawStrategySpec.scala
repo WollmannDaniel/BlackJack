@@ -1,5 +1,11 @@
+/*
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent.Deck
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.{DrawStrategy, GameConfig}
+import de.htwg.se.blackjack.model.gameConfigComponent.{DrawStrategy, GameConfig, gameConfigBaseImpl}
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.TryValues.convertTryToSuccessOrFailure
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
@@ -16,7 +22,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
         val hand = Hand(handCards)
         val playerList = Vector[Player](Player("any-name", Hand(Vector[Card]())))
         val dealer = Player("any-name-2", hand)
-        val gameConfig = GameConfig(playerList, dealer, deck: Deck, 0, Vector[Player]())
+        val gameConfig = gameConfigBaseImpl.GameConfig(playerList, dealer, deck: Deck, 0, Vector[Player]())
 
         "have draw cards until card value is greater or equals than 17" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawDealerHand, gameConfig)
@@ -50,7 +56,7 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
         val hand = Hand(handCards)
         val playerList = Vector[Player](Player("any-name", hand))
         val dealer = Player("any-name-2", Hand(Vector[Card]()))
-        val gameConfig = GameConfig(playerList, dealer, deck: Deck, 0, Vector[Player]())
+        val gameConfig = gameConfigBaseImpl.GameConfig(playerList, dealer, deck: Deck, 0, Vector[Player]())
 
         "draw and have a hand value of 16" in {
             val config = DrawStrategy.strategy(DrawStrategy.drawPlayerHand, gameConfig)
@@ -58,3 +64,4 @@ class DrawStrategySpec extends AnyWordSpec with Matchers {
         }
     }}
 }
+*/

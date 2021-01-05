@@ -1,15 +1,16 @@
-package de.htwg.se.blackjack.model
+package de.htwg.se.blackjack.model.deckComponent.deckBaseImpl
 
-import de.htwg.se.blackjack.model.Rank._
-import de.htwg.se.blackjack.model.Suit._
+import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
+import de.htwg.se.blackjack.model.deckComponent.Rank._
+import de.htwg.se.blackjack.model.deckComponent.Suit._
 
 import scala.util.Random
 
-case class Deck(cards: Vector[Card]) {
-    def this() = this(Vector[Card]())
+case class Deck(cards: Vector[ICard]) extends IDeck {
+    def this() = this(Vector[ICard]())
 
-    def drawCards(num: Int): (Deck, Vector[Option[Card]]) = {
-        var drawnCards = Vector[Option[Card]]()
+    def drawCards(num: Int): (IDeck, Vector[Option[ICard]]) = {
+        var drawnCards = Vector[Option[ICard]]()
 
         var from = cards.size - num
         var bis = cards.size - 1
@@ -31,16 +32,15 @@ case class Deck(cards: Vector[Card]) {
         (copy(newDeck), drawnCards)
     }
 
-    def initDeck(): Vector[Card] = {
+    def initDeck(): Vector[ICard] = {
         for {
             suit <- Vector(Heart, Diamond, Spade, Club)
             rank <- Vector(Ace, King, Queen, Jack, Ten, Nine, Eight, Seven, Six, Five, Four, Three, Two)
         }
-        yield Card(suit, rank)
+            yield Card(suit, rank)
     }
 
-    def resetDeck(): Deck = {
+    def resetDeck(): IDeck = {
         copy(Random.shuffle(initDeck()))
     }
 }
-

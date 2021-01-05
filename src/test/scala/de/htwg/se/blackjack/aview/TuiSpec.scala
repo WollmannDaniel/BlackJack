@@ -1,10 +1,14 @@
+/*
 package de.htwg.se.blackjack.aview
 
 import java.io.{ByteArrayOutputStream, StringReader}
 
-import de.htwg.se.blackjack.controller.{Controller, IsRunning}
-import de.htwg.se.blackjack.model.{Card, Deck, GameConfig, Hand, Player, Rank, Suit}
-import de.htwg.se.blackjack.controller.GameState._
+import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{Controller, IsRunning}
+import de.htwg.se.blackjack.model.Player
+import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.GameState._
+import de.htwg.se.blackjack.model.deckComponent.Deck
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -338,3 +342,4 @@ class TuiSpec extends AnyWordSpec with Matchers {
         }
     }
 }
+*/

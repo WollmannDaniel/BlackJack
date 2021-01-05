@@ -1,6 +1,8 @@
+/*
 package de.htwg.se.blackjack.controller
 
-import de.htwg.se.blackjack.model.{Card, Hand, Rank, Suit}
+import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{IsNotRunning, IsRunning}
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.Hand
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -39,4 +41,4 @@ class StatePatternSpec extends AnyWordSpec with Matchers {
             }
         }
     }
-}
+}*/

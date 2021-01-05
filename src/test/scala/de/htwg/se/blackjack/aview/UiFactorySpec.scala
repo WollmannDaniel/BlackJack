@@ -1,8 +1,9 @@
+/*
 package de.htwg.se.blackjack.aview
 
 import de.htwg.se.blackjack.aview.gui.WelcomeGui
-import de.htwg.se.blackjack.controller.Controller
-import de.htwg.se.blackjack.model.Deck
+import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.Controller
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Deck
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -46,3 +47,4 @@ class UiFactorySpec extends AnyWordSpec with Matchers{
         }
     }}
 }
+*/

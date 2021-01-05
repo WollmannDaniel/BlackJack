@@ -1,5 +1,9 @@
+/*
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent.Deck
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck, Rank, Suit}
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -54,3 +58,4 @@ class PlayerSpec extends AnyWordSpec with Matchers {
         }
     }}
 }
+*/

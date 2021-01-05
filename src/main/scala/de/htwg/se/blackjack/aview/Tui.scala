@@ -1,12 +1,11 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, RefreshData}
-import de.htwg.se.blackjack.util.Observer
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, RefreshData}
 import de.htwg.se.blackjack.controller.GameState._
 
 import scala.swing.Reactor
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: IController) extends Reactor {
     listenTo(controller)
 
     def processCommands(input: String): Unit = {
