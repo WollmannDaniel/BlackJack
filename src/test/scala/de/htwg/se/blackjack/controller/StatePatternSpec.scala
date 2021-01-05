@@ -1,4 +1,4 @@
-/*
+
 package de.htwg.se.blackjack.controller
 
 import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{IsNotRunning, IsRunning}
@@ -41,4 +41,4 @@ class StatePatternSpec extends AnyWordSpec with Matchers {
             }
         }
     }
-}*/
+}

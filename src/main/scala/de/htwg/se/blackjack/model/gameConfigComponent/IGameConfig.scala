@@ -25,6 +25,7 @@ trait IGameConfig {
     def getDeck(): IDeck
     def getActivePlayerIndex(): Int
     def getDealer(): IPlayer
+    def getWinners(): Vector[IPlayer]
 }
 
 trait IDrawStrategy {

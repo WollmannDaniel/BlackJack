@@ -120,4 +120,6 @@ case class GameConfig(players: Vector[IPlayer], dealer: IPlayer, deck: IDeck, ac
     def getActivePlayerIndex(): Int = activePlayerIndex
 
     def getDealer(): IPlayer = dealer
+
+    def getWinners(): Vector[IPlayer] = winners
 }
