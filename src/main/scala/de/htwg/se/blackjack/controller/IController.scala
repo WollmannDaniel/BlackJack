@@ -28,6 +28,8 @@ trait IController extends Publisher {
     def undo: Unit
     def redo: Unit
     def mapSymbolToChar(hideDealerCards: Boolean, isDealer: Boolean, playerIndex: Int): List[String]
+    def save: Unit
+    def load: Unit
 }
 
 object GameState extends Enumeration {

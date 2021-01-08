@@ -29,6 +29,8 @@ class SetupGui(controller: IController) extends Frame {
         contents += btn_do
     }
 
+    this.defaultButton = btn_do
+
     val txt_playername = new TextField {
         columns = 40
     }

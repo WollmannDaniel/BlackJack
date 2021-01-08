@@ -5,6 +5,7 @@ import com.google.inject.{Guice, Inject}
 import de.htwg.se.blackjack.BlackjackModule
 import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.controller._
+import de.htwg.se.blackjack.model.fileIoComponent.IFileIO
 import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
 import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.DrawStrategy
 import de.htwg.se.blackjack.util.UndoManager
@@ -17,6 +18,7 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
     var running: State = IsNotRunning()
     private val undoManager = new UndoManager
     val injector = Guice.createInjector(new BlackjackModule)
+    val fileIO = injector.getInstance(classOf[IFileIO])
 
     def getState() = {
         val (state, output) = running.handle(running)
@@ -259,5 +261,17 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
             }
         }
         cardImageNames
+    }
+
+    def load: Unit = {
+        val c = fileIO.load
+        this.gameConfig = c.gameConfig
+        this.gameState = c.gameState
+        publish(new RefreshData)
+    }
+
+    def save: Unit = {
+        fileIO.save(this)
+        publish(new Saved)
     }
 }

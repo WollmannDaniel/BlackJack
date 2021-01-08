@@ -6,6 +6,7 @@ trait IDeck {
     def drawCards(num: Int): (IDeck, Vector[Option[ICard]])
     def initDeck(): Vector[ICard]
     def resetDeck(): IDeck
+    def getCards(): Vector[ICard]
 }
 
 trait ICard {

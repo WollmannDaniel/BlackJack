@@ -1,6 +1,6 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.{DealersTurn, IController, RefreshData}
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, RefreshData, Saved}
 import de.htwg.se.blackjack.controller.GameState._
 
 import scala.swing.Reactor
@@ -42,12 +42,15 @@ class Tui(controller: IController) extends Reactor {
             case "q" => controller.quitGame()
             case "z" => controller.undo
             //case "y" => controller.redo
+            case "save" => controller.save
+            case "load" => controller.load
             case "state" => controller.getState()
             case _ => print("unknown command")
         }
     }
 
     reactions += {
+        case event: Saved => print("Game was saved!\n")
         case _ => update
     }
 

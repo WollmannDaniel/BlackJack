@@ -44,4 +44,6 @@ case class Deck(cards: Vector[ICard]) extends IDeck {
     def resetDeck(): IDeck = {
         copy(Random.shuffle(initDeck()))
     }
+
+    def getCards(): Vector[ICard] = cards
 }

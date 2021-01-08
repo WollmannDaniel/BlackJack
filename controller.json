@@ -1,0 +1,131 @@
+{
+  "controller" : {
+    "gameState" : "PLAYER_TURN",
+    "gameConfig" : {
+      "players" : [ {
+        "name" : "da",
+        "hand" : [ {
+          "card" : "JS"
+        }, {
+          "card" : "8S"
+        } ]
+      }, {
+        "name" : "vl",
+        "hand" : [ {
+          "card" : "QS"
+        }, {
+          "card" : "10S"
+        } ]
+      }, {
+        "name" : "bo",
+        "hand" : [ {
+          "card" : "10H"
+        }, {
+          "card" : "6C"
+        } ]
+      }, {
+        "name" : "axt",
+        "hand" : [ {
+          "card" : "KD"
+        }, {
+          "card" : "QH"
+        } ]
+      } ],
+      "dealer" : {
+        "name" : "Dealer",
+        "hand" : [ {
+          "card" : "KS"
+        }, {
+          "card" : "QC"
+        } ]
+      },
+      "deck" : [ {
+        "card" : "2H"
+      }, {
+        "card" : "AC"
+      }, {
+        "card" : "JD"
+      }, {
+        "card" : "5D"
+      }, {
+        "card" : "3H"
+      }, {
+        "card" : "KH"
+      }, {
+        "card" : "7C"
+      }, {
+        "card" : "9C"
+      }, {
+        "card" : "5H"
+      }, {
+        "card" : "5S"
+      }, {
+        "card" : "4C"
+      }, {
+        "card" : "4H"
+      }, {
+        "card" : "9S"
+      }, {
+        "card" : "8C"
+      }, {
+        "card" : "10D"
+      }, {
+        "card" : "9H"
+      }, {
+        "card" : "6S"
+      }, {
+        "card" : "8D"
+      }, {
+        "card" : "4D"
+      }, {
+        "card" : "10C"
+      }, {
+        "card" : "6H"
+      }, {
+        "card" : "AD"
+      }, {
+        "card" : "QD"
+      }, {
+        "card" : "2C"
+      }, {
+        "card" : "JH"
+      }, {
+        "card" : "AS"
+      }, {
+        "card" : "AH"
+      }, {
+        "card" : "6D"
+      }, {
+        "card" : "3D"
+      }, {
+        "card" : "3C"
+      }, {
+        "card" : "7S"
+      }, {
+        "card" : "2D"
+      }, {
+        "card" : "7H"
+      }, {
+        "card" : "3S"
+      }, {
+        "card" : "9D"
+      }, {
+        "card" : "KC"
+      }, {
+        "card" : "5C"
+      }, {
+        "card" : "4S"
+      }, {
+        "card" : "2S"
+      }, {
+        "card" : "JC"
+      }, {
+        "card" : "7D"
+      }, {
+        "card" : "8H"
+      } ],
+      "activePlayerIndex" : 2,
+      "winners" : [ ]
+    }
+  }
+}
