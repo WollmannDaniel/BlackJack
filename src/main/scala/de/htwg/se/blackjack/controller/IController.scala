@@ -1,7 +1,6 @@
 package de.htwg.se.blackjack.controller
 
 import de.htwg.se.blackjack.controller.GameState.{GameState, WELCOME}
-import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.{IsNotRunning, State}
 import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
 
 import scala.swing.Publisher

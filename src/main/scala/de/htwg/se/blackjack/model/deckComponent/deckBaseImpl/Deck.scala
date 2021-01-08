@@ -1,5 +1,6 @@
 package de.htwg.se.blackjack.model.deckComponent.deckBaseImpl
 
+import com.google.inject.Inject
 import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
 import de.htwg.se.blackjack.model.deckComponent.Rank._
 import de.htwg.se.blackjack.model.deckComponent.Suit._

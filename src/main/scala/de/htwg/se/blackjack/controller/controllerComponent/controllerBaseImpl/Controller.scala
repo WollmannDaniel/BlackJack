@@ -5,14 +5,9 @@ import com.google.inject.{Guice, Inject}
 import de.htwg.se.blackjack.BlackjackModule
 import de.htwg.se.blackjack.controller.GameState._
 import de.htwg.se.blackjack.controller._
-import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
-import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
-import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.{DrawStrategy, GameConfig}
-import de.htwg.se.blackjack.model.playerComponent.IPlayer
-import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.DrawStrategy
 import de.htwg.se.blackjack.util.UndoManager
-import net.codingwell.scalaguice.InjectorExtensions.ScalaInjector
 
 import scala.swing.Publisher
 import scala.util.{Failure, Success, Try}

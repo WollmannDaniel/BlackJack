@@ -1,6 +1,5 @@
 package de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl
 
-import com.google.inject.Inject
 import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Deck
 import de.htwg.se.blackjack.model.deckComponent.{ICard, IDeck}
 import de.htwg.se.blackjack.model.gameConfigComponent.IGameConfig
@@ -14,7 +13,11 @@ import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand,
  * @param activePlayerIndex
  * @param winners
  */
-case class GameConfig @Inject() (players: Vector[IPlayer] = Vector[IPlayer](), dealer: IPlayer = Player("Dealer", Hand(Vector[ICard]())), deck: IDeck = new Deck().resetDeck(), activePlayerIndex: Int = 0, winners: Vector[IPlayer] = Vector[IPlayer]()) extends IGameConfig {
+case class GameConfig(players: Vector[IPlayer] = Vector[IPlayer](),
+                      dealer: IPlayer = Player("Dealer", Hand(Vector[ICard]())),
+                      deck: IDeck = new Deck().resetDeck(),
+                      activePlayerIndex: Int = 0,
+                      winners: Vector[IPlayer] = Vector[IPlayer]()) extends IGameConfig {
 
     def createPlayer(playerName: String = ""): IGameConfig = {
         val (newDeck, newHand) = deck.drawCards(2)
