@@ -1,24 +1,25 @@
-package de.htwg.se.blackjack.model.fileIoComponent.fileIoJsonImpl
+package de.htwg.se.blackjack.model.fileIoComponent.fileIoXmlImpl
 
 import de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl.Controller
 import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Card
+import de.htwg.se.blackjack.model.fileIoComponent.fileIoXmlImpl.Xml
 import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl.GameConfig
 import de.htwg.se.blackjack.model.playerComponent.IPlayer
 import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
-class JsonSpec extends AnyWordSpec with Matchers {
-    "A Json FileIO" when {
+class XmlSpec extends AnyWordSpec with Matchers {
+    "A Xml FileIO" when {
         "loading" should {
             val playerOne = Player("any-name-1", Hand(Vector[Card]()))
             val playerTwo = Player("any-name-2", Hand(Vector[Card]()))
             val controller = new Controller(GameConfig(Vector[IPlayer](playerOne, playerTwo)))
-            val jsonIO = new Json()
+            val xmlIO = new Xml()
 
             "get the correct game config and game state" in {
-                jsonIO.save(controller)
-                val loadedController = jsonIO.load
+                xmlIO.save(controller)
+                val loadedController = xmlIO.load
 
                 loadedController.gameState should be(controller.gameState)
                 loadedController.gameConfig.getPlayers() should be(controller.gameConfig.getPlayers())
