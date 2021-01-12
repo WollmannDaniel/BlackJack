@@ -16,7 +16,7 @@ import play.api.libs.json.{JsArray, JsLookupResult, JsNumber, JsObject, JsValue,
 import scala.io.Source
 import scala.collection.Seq
 
-class Json extends IFileIO{
+class Json extends IFileIO {
     override def load: IController = {
         val source: String = Source.fromFile("controller.json").getLines().mkString
         val json: JsValue = Json.parse(source)

@@ -1,152 +1,129 @@
 {
   "controller" : {
-    "gameState" : "IDLE",
+    "gameState" : "WELCOME",
     "gameConfig" : {
       "players" : [ {
         "player" : {
-          "name" : "vlad",
-          "hand" : [ {
-            "card" : "3C"
-          }, {
-            "card" : "2H"
-          }, {
-            "card" : "9H"
-          }, {
-            "card" : "7H"
-          } ]
+          "name" : "any-name-1",
+          "hand" : [ ]
         }
       }, {
         "player" : {
-          "name" : "dani",
-          "hand" : [ {
-            "card" : "KH"
-          }, {
-            "card" : "JC"
-          } ]
-        }
-      }, {
-        "player" : {
-          "name" : "axt",
-          "hand" : [ {
-            "card" : "KD"
-          }, {
-            "card" : "7S"
-          }, {
-            "card" : "QS"
-          } ]
-        }
-      }, {
-        "player" : {
-          "name" : "bog",
-          "hand" : [ {
-            "card" : "7D"
-          }, {
-            "card" : "10H"
-          }, {
-            "card" : "AS"
-          } ]
+          "name" : "any-name-2",
+          "hand" : [ ]
         }
       } ],
       "dealer" : {
         "name" : "Dealer",
-        "hand" : [ {
-          "card" : "8C"
-        }, {
-          "card" : "10S"
-        } ]
+        "hand" : [ ]
       },
       "deck" : [ {
-        "card" : "5S"
-      }, {
-        "card" : "2S"
-      }, {
-        "card" : "KS"
-      }, {
-        "card" : "10D"
-      }, {
-        "card" : "9S"
-      }, {
-        "card" : "QC"
-      }, {
-        "card" : "6H"
-      }, {
-        "card" : "AH"
-      }, {
-        "card" : "8H"
-      }, {
-        "card" : "9C"
-      }, {
-        "card" : "KC"
-      }, {
-        "card" : "6S"
-      }, {
-        "card" : "5C"
-      }, {
-        "card" : "4C"
-      }, {
-        "card" : "QH"
-      }, {
-        "card" : "6D"
-      }, {
-        "card" : "4S"
-      }, {
-        "card" : "AD"
-      }, {
-        "card" : "8S"
-      }, {
-        "card" : "5H"
-      }, {
-        "card" : "AC"
-      }, {
-        "card" : "7C"
-      }, {
-        "card" : "5D"
-      }, {
-        "card" : "4D"
-      }, {
-        "card" : "JH"
-      }, {
-        "card" : "2D"
-      }, {
-        "card" : "JS"
-      }, {
-        "card" : "8D"
-      }, {
-        "card" : "10C"
-      }, {
-        "card" : "JD"
-      }, {
-        "card" : "2C"
-      }, {
-        "card" : "3H"
-      }, {
-        "card" : "3S"
+        "card" : "2H"
       }, {
         "card" : "4H"
       }, {
-        "card" : "6C"
+        "card" : "AD"
       }, {
-        "card" : "3D"
+        "card" : "6H"
+      }, {
+        "card" : "3C"
+      }, {
+        "card" : "AS"
+      }, {
+        "card" : "4S"
+      }, {
+        "card" : "4D"
+      }, {
+        "card" : "3H"
+      }, {
+        "card" : "2D"
+      }, {
+        "card" : "7S"
+      }, {
+        "card" : "2C"
+      }, {
+        "card" : "10D"
+      }, {
+        "card" : "JH"
+      }, {
+        "card" : "6D"
+      }, {
+        "card" : "8S"
+      }, {
+        "card" : "QC"
       }, {
         "card" : "QD"
       }, {
+        "card" : "JD"
+      }, {
+        "card" : "AC"
+      }, {
+        "card" : "KD"
+      }, {
+        "card" : "10H"
+      }, {
+        "card" : "10S"
+      }, {
+        "card" : "9S"
+      }, {
+        "card" : "10C"
+      }, {
+        "card" : "JS"
+      }, {
+        "card" : "9H"
+      }, {
+        "card" : "4C"
+      }, {
+        "card" : "KS"
+      }, {
+        "card" : "3S"
+      }, {
+        "card" : "8C"
+      }, {
+        "card" : "5C"
+      }, {
+        "card" : "3D"
+      }, {
+        "card" : "2S"
+      }, {
+        "card" : "6C"
+      }, {
+        "card" : "QS"
+      }, {
+        "card" : "5H"
+      }, {
         "card" : "9D"
+      }, {
+        "card" : "JC"
+      }, {
+        "card" : "9C"
+      }, {
+        "card" : "7C"
+      }, {
+        "card" : "QH"
+      }, {
+        "card" : "8H"
+      }, {
+        "card" : "KH"
+      }, {
+        "card" : "8D"
+      }, {
+        "card" : "KC"
+      }, {
+        "card" : "7D"
+      }, {
+        "card" : "6S"
+      }, {
+        "card" : "AH"
+      }, {
+        "card" : "5S"
+      }, {
+        "card" : "5D"
+      }, {
+        "card" : "7H"
       } ],
       "activePlayerIndex" : 0,
-      "winners" : [ {
-        "player" : {
-          "name" : "vlad",
-          "hand" : [ {
-            "card" : "3C"
-          }, {
-            "card" : "2H"
-          }, {
-            "card" : "9H"
-          }, {
-            "card" : "7H"
-          } ]
-        }
-      } ]
+      "winners" : [ ]
     }
   }
 }
