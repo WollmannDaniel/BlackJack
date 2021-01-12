@@ -49,5 +49,9 @@ case class Card(suit: Suit, rank: Rank) extends ICard {
     def getRank(): Rank = {
         rank
     }
+
+    def getSuit(): Suit = {
+        suit
+    }
 }
 

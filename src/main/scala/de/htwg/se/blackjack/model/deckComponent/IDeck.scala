@@ -1,6 +1,7 @@
 package de.htwg.se.blackjack.model.deckComponent
 
 import de.htwg.se.blackjack.model.deckComponent.Rank.Rank
+import de.htwg.se.blackjack.model.deckComponent.Suit.Suit
 
 trait IDeck {
     def drawCards(num: Int): (IDeck, Vector[Option[ICard]])
@@ -14,4 +15,5 @@ trait ICard {
     def mapCardValue(): Int
     def mapCardSymbol(): String
     def getRank(): Rank
+    def getSuit(): Suit
 }
