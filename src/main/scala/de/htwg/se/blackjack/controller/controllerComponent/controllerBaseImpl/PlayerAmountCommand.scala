@@ -1,4 +1,4 @@
-package de.htwg.se.blackjack.controller
+package de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl
 
 import de.htwg.se.blackjack.util.Command
 

@@ -1,12 +1,11 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, RefreshData}
-import de.htwg.se.blackjack.util.Observer
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, RefreshData, Saved, ShowResults}
 import de.htwg.se.blackjack.controller.GameState._
 
 import scala.swing.Reactor
 
-class Tui(controller: Controller) extends Reactor {
+class Tui(controller: IController) extends Reactor {
     listenTo(controller)
 
     def processCommands(input: String): Unit = {
@@ -42,13 +41,15 @@ class Tui(controller: Controller) extends Reactor {
             case "n" => controller.newGame()
             case "q" => controller.quitGame()
             case "z" => controller.undo
-            //case "y" => controller.redo
+            case "save" => controller.save
+            case "load" => controller.load
             case "state" => controller.getState()
             case _ => print("unknown command")
         }
     }
 
     reactions += {
+        case event: Saved => print("Game was saved!\n")
         case _ => update
     }
 
@@ -71,20 +72,24 @@ class Tui(controller: Controller) extends Reactor {
                 println(s"${controller.getActivePlayerName}'s hand value went over twenty-one!\n")
                 println(controller.gameStateToString)
             }
-            case DEALERS_TURN => println(controller.gameStateToString)
-            case IDLE => println("q = quit, n = start new game")
             case DEALER_WON | PLAYER_WON => {
                 println(controller.gameStateToString)
+                println("q = quit, n = start new game")
             }
             case DRAW => {
                 print("It's a draw!\n")
                 println(controller.gameStateToString)
+                println("q = quit, n = start new game")
             }
+            //case DEALERS_TURN => print("")//nothing to do in this case
             case WRONG_CMD => print("Command not allowed!\n")
             case END_GAME => print("Good bye!")
             case EMPTY_DECK => {
                 throw new IllegalStateException("Deck doesn't have enough cards.")
             }
+            case _ =>
         }
     }
+
+    def getController: IController = controller
 }

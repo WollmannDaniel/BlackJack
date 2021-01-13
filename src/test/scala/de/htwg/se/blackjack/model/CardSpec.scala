@@ -1,5 +1,7 @@
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.Card
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -69,6 +71,9 @@ class CardSpec extends AnyWordSpec with Matchers {
         }
         "have this card Symbol when is Club" in {
             clubCard.mapCardSymbol() equals "C"
+        }
+        "have this Rank when is jackCard" in {
+            jackCard.getRank() equals Rank.Jack
         }
     }}
     "To get 100% code coverage" when { "for enum" should {

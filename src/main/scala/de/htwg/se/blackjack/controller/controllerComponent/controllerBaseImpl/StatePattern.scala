@@ -1,4 +1,4 @@
-package de.htwg.se.blackjack.controller
+package de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl
 
 trait State {
     def handle(e: State): (State, String)

@@ -1,6 +1,5 @@
-package de.htwg.se.blackjack.controller
+package de.htwg.se.blackjack.controller.controllerComponent.controllerBaseImpl
 
-import de.htwg.se.blackjack.model.GameConfig
 import de.htwg.se.blackjack.util.Command
 
 class NameCommand(controller: Controller, playerName: String) extends Command {

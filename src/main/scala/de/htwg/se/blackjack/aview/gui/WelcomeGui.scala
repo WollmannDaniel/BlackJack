@@ -1,11 +1,11 @@
 package de.htwg.se.blackjack.aview.gui
 
-import de.htwg.se.blackjack.controller.{Controller, InitGame}
+import de.htwg.se.blackjack.controller.{IController, InitGame}
 
 import scala.swing._
 import scala.swing.event.ButtonClicked
 
-class WelcomeGui(controller: Controller) extends Frame {
+class WelcomeGui(controller: IController) extends Frame {
     visible = true
     peer.setLocationRelativeTo(null)
     peer.setPreferredSize(new Dimension(300, 300))

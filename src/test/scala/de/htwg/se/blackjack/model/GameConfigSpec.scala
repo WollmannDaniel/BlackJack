@@ -1,5 +1,10 @@
+
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
+import de.htwg.se.blackjack.model.gameConfigComponent.gameConfigBaseImpl
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -13,17 +18,17 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             Card(Suit.Club, Rank.Seven)))
 
         val dealer = Player("any-dealer-name", Hand(Vector[Card]()))
-        val gameConfig = GameConfig(Vector[Player](), dealer, deck: Deck, 0, Vector[Player]())
+        val gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](), dealer, deck: Deck, 0, Vector[Player]())
 
         "create player with default name" in {
             val config = gameConfig.createPlayer()
-            config.players(0).name should be("")
+            config.getPlayerAtIndex(0).getName() should be("")
         }
 
         "create a player" in {
             val config = gameConfig.createPlayer("any-name")
-            config.players(0).name should be("any-name")
-            config.players(0).hand.cards.size should be(2)
+            config.getPlayerAtIndex(0).getName() should be("any-name")
+            config.getPlayerAtIndex(0).getHand().getCards().size should be(2)
         }
 
         "success in unpacking list with options cards" in {
@@ -44,7 +49,7 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
         "set player name" in {
             var config = gameConfig.createPlayer("any-name")
             config = config.setPlayerName("any-name-changed", 0)
-            config.players(0).name should be("any-name-changed")
+            config.getPlayerAtIndex(0).getName() should be("any-name-changed")
         }
 
         "update player at index" in {
@@ -52,21 +57,21 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             var config = gameConfig.createPlayer("any-name-1")
             config = config.createPlayer("any-name-2")
             config = config.updatePlayerAtIndex(newPlayer, 0, deck)
-            config.players(0).name should be("updated-name")
-            config.players(0).hand.cards.size should be(0)
-            config.players(1).name should be("any-name-2")
-            config.players(1).hand.cards.size should be(2)
+            config.getPlayerAtIndex(0).getName() should be("updated-name")
+            config.getPlayerAtIndex(0).getHand().getCards().size should be(0)
+            config.getPlayerAtIndex(1).getName() should be("any-name-2")
+            config.getPlayerAtIndex(1).getHand().getCards().size should be(2)
         }
 
         "increment active player index" in {
             val currentIndex = gameConfig.activePlayerIndex
             val config = gameConfig.incrementActivePlayerIndex()
-            (config.activePlayerIndex - currentIndex) should be(1)
+            (config.getActivePlayerIndex() - currentIndex) should be(1)
         }
 
         "reset active player index" in {
             val config = gameConfig.resetActivePlayerIndex()
-            config.activePlayerIndex should be(0)
+            config.getActivePlayerIndex() should be(0)
         }
 
         "get active player name" in {
@@ -76,13 +81,13 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
 
         "get active player" in {
             val config = gameConfig.createPlayer("any-name")
-            config.getActivePlayer should be(config.players(0))
+            config.getActivePlayer should be(config.getPlayerAtIndex(0))
         }
 
         "init dealer" in {
             val config = gameConfig.initDealer()
-            config.dealer.name should be("any-dealer-name")
-            config.dealer.hand.cards.size should be(2)
+            config.getDealer().getName() should be("any-dealer-name")
+            config.getDealer().getHand().getCards().size should be(2)
         }
 
         "get players and dealer as string" in {
@@ -91,19 +96,19 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             config = config.initDealer()
             val string = config.getAllPlayerAndDealerHandsAsString
             val builder = new StringBuilder()
-            string should be(builder.append(config.players(0)).append(config.players(1)).append(config.dealer).toString())
+            string should be(builder.append(config.getPlayerAtIndex(0)).append(config.getPlayerAtIndex(1)).append(config.getDealer()).toString())
         }
 
         "reset itself" in {
             var config = gameConfig.createPlayer("any-name")
             config = config.resetGameConfig()
-            config.players.size should be(1)
-            config.players(0).name should be("any-name")
-            config.dealer.name should be("Dealer")
-            config.dealer.hand.cards.size should be(2)
-            config.deck.cards.size should be(48)
-            config.activePlayerIndex should be(0)
-            config.winners.size should be(0)
+            config.getPlayers().size should be(1)
+            config.getPlayerAtIndex(0).getName() should be("any-name")
+            config.getDealer().getName() should be("Dealer")
+            config.getDealer().getHand().getCards().size should be(2)
+            //config.getDeck().cards.size should be(48)
+            config.getActivePlayerIndex() should be(0)
+            config.getWinners().size should be(0)
         }
 
         "add winner" in {
@@ -111,7 +116,7 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             val playerTwo = Player("any-name-2", Hand(Vector[Card]()))
             var config = gameConfig.addWinner(playerOne)
             config = config.addWinner(playerTwo)
-            config.winners.size should be(2)
+            config.getWinners().size should be(2)
         }
 
         "set winner" in {
@@ -119,8 +124,8 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
             val playerTwo = Player("any-name-2", Hand(Vector[Card]()))
             var config = gameConfig.addWinner(playerOne)
             config = config.setWinner(playerTwo)
-            config.winners.size should be(1)
-            config.winners(0) should be(playerTwo)
+            config.getWinners().size should be(1)
+            config.getWinners()(0) should be(playerTwo)
         }
 
         "get winners as string" in {
@@ -142,4 +147,3 @@ class GameConfigSpec extends AnyWordSpec with Matchers {
         }
     }}
 }
-

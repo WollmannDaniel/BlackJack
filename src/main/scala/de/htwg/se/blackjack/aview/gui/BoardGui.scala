@@ -2,14 +2,13 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.Image
 
-import de.htwg.se.blackjack.controller.{Controller, DealersTurn, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
-import javax.swing.border.{Border, LineBorder}
 
 import scala.swing._
-import scala.swing.event.ButtonClicked
+import scala.swing.event.{ButtonClicked, Key}
 
-class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
+class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     listenTo(controller)
     title = "Blackjack"
     peer.setPreferredSize(new Dimension(1000, 750))
@@ -64,7 +63,7 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
     def createPlayerGrid(index: Int = -1): GridPanel = new GridPanel(2,1) {
         if (index != -1) {
             contents += new Label {
-                text = controller.gameConfig.players(index).name
+                text = controller.gameConfig.getPlayerAtIndex(index).getName()
             }
         } else {
             contents += lbl_player
@@ -128,6 +127,14 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
         contents += buttonFlowPanel
     }
 
+    menuBar = new MenuBar {
+        contents += new Menu("File") {
+            mnemonic = Key.F
+            contents += new MenuItem(Action("Save") { controller.save })
+            contents += new MenuItem(Action("Load") { controller.load })
+        }
+    }
+
     reactions += {
         case event: SetupMenu => {
             parent.pack()
@@ -147,9 +154,10 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
         case event: PlayerWentOver => {
             Dialog.showMessage(contents.head, s"${controller.getActivePlayerName}'s hand value went over twenty-one!", "Game message")
             lbl_player.text = controller.getActivePlayerName
-            repaint
+            repaint()
         }
         case event: ShowResults => {
+            hideDealerCard = false
             redrawResults
         }
         case event: NewGameStarted => hideDealerCard = true
@@ -165,7 +173,7 @@ class BoardGui(parent: SetupGui, controller: Controller) extends Frame {
     }
 
     def redrawResults: Unit = {
-        val playerAmount = controller.gameConfig.players.size
+        val playerAmount = controller.gameConfig.getPlayers().size
         contents = new BoxPanel(Orientation.Vertical){
             contents += new GridPanel(1,1) {
                 contents += new Label {
