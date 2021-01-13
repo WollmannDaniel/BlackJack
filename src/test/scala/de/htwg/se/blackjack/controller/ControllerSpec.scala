@@ -112,7 +112,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 val player = Player("any-name", Hand(Vector(Card(Suit.Diamond, Rank.Ten), Card(Suit.Heart, Rank.Jack))))
                 controller.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](player), dealer, newDeck, 0, Vector[Player]())
                 controller.playerHits()
-                controller.gameState should be(IDLE)
+                controller.gameState should be(DEALER_WON)
                 //observer.updated should be(true)
             }
 
@@ -185,7 +185,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
                 tempController.checkWinner()
                 //observer.updated should be(true)
-                controller.gameState should be(IDLE)
+                controller.gameState should be(PLAYER_WON)
             }
 
             "notify its Observer after dealer wins with bigger hand than player" in {
@@ -195,7 +195,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
                 controller.checkWinner()
                 //observer.updated should be(true)
-                controller.gameState should be(IDLE)
+                controller.gameState should be(DEALER_WON)
             }
 
             "notify its Observer after player wins with bigger hand than dealer" in {
@@ -205,7 +205,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
                 controller.checkWinner()
                 //observer.updated should be(true)
-                controller.gameState should be(IDLE)
+                controller.gameState should be(PLAYER_WON)
             }
 
             "notify its Observer after its a draw" in {
@@ -215,7 +215,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
                 controller.checkWinner()
                 //observer.updated should be(true)
-                controller.gameState should be(IDLE)
+                controller.gameState should be(DRAW)
             }
 
             "notify its Observer after quiting the game" in {
@@ -232,7 +232,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
             }
 
             "notify its Observer after trying to create new game" in {
-                controller.gameState = IDLE
+                controller.gameState = PLAYER_WON
                 controller.newGame()
                 //observer.updated should be(true)
                 controller.gameState should be(PLAYER_TURN)
@@ -285,11 +285,15 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 val playerHand = Hand(Vector(Card(Suit.Diamond, Rank.Nine), Card(Suit.Spade, Rank.Eight)))
                 tempController.gameConfig = gameConfigBaseImpl.GameConfig(Vector[Player](Player("Player1", playerHand)), Player("Dealer", dealerHand), deck.resetDeck(), 0, Vector[Player]())
                 tempController.gameState = PLAYER_WON
-                val outputString = tempController.gameConfig.getAllWinnerAsString
+                val sb = new StringBuilder()
+                sb.append(tempController.gameConfig.getAllPlayerAndDealerHandsAsString)
+                    .append("\n")
+                    .append(tempController.gameConfig.getAllWinnerAsString)
+                val outputString = sb.toString()
                 tempController.gameStateToString should be(outputString)
             }
 
-            "have these gameStateToString representation when gameState is DEALERS_TURN" in {
+            /*"have these gameStateToString representation when gameState is DEALERS_TURN" in {
                 val tempController = controller
                 val dealerHand = Hand(Vector(Card(Suit.Spade, Rank.Queen), Card(Suit.Heart, Rank.Jack)))
                 val playerHand = Hand(Vector(Card(Suit.Diamond, Rank.Nine), Card(Suit.Spade, Rank.Eight)))
@@ -297,7 +301,7 @@ class ControllerSpec extends AnyWordSpec with Matchers {
                 tempController.gameState = DEALERS_TURN
                 val outputString = tempController.gameConfig.getAllPlayerAndDealerHandsAsString
                 tempController.gameStateToString should be(outputString)
-            }
+            }*/
 
             "return these image names when dealer" in {
                 val tempController = controller

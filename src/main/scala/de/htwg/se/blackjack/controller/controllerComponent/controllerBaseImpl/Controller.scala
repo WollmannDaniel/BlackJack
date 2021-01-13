@@ -176,13 +176,16 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
         }
 
         publish(new ShowResults)
-        gameState = IDLE
-        publish(new ShowResults)
+        //gameState = IDLE
+        //publish(new ShowResults)
         running = IsNotRunning()
     }
 
     def newGame(): Unit ={
-        if (gameState != IDLE) {
+        if (gameState != DRAW &&
+            gameState != PLAYER_WON &&
+            gameState != DEALER_WON)  {
+
             gameState = WRONG_CMD
             publish(new RefreshData)
             gameState = PLAYER_TURN
@@ -201,8 +204,13 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
     def gameStateToString: String = {
         gameState match {
             case PLAYER_TURN | PLAYER_LOST => gameConfig.getPlayers()(gameConfig.getActivePlayerIndex()).toString + gameConfig.getDealer().toStringDealer
-            case PLAYER_WON | DEALER_WON | DRAW => gameConfig.getAllWinnerAsString
-            case _ => gameConfig.getAllPlayerAndDealerHandsAsString
+            case PLAYER_WON | DEALER_WON | DRAW => {
+                val sb = new StringBuilder()
+                sb.append(gameConfig.getAllPlayerAndDealerHandsAsString)
+                    .append("\n")
+                    .append(gameConfig.getAllWinnerAsString)
+                sb.toString()
+            }
         }
     }
 
@@ -267,7 +275,14 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
         val c = fileIO.load
         this.gameConfig = c.gameConfig
         this.gameState = c.gameState
-        publish(new RefreshData)
+
+        if (gameState == DRAW ||
+            gameState == PLAYER_WON ||
+            gameState == DEALER_WON) {
+            publish(new ShowResults)
+        } else {
+            publish(new RefreshData)
+        }
     }
 
     def save: Unit = {

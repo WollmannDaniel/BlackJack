@@ -6,7 +6,7 @@ import de.htwg.se.blackjack.controller.{DealersTurn, IController, NewGameStarted
 import javax.swing.ImageIcon
 
 import scala.swing._
-import scala.swing.event.ButtonClicked
+import scala.swing.event.{ButtonClicked, Key}
 
 class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     listenTo(controller)
@@ -127,6 +127,14 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         contents += buttonFlowPanel
     }
 
+    menuBar = new MenuBar {
+        contents += new Menu("File") {
+            mnemonic = Key.F
+            contents += new MenuItem(Action("Save") { controller.save })
+            contents += new MenuItem(Action("Load") { controller.load })
+        }
+    }
+
     reactions += {
         case event: SetupMenu => {
             parent.pack()
@@ -149,6 +157,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
             repaint()
         }
         case event: ShowResults => {
+            hideDealerCard = false
             redrawResults
         }
         case event: NewGameStarted => hideDealerCard = true

@@ -18,109 +18,109 @@
         "hand" : [ ]
       },
       "deck" : [ {
-        "card" : "5D"
+        "card" : "JH"
       }, {
         "card" : "5S"
       }, {
-        "card" : "9D"
+        "card" : "6H"
       }, {
-        "card" : "5C"
-      }, {
-        "card" : "QH"
-      }, {
-        "card" : "3H"
-      }, {
-        "card" : "JS"
-      }, {
-        "card" : "10C"
-      }, {
-        "card" : "8H"
-      }, {
-        "card" : "KH"
+        "card" : "9C"
       }, {
         "card" : "JD"
       }, {
         "card" : "AD"
       }, {
-        "card" : "10S"
+        "card" : "KC"
       }, {
         "card" : "7H"
       }, {
-        "card" : "4D"
-      }, {
-        "card" : "JC"
-      }, {
-        "card" : "7C"
-      }, {
-        "card" : "9S"
-      }, {
-        "card" : "2C"
-      }, {
-        "card" : "10D"
-      }, {
-        "card" : "4H"
-      }, {
-        "card" : "KS"
-      }, {
-        "card" : "QD"
-      }, {
-        "card" : "QC"
-      }, {
-        "card" : "4S"
-      }, {
-        "card" : "2S"
-      }, {
-        "card" : "KD"
-      }, {
-        "card" : "7S"
-      }, {
-        "card" : "4C"
-      }, {
-        "card" : "10H"
-      }, {
-        "card" : "7D"
-      }, {
-        "card" : "6H"
-      }, {
-        "card" : "AS"
-      }, {
-        "card" : "6C"
-      }, {
-        "card" : "8S"
-      }, {
-        "card" : "QS"
-      }, {
-        "card" : "JH"
-      }, {
-        "card" : "2D"
-      }, {
         "card" : "8D"
       }, {
-        "card" : "5H"
+        "card" : "8H"
       }, {
-        "card" : "KC"
-      }, {
-        "card" : "9H"
-      }, {
-        "card" : "6S"
-      }, {
-        "card" : "6D"
-      }, {
-        "card" : "3C"
-      }, {
-        "card" : "3D"
-      }, {
-        "card" : "9C"
-      }, {
-        "card" : "8C"
-      }, {
-        "card" : "2H"
+        "card" : "4D"
       }, {
         "card" : "3S"
       }, {
+        "card" : "4H"
+      }, {
+        "card" : "2H"
+      }, {
+        "card" : "JS"
+      }, {
+        "card" : "10H"
+      }, {
+        "card" : "5C"
+      }, {
+        "card" : "9H"
+      }, {
+        "card" : "5H"
+      }, {
         "card" : "AH"
       }, {
+        "card" : "6C"
+      }, {
+        "card" : "QC"
+      }, {
+        "card" : "4C"
+      }, {
+        "card" : "8S"
+      }, {
+        "card" : "10C"
+      }, {
+        "card" : "QH"
+      }, {
+        "card" : "JC"
+      }, {
+        "card" : "2S"
+      }, {
+        "card" : "6D"
+      }, {
+        "card" : "4S"
+      }, {
+        "card" : "7S"
+      }, {
+        "card" : "9D"
+      }, {
+        "card" : "10D"
+      }, {
+        "card" : "3D"
+      }, {
+        "card" : "7C"
+      }, {
+        "card" : "3C"
+      }, {
+        "card" : "KH"
+      }, {
+        "card" : "10S"
+      }, {
+        "card" : "5D"
+      }, {
+        "card" : "AS"
+      }, {
+        "card" : "9S"
+      }, {
+        "card" : "8C"
+      }, {
+        "card" : "2C"
+      }, {
+        "card" : "2D"
+      }, {
+        "card" : "KS"
+      }, {
+        "card" : "KD"
+      }, {
+        "card" : "6S"
+      }, {
+        "card" : "7D"
+      }, {
+        "card" : "QD"
+      }, {
         "card" : "AC"
+      }, {
+        "card" : "QS"
+      }, {
+        "card" : "3H"
       } ],
       "activePlayerIndex" : 0,
       "winners" : [ ]
