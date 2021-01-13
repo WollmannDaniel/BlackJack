@@ -1,13 +1,14 @@
 package de.htwg.se.blackjack.aview
 
-import de.htwg.se.blackjack.controller.Controller
-import de.htwg.se.blackjack.util.Observer
+import de.htwg.se.blackjack.controller.{DealersTurn, IController, RefreshData, Saved, ShowResults}
 import de.htwg.se.blackjack.controller.GameState._
 
-class Tui(controller: Controller) extends Observer with UserInterface {
-    controller.add(this)
+import scala.swing.Reactor
 
-    override def processCommands(input: String): Unit = {
+class Tui(controller: IController) extends Reactor {
+    listenTo(controller)
+
+    def processCommands(input: String): Unit = {
         if (controller.gameState == WELCOME) {
             input match {
                 case "z" => controller.undo
@@ -40,22 +41,28 @@ class Tui(controller: Controller) extends Observer with UserInterface {
             case "n" => controller.newGame()
             case "q" => controller.quitGame()
             case "z" => controller.undo
-            //case "y" => controller.redo
+            case "save" => controller.save
+            case "load" => controller.load
             case "state" => controller.getState()
             case _ => print("unknown command")
         }
     }
 
-    override def update: Boolean = {
+    reactions += {
+        case event: Saved => print("Game was saved!\n")
+        case _ => update
+    }
+
+    def update: Unit = {
         controller.gameState match {
             case WELCOME => {
-                println("Starting new game!\nThe deck was shuffled.\nHow many players want to play?")
+                print("Starting new game!\nThe deck was shuffled.\nHow many players want to play?\n")
             }
             case NAME_CREATION => {
-                println(controller.getPlayerName)
+                print(controller.getPlayerName + "\n")
             }
             case NEW_GAME_STARTED => {
-                println("Starting new game!\nThe deck was shuffled.")
+                print("Starting new game!\nThe deck was shuffled.\n")
             }
             case PLAYER_TURN => {
                 println(s"${controller.getActivePlayerName}'s turn. Hit or stand?(h/s)\n")
@@ -65,21 +72,24 @@ class Tui(controller: Controller) extends Observer with UserInterface {
                 println(s"${controller.getActivePlayerName}'s hand value went over twenty-one!\n")
                 println(controller.gameStateToString)
             }
-            case DEALERS_TURN => println(controller.gameStateToString)
-            case IDLE => println("q = quit, n = start new game")
             case DEALER_WON | PLAYER_WON => {
                 println(controller.gameStateToString)
+                println("q = quit, n = start new game")
             }
             case DRAW => {
-                println("It's a draw!")
+                print("It's a draw!\n")
                 println(controller.gameStateToString)
+                println("q = quit, n = start new game")
             }
-            case WRONG_CMD => println("Command not allowed!")
+            //case DEALERS_TURN => print("")//nothing to do in this case
+            case WRONG_CMD => print("Command not allowed!\n")
             case END_GAME => print("Good bye!")
             case EMPTY_DECK => {
                 throw new IllegalStateException("Deck doesn't have enough cards.")
             }
+            case _ =>
         }
-        true
     }
+
+    def getController: IController = controller
 }

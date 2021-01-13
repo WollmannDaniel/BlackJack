@@ -1,5 +1,8 @@
+
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent._
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
 
@@ -32,7 +35,7 @@ class DeckSpec extends AnyWordSpec with Matchers {
                                Card(Suit.Club, Rank.Seven)))
 
         val (newDeck, cards) = deck.drawCards(1)
-        deck = newDeck
+        deck = newDeck.asInstanceOf[Deck]
         "have draw card" in {
             deck.cards.size should be(4)
             cards(0) should be(Some(Card(Suit.Club, Rank.Seven)))
@@ -47,7 +50,7 @@ class DeckSpec extends AnyWordSpec with Matchers {
             Card(Suit.Club, Rank.Seven)))
 
         val (newDeck, cards) = deck.drawCards(4)
-        deck = newDeck
+        deck = newDeck.asInstanceOf[Deck]
         "have drawn multiple cards" in {
             deck.cards.size should be(1)
             cards.size should be(4)
@@ -57,7 +60,7 @@ class DeckSpec extends AnyWordSpec with Matchers {
             val (updatedDeck, cards2) = deck.drawCards(2)
             cards2(0) should be(Some(Card(Suit.Diamond, Rank.Two)))
             cards2(1) should be(None)
-            updatedDeck.cards.size should be(0)
+            updatedDeck.asInstanceOf[Deck].cards.size should be(0)
         }
     }}
 
@@ -67,7 +70,7 @@ class DeckSpec extends AnyWordSpec with Matchers {
             deck.cards.size should be(2)
         }
         "have 52 cards" in {
-            deck = deck.resetDeck()
+            deck = deck.resetDeck().asInstanceOf[Deck]
             deck.cards.size should be (52)
         }
     }}

@@ -1,25 +1,26 @@
 package de.htwg.se.blackjack
 
-import de.htwg.se.blackjack.aview.{Tui, UserInterface}
-import de.htwg.se.blackjack.controller.Controller
-import de.htwg.se.blackjack.model.{Deck, Hand}
+import com.google.inject.{Guice, Injector}
+import de.htwg.se.blackjack.aview.gui.WelcomeGui
+import de.htwg.se.blackjack.aview.{Tui}
+import de.htwg.se.blackjack.controller.{IController, RefreshData}
 
 import scala.io.StdIn.readLine
 
 object Blackjack {
-    val deck = new Deck()
-    val controller = new Controller(deck)
-
     def main(args: Array[String]): Unit = {
+        val injector: Injector = Guice.createInjector(new BlackjackModule())
+        val controller: IController = injector.getInstance(classOf[IController])
+
         var input: String = ""
 
-        val uiType = "tui"
-        val ui = UserInterface(uiType, controller)
-        controller.notifyObservers
+        val gui = new WelcomeGui(controller)
+        val tui = new Tui(controller)
+        controller.publish(new RefreshData)
 
         do {
             input = readLine().toLowerCase()
-            ui.processCommands(input)
+            tui.processCommands(input)
         } while (input != "q")
     }
 }

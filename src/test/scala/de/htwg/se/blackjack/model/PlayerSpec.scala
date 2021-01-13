@@ -1,7 +1,10 @@
 package de.htwg.se.blackjack.model
 
+import de.htwg.se.blackjack.model.deckComponent.deckBaseImpl.{Card, Deck}
+import de.htwg.se.blackjack.model.playerComponent.playerComponentBaseImpl.{Hand, Player}
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpec
+import de.htwg.se.blackjack.model.deckComponent._
 
 class PlayerSpec extends AnyWordSpec with Matchers {
     "The Player" when { "new" should {
@@ -10,29 +13,14 @@ class PlayerSpec extends AnyWordSpec with Matchers {
 
         "have the playerhand and name" in {
             player.name should be("playername")
-            player.hand.cards should be(playerHand)
+            player.hand.getCards() should be(playerHand)
         }
         "have name = newPlayerName after setName" in {
-            player = player.setName("newPlayerName")
+            player = player.setName("newPlayerName").asInstanceOf[Player]
             player.name should be("newPlayerName")
         }
         "have unapply" in {
             Player.unapply(player).get should be (player.name, player.hand)
-        }
-    }}
-
-    "The Player" when { "draw a card" should {
-        val playerHand = Vector(Card(Suit.Diamond, Rank.Two), Card(Suit.Heart, Rank.Ace))
-        val player = Player("playername", Hand(playerHand))
-
-        val deck = Deck(Vector(
-            Card(Suit.Heart, Rank.Jack),
-            Card(Suit.Spade, Rank.Ten),
-            Card(Suit.Club, Rank.Seven)))
-
-        "have three handcards" in {
-            val (newPlayer, newDeck) = player.drawCard(deck)
-            newPlayer.hand.cards.size should be(3)
         }
     }}
 
@@ -42,6 +30,14 @@ class PlayerSpec extends AnyWordSpec with Matchers {
 
         "have these string representation" in {
             player.toString should be("playername [♦2,♥A] = 13\n")
+        }
+
+        "have this name" in {
+            player.getName() should be("playername")
+        }
+
+        "have these cards" in {
+            player.getHand().getCards() should be(playerHand)
         }
     }}
 
