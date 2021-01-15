@@ -1,6 +1,6 @@
 package de.htwg.se.blackjack.aview.gui
 
-import java.awt.Image
+import java.awt.{Color, Image}
 
 import de.htwg.se.blackjack.controller.{DealersTurn, IController, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
@@ -11,30 +11,49 @@ import scala.swing.event.{ButtonClicked, Key}
 class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     listenTo(controller)
     title = "Blackjack"
-    peer.setPreferredSize(new Dimension(1000, 750))
+    peer.setPreferredSize(new Dimension(1000, 1000))
     peer.setResizable(false)
     peer.setDefaultCloseOperation(3)
 
     val pathToImage = "src/main/scala/de/htwg/se/blackjack/aview/gui/img/"
-    val imageHeight = 80
-    val imageWidth = 60
+    val imageHeight = 116
+    val imageWidth = 76
 
     var hideDealerCard = true
+    val textFontSize = 28
+    val buttonFontSize = 20
+    val backGroundColor = new Color(0, 102, 0)
+    val fontColor = Color.WHITE
+    val buttonColor = new Color(202, 42, 28)
 
     val lbl_dealer = new Label {
         text = "Dealer"
+        font = new Font("Arial", 0, textFontSize)
+        foreground = fontColor
     }
 
     val lbl_player = new Label {
         text = controller.getActivePlayerName
+        font = new Font("Arial", 0, textFontSize)
+        foreground = fontColor
     }
 
     val btn_hit = new Button {
         text = "Hit"
+        font = new Font("Arial", 0, buttonFontSize)
+        foreground = fontColor
+        background = buttonColor
+        opaque = true
+        borderPainted = false
     }
 
     val btn_stand = new Button {
         text = "Stand"
+        font = new Font("Arial", 0, buttonFontSize)
+        foreground = fontColor
+        background = buttonColor
+        opaque = true
+        borderPainted = false
     }
 
     def getCards(hideDealerCards: Boolean, isDealer: Boolean, playerIndex: Int): collection.mutable.Buffer[Component] = {
@@ -52,35 +71,42 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         val cards = getCards(hideDealerCard, true, -1)
         for(content <- cards) {
             contents += content
+            background = backGroundColor
         }
     }
 
     def createDealerGrid: GridPanel = new GridPanel(2,1){
         contents += lbl_dealer
         contents += createDealerCards
+        background = backGroundColor
     }
 
     def createPlayerGrid(index: Int = -1): GridPanel = new GridPanel(2,1) {
         if (index != -1) {
             contents += new Label {
                 text = controller.gameConfig.getPlayerAtIndex(index).getName()
+                font = new Font("Arial", 0, textFontSize)
+                foreground = fontColor
             }
         } else {
             contents += lbl_player
         }
         contents += createPlayerCards(index)
+        background = backGroundColor
     }
 
     def createPlayerCards(index: Int): FlowPanel = new FlowPanel {
         val cards = getCards(false, false, index)
         for (content <- cards) {
             contents += content
+            background = backGroundColor
         }
     }
 
     val buttonFlowPanel = new FlowPanel {
         contents += btn_hit
         contents += btn_stand
+        background = backGroundColor
 
         listenTo(btn_hit, btn_stand)
 
@@ -98,12 +124,23 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     val endGameButtonFlowPanel = new FlowPanel {
         val btn_NewGame = new Button{
             text = "New Game"
+            font = new Font("Arial", 0, buttonFontSize)
+            foreground = fontColor
+            background = buttonColor
+            opaque = true
+            borderPainted = false
         }
         val btn_Exit = new Button{
             text = "Exit"
+            font = new Font("Arial", 0, buttonFontSize)
+            foreground = fontColor
+            background = buttonColor
+            opaque = true
+            borderPainted = false
         }
         contents += btn_NewGame
         contents += btn_Exit
+        background = backGroundColor
 
         listenTo(btn_NewGame, btn_Exit)
 
@@ -125,6 +162,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         contents += createDealerGrid
         contents += createPlayerGrid()
         contents += buttonFlowPanel
+        background = backGroundColor
     }
 
     menuBar = new MenuBar {
@@ -168,6 +206,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
             contents += createDealerGrid
             contents += createPlayerGrid()
             contents += buttonFlowPanel
+            background = backGroundColor
         }
         contents = grid
     }
@@ -178,9 +217,12 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
             contents += new GridPanel(1,1) {
                 contents += new Label {
                     text = controller.gameConfig.getAllWinnerAsString
+                    font = new Font("Arial", 0, textFontSize)
+                    foreground = fontColor
                     //horizontalAlignment = Alignment.Center
 
                 }
+                background = backGroundColor
             }
             contents += createDealerGrid
 
@@ -188,9 +230,10 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
                 for (i <- 0 until playerAmount) {
                     contents += createPlayerGrid(i)
                 }
+                background = backGroundColor
             }
             contents += endGameButtonFlowPanel
-
+            background = backGroundColor
         }
     }
 
@@ -199,4 +242,6 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         val scaledImage = orig.getImage.getScaledInstance(width, height, Image.SCALE_DEFAULT)
         new ImageIcon(scaledImage)
     }
+
+    centerOnScreen()
 }
