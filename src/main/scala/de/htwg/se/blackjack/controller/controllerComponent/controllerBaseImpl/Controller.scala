@@ -216,7 +216,7 @@ class Controller @Inject() (var gameConfig: IGameConfig) extends IController wit
 
     def quitGame(): Unit = {
         gameState = END_GAME
-        publish(new RefreshData)
+        publish(new EndGame)
     }
 
     def testNotify(): Unit = {

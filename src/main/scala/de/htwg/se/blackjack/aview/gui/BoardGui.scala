@@ -2,7 +2,7 @@ package de.htwg.se.blackjack.aview.gui
 
 import java.awt.{Color, Image}
 
-import de.htwg.se.blackjack.controller.{DealersTurn, IController, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
+import de.htwg.se.blackjack.controller.{DealersTurn, EndGame, IController, NewGameStarted, PlayerWentOver, RefreshData, SetupMenu, ShowResults}
 import javax.swing.ImageIcon
 
 import scala.swing._
@@ -151,8 +151,6 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
                     controller.newGame()
                 } else if(component == btn_Exit) {
                     controller.quitGame()
-                    Dialog.showMessage(contents.head, "Good bye!", "Ciao Bella")
-                    System.exit(0)
                 }
             }
         }
@@ -197,6 +195,10 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
         case event: ShowResults => {
             hideDealerCard = false
             redrawResults
+        }
+        case event: EndGame => {
+            Dialog.showMessage(contents.head, "Good bye!", "Ciao Bella")
+            System.exit(0)
         }
         case event: NewGameStarted => hideDealerCard = true
     }
