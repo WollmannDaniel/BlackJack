@@ -21,7 +21,11 @@ class SetupGui(controller: IController) extends Frame {
 
     var boardGui = new BoardGui(SetupGui.this, controller)
 
+    val buttonWidth = 100
+    val buttonHeight = 32
+
     val btn_undo = new Button {
+        preferredSize = new Dimension(buttonWidth, buttonHeight)
         text = "Undo"
         font = new Font("Arial", 0, buttonFontSize)
         foreground = fontColor
@@ -30,6 +34,7 @@ class SetupGui(controller: IController) extends Frame {
         borderPainted = false
     }
     val btn_redo = new Button {
+        preferredSize = new Dimension(buttonWidth, buttonHeight)
         text = "Redo"
         font = new Font("Arial", 0, buttonFontSize)
         foreground = fontColor
@@ -38,6 +43,7 @@ class SetupGui(controller: IController) extends Frame {
         borderPainted = false
     }
     val btn_do = new Button {
+        preferredSize = new Dimension(buttonWidth, buttonHeight)
         text = "Do"
         font = new Font("Arial", 0, buttonFontSize)
         foreground = fontColor
