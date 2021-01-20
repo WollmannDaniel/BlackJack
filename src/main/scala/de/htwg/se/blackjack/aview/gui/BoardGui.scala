@@ -26,6 +26,9 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     val fontColor = Color.WHITE
     val buttonColor = new Color(202, 42, 28)
 
+    val buttonWidth = 150
+    val buttonHeight = 32
+
     val lbl_dealer = new Label {
         text = "Dealer"
         font = new Font("Arial", 0, textFontSize)
@@ -39,6 +42,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     }
 
     val btn_hit = new Button {
+        preferredSize = new Dimension(buttonWidth, buttonHeight)
         text = "Hit"
         font = new Font("Arial", 0, buttonFontSize)
         foreground = fontColor
@@ -48,6 +52,7 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     }
 
     val btn_stand = new Button {
+        preferredSize = new Dimension(buttonWidth, buttonHeight)
         text = "Stand"
         font = new Font("Arial", 0, buttonFontSize)
         foreground = fontColor
@@ -122,7 +127,8 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
     }
 
     val endGameButtonFlowPanel = new FlowPanel {
-        val btn_NewGame = new Button{
+        val btn_NewGame = new Button {
+            preferredSize = new Dimension(buttonWidth, buttonHeight)
             text = "New Game"
             font = new Font("Arial", 0, buttonFontSize)
             foreground = fontColor
@@ -130,7 +136,8 @@ class BoardGui(parent: SetupGui, controller: IController) extends Frame {
             opaque = true
             borderPainted = false
         }
-        val btn_Exit = new Button{
+        val btn_Exit = new Button {
+            preferredSize = new Dimension(buttonWidth, buttonHeight)
             text = "Exit"
             font = new Font("Arial", 0, buttonFontSize)
             foreground = fontColor
