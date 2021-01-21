@@ -1,57 +1,106 @@
 <controller>
-     <gameState>WELCOME</gameState>
+     <gameState>PLAYER_WON</gameState>
      <gameConfig>
           <activePlayerIndex>0</activePlayerIndex>
           <players>
                <player>
-                    <name>any-name-1</name>
+                    <name>Player1</name>
                     <hand>
                          <card>
-                              <suit>Spade</suit>
-                              <rank>Seven</rank>
+                              <suit>Diamond</suit>
+                              <rank>Two</rank>
                          </card>
                          <card>
-                              <suit>Diamond</suit>
-                              <rank>Ten</rank>
+                              <suit>Club</suit>
+                              <rank>Jack</rank>
                          </card>
                     </hand>
-               </player>
-               <player>
-                    <name>any-name-2</name>
-                    <hand></hand>
                </player>
           </players>
           <dealer>
                <name>Dealer</name>
-               <hand></hand>
+               <hand>
+                    <card>
+                         <suit>Heart</suit>
+                         <rank>Two</rank>
+                    </card>
+                    <card>
+                         <suit>Heart</suit>
+                         <rank>Jack</rank>
+                    </card>
+               </hand>
           </dealer>
           <deck>
                <card>
-                    <suit>Heart</suit>
-                    <rank>Ace</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
+                    <suit>Club</suit>
                     <rank>Queen</rank>
                </card>
                <card>
-                    <suit>Diamond</suit>
-                    <rank>King</rank>
+                    <suit>Club</suit>
+                    <rank>Five</rank>
                </card>
                <card>
                     <suit>Heart</suit>
                     <rank>Four</rank>
                </card>
                <card>
-                    <suit>Spade</suit>
-                    <rank>Ten</rank>
+                    <suit>Club</suit>
+                    <rank>King</rank>
                </card>
                <card>
-                    <suit>Spade</suit>
+                    <suit>Club</suit>
+                    <rank>Seven</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Two</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
                     <rank>Nine</rank>
                </card>
                <card>
                     <suit>Diamond</suit>
+                    <rank>Two</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Ace</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Jack</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>King</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Eight</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Two</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Eight</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Three</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>King</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>Queen</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
                     <rank>Ace</rank>
                </card>
                <card>
@@ -60,199 +109,137 @@
                </card>
                <card>
                     <suit>Heart</suit>
-                    <rank>Six</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Three</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Three</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Eight</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Three</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Five</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Ten</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Six</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Five</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
                     <rank>Queen</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Eight</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Two</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Seven</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>King</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>King</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Queen</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Ace</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Nine</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Nine</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Five</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Three</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Eight</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Seven</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Ten</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Four</rank>
                </card>
                <card>
                     <suit>Spade</suit>
                     <rank>Ace</rank>
                </card>
                <card>
+                    <suit>Diamond</suit>
+                    <rank>Five</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Five</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Six</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Ten</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Nine</rank>
+               </card>
+               <card>
                     <suit>Club</suit>
                     <rank>Jack</rank>
                </card>
                <card>
                     <suit>Diamond</suit>
-                    <rank>Jack</rank>
+                    <rank>Eight</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Ten</rank>
                </card>
                <card>
                     <suit>Diamond</suit>
-                    <rank>Queen</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Two</rank>
+                    <rank>Ten</rank>
                </card>
                <card>
                     <suit>Spade</suit>
                     <rank>Four</rank>
                </card>
                <card>
-                    <suit>Club</suit>
-                    <rank>Two</rank>
-               </card>
-               <card>
-                    <suit>Spade</suit>
-                    <rank>Jack</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Six</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
-                    <rank>Ten</rank>
-               </card>
-               <card>
                     <suit>Heart</suit>
                     <rank>Jack</rank>
                </card>
                <card>
                     <suit>Spade</suit>
-                    <rank>Six</rank>
-               </card>
-               <card>
-                    <suit>Heart</suit>
-                    <rank>Two</rank>
+                    <rank>Seven</rank>
                </card>
                <card>
                     <suit>Spade</suit>
-                    <rank>King</rank>
-               </card>
-               <card>
-                    <suit>Club</suit>
                     <rank>Nine</rank>
-               </card>
-               <card>
-                    <suit>Diamond</suit>
-                    <rank>Five</rank>
                </card>
                <card>
                     <suit>Heart</suit>
                     <rank>Seven</rank>
                </card>
                <card>
-                    <suit>Spade</suit>
-                    <rank>Eight</rank>
+                    <suit>Diamond</suit>
+                    <rank>Three</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>Jack</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Four</rank>
                </card>
                <card>
                     <suit>Diamond</suit>
                     <rank>Four</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Six</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Eight</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Three</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>Ace</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Five</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Three</rank>
+               </card>
+               <card>
+                    <suit>Heart</suit>
+                    <rank>Six</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>Nine</rank>
+               </card>
+               <card>
+                    <suit>Club</suit>
+                    <rank>Ten</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Two</rank>
+               </card>
+               <card>
+                    <suit>Diamond</suit>
+                    <rank>Six</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>King</rank>
+               </card>
+               <card>
+                    <suit>Spade</suit>
+                    <rank>Queen</rank>
                </card>
           </deck>
-          <winners>
-               <player>
-                    <name>any-name-1</name>
-                    <hand>
-                         <card>
-                              <suit>Spade</suit>
-                              <rank>Seven</rank>
-                         </card>
-                         <card>
-                              <suit>Diamond</suit>
-                              <rank>Ten</rank>
-                         </card>
-                    </hand>
-               </player>
-               <player>
-                    <name>any-name-2</name>
-                    <hand></hand>
-               </player>
-          </winners>
+          <winners></winners>
      </gameConfig>
 </controller>
