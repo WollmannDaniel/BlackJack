@@ -34,13 +34,14 @@ Nachdem alle Spieler ihre Runde beendet haben, zieht der Dealer automatisch Kart
 Nachdem der Dealer seine Karten gezogen hat werden alle Karten aufgedeckt und die Gewinner angezeigt.
 
 # Gameboard
-##Welcome Screen
+
+## Welcome Screen
 ![WelcomeScreen](img/WelcomeScreen.PNG)
 
-##Game Screen
+## Game Screen
 ![GameScreen](img/GameScreen.PNG)
 
-##End Screen
+## End Screen
 ![EndScreen](img/EndScreen.PNG)
 
 # Steps to build our project on docker (MacOS)
