@@ -11,3 +11,4 @@ class StartGame extends Event
 class SetupMenu extends Event
 class NewGameStarted extends Event
 class Saved extends Event
+class EndGame extends Event
