@@ -39,10 +39,10 @@ Nachdem der Dealer seine Karten gezogen hat werden alle Karten aufgedeckt und di
 ![WelcomeScreen](img/WelcomeScreen.PNG)
 
 ## Game Screen
-![GameScreen](img/GameScreen.PNG)
+![GameScreen](./img/GameScreen.png =500x500)
 
 ## End Screen
-![EndScreen](img/EndScreen.PNG)
+![EndScreen](img/EndScreen.PNG =500x500)
 
 # Steps to build our project on docker (MacOS)
 
