@@ -39,7 +39,7 @@ Nachdem der Dealer seine Karten gezogen hat werden alle Karten aufgedeckt und di
 ![WelcomeScreen](img/WelcomeScreen.PNG)
 
 ## Game Screen
-![GameScreen](./img/GameScreen.png)
+![GameScreen](img/GameScreen.PNG)
 
 ## End Screen
 ![EndScreen](img/EndScreen.PNG)
