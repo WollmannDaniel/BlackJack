@@ -32,3 +32,28 @@ Die Spieler dürfen so lange Karten nachziehen wie sie wollen. Hat ein Spieler e
 Nachdem alle Spieler ihre Runde beendet haben, zieht der Dealer automatisch Karten nach bis er einen Handkartenwert größer als 16 hat.
 
 Nachdem der Dealer seine Karten gezogen hat werden alle Karten aufgedeckt und die Gewinner angezeigt.
+
+# Gameboard
+##Welcome Screen
+![WelcomeScreen](img/WelcomeScreen.PNG)
+
+##Game Screen
+![GameScreen](img/GameScreen.PNG)
+
+##End Screen
+![EndScreen](img/EndScreen.PNG)
+
+# Steps to build our project on docker (MacOS)
+
+1. Install xquartz (https://www.xquartz.org/)
+1. Make sure xquartz is running in background
+1. In the XQuartz preferences, go to the “Security” tab and make sure you’ve got “Allow connections from network clients” ticked
+![xquartz](https://fredrikaverpil.github.io/blog/assets/docker/xquartz_preferences.png)
+1. Allow connections from your local machine by running these commands in bash:
+    1. ```ip=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')```
+    1. ```xhost + $ip```
+1. Build docker image
+    1. ```docker build -t blackjack .```
+1. Run docker
+    1. ```docker run -e DISPLAY=$ip:0 -v /tmp/.X11-unix:/tmp/.X11-unix -ti blackjack```
+1. Have fun!
